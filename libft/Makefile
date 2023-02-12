@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/29 12:26:23 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/12 19:14:13 by amitcul          ###   ########.fr        #
+#    Updated: 2023/02/12 19:16:02 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ AR			=	ar rcs
 
 OBJF		=	.cache_exists
 
-LIB_DIR		=	libft_src/
+LIB_DIR		=	
 LIB_SRC		=	ft_split ft_strchr ft_strdup ft_striteri ft_strjoin \
 				ft_strlcat ft_strlcpy ft_strlen ft_strmapi ft_strncmp \
 				ft_strnstr ft_strrchr ft_strtrim ft_substr \

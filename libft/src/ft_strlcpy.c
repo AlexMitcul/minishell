@@ -6,11 +6,11 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 18:04:29 by alexmitcul        #+#    #+#             */
-/*   Updated: 2022/11/29 13:05:22 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/12 19:17:35 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/libft.h"
+#include "libft.h"
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {

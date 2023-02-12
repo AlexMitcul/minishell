@@ -1,1 +1,9 @@
+# to be ignored
 .vscode
+*.o
+*.a
+.*
+
+# not to be ignored
+!.gitignore
+!.git
