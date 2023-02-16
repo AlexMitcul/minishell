@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/16 14:21:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/16 14:22:05 by amitcul          ###   ########.fr       */
+/*   Created: 2023/02/16 14:19:13 by amitcul           #+#    #+#             */
+/*   Updated: 2023/02/16 14:23:49 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef PARSER_H
-# define PARSER_H
+#include "parser.h"
 
-# include <stdlib.h>
+int	parser(int argc, char **argv, char **envp)
+{
+	(void)argc;
+	(void)argv;
+	(void)envp;
 
-
-#endif
+	return (EXIT_SUCCESS);
+}
