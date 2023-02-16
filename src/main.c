@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/16 14:23:53 by amitcul          ###   ########.fr       */
+/*   Created: 2023/02/16 14:18:27 by amitcul           #+#    #+#             */
+/*   Updated: 2023/02/16 14:24:02 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "../libft/includes/libft.h"
+int	main(int argc, char **argv, char **envp) {
 
-# include <limits.h>
 
-/*
-	parser
-*/
-int	parser(int argc, char **argv, char **envp);
+	printf("%d\n", parser(argc, argv, envp));
 
-#endif
+	return (0);
+}
