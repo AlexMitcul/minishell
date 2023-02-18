@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 22:20:51 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/18 22:26:17 by amitcul          ###   ########.fr       */
+/*   Created: 2023/02/18 22:23:05 by amitcul           #+#    #+#             */
+/*   Updated: 2023/02/18 22:31:54 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
-
-# include "../libft/includes/libft.h"
-# include "utils.h"
-
-//! DEBUG
+#include "../../includes/lexer.h"
 
 #include <stdio.h>
 
-//!
+int	lexer(t_dll_item *token_list, char *input);
 
-#endif
+
+int main() {
+	printf("Hello");
+
+	lexer(NULL, NULL);
+
+	return 0;
+}

@@ -12,123 +12,6 @@
 
 #include "../../includes/lexer.h"
 
-#include <stdio.h>
-
-#include <string.h>
-
-//------------------------------------------------------------
-//------------------------------------------------------------
-//------------------------------------------------------------
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	size;
-
-	size = 0;
-	while (s[size])
-		size += 1;
-	return (size);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	srclen;
-
-	srclen = ft_strlen(src);
-	if (srclen + 1 < dstsize)
-		ft_memcpy(dst, src, srclen + 1);
-	else if (dstsize != 0)
-	{
-		ft_memcpy(dst, src, dstsize - 1);
-		dst[dstsize - 1] = '\0';
-	}
-	return (srclen);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*res;
-	int		length;
-	size_t	i;
-
-	if (!s1 || !s2)
-		return (NULL);
-	length = ft_strlen(s1) + ft_strlen(s2);
-	res = (char *)malloc(sizeof(char) * (length + 1));
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (*s1)
-	{
-		res[i++] = *s1;
-		s1 += 1;
-	}
-	while (*s2)
-	{
-		res[i++] = *s2;
-		s2 += 1;
-	}
-	res[i] = '\0';
-	return (res);
-}
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	int				i;
-	unsigned char	*d;
-	unsigned char	*s;
-
-	if (!dst && !src)
-		return (NULL);
-	i = 0;
-	d = (unsigned char *)dst;
-	s = (unsigned char *)src;
-	while (n > 0)
-	{
-		d[i] = s[i];
-		i += 1;
-		n -= 1;
-	}
-	return (dst);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*res;
-
-	if (!s)
-		return (NULL);
-	if (ft_strlen(s) < start)
-		len = 0;
-	if (ft_strlen(s + start) < len)
-		len = ft_strlen(s + start);
-	res = (char *)malloc(sizeof(char) * (len + 1));
-	if (!res)
-		return (NULL);
-	ft_strlcpy(res, s + start, len + 1);
-	return (res);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	unsigned char	symbol;
-
-	symbol = c;
-	while (*s != '\0')
-	{
-		if (*s == symbol)
-			return ((char *)s);
-		s++;
-	}
-	if (*s == '\0' && c == '\0')
-		return ((char *)s);
-	return (NULL);
-}
-
-//------------------------------------------------------------
-//------------------------------------------------------------
-//------------------------------------------------------------
-
 #define S_SYMBOLS " <>;|'\""
 
 typedef enum e_token_type
@@ -198,15 +81,31 @@ void	string_join(char **str, char *to_add)
 	*str = new_str;
 }
 
-t_token	*parse_started_from_spec_symbol(char *input, int *i, int *j)
+t_token	*parse_quotes(char *input, int *i, int *j)
 {
-	t_token	*token;
+	(void)input;
+	(void)i;
+	(void)j;
+	return (NULL);
+}
 
+t_token	*parse_redirects(char *input, int *i, int *j)
+{
+	(void)input;
+	(void)i;
+	(void)j;
+	return (NULL);
+}
+
+int	parse_started_from_spec_symbol(char *input, t_token *token, int *i, int *j)
+{
 	if (input[*j] == '\'' || input[*j] == '\"')
 		token = parse_quotes(input, i, j);
 	else if (input[*j] == '<' || input[*j] == '>')
 		token = parse_redirects(input, i, j);
-	return (token);
+	if (token == NULL)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	parse_plain_text(t_token *token, char *input, int i, int *j)
@@ -225,13 +124,13 @@ t_token	*get_next_token(char **input)
 	if (!token)
 		return (NULL);
 	i = 0;
-	while (input[i] != '\0')
+	while ((*input)[i] != '\0')
 	{
 		j = i + 1;
-		if (ft_strchr(S_SYMBOLS, input[j]) == NULL)
-			status = parse_plain_text(token, input, i, &j);
+		if (ft_strchr(S_SYMBOLS, (*input)[j]) == NULL)
+			status = parse_plain_text(token, *input, i, &j);
 		else
-			status = parse_started_from_spec_symbol(input, &i, &j);
+			status = parse_started_from_spec_symbol(*input, token, &i, &j);
 		if (status == EXIT_FAILURE)
 			return (free_token(token), NULL);
 		i = j;
@@ -254,26 +153,4 @@ int	lexer(t_dll_item *token_list, char *input)
 	}
 	token_list = list;
 	return (EXIT_SUCCESS);
-}
-
-/*
-	Test cases to lexer
-
-	echo pwd | pwd ["echo", "pwd"]
-	cat
-export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST
-
-
-*/
-
-int	main(int argc, char **argv)
-{
-	t_dll_item	*token_list;
-
-	token_list = NULL;
-	if (argc > 1)
-	{
-		lexer(argv[1], token_list);
-	}
-	return (0);
 }

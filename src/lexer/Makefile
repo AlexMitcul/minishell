@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/18 20:47:27 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/18 21:56:49 by amitcul          ###   ########.fr        #
+#    Updated: 2023/02/18 22:35:35 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,10 +38,16 @@ $(NAME): $(OBJECTS)
 	@$(AR) $(NAME) $(OBJECTS_DIR)
 	@$(RN) $(NAME)
 
+debug: all
+	$(CC) $(CFLAGS) $(NAME) libft.a main.c doubly_linked_list_utils.c
+
+d: debug
+
 clean:
 	@rm -rf $(O_DIR)
 
 fclean: clean
+	rm -rf a.out
 	@rm -rf $(NAME)
 	@rm -rf $(O_DIR)
 
