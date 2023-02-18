@@ -3,6 +3,7 @@
 *.o
 *.a
 .*
+*a.out
 
 # not to be ignored
 !.gitignore
