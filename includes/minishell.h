@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/16 14:23:53 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/18 17:07:14 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 
 # include <limits.h>
 
-/*
-	parser
-*/
-int	parser(int argc, char **argv, char **envp);
+# include <readline/readline.h>
+# include <readline/history.h>
 
 #endif
