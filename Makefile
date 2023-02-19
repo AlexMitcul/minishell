@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/18 21:57:55 by amitcul          ###   ########.fr        #
+#    Updated: 2023/02/19 17:57:53 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,46 +14,52 @@ NAME	=	minishell
 
 CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror
-RM		=	rm -f
-AR		=	ar rc
-RN		=	ranlib
+RM		=	rm -rf
 
 LIBS_DIR = ./libs
 
 LIBFT	=	libft
+LIBFT_NAME = libft.a
+
 LEXER	=	src/lexer
 
-O_DIR = ./obj
+OBJ_DIR = ./obj
 
-SOURCES := src/main.c
+INCLUDES = includes
+
+SRC_DIR	= src
+SOURCES_WITH_DIR := $(shell find $(SRC_DIR) -name "*.c")
+DIR = $(dir $(SOURCES_WITH_DIR))
+SOURCES := $(notdir $(shell find $(SRC_DIR) -name "*.c"))
+
 OBJECTS := $(SOURCES:.c=.o)
+OBJECTS_WITH_DIR = $(addprefix $(OBJ_DIR)/, $(OBJECTS))
 
-all: start lib lexer $(NAME)
+all: start lib $(NAME)
+
+$(NAME): $(OBJECTS_WITH_DIR)
+	$(CC) $(CFLAGS) -o $(OBJECTS_WITH_DIR) -L ./libs/ -lft main.c
+# $(CC) $(CFLAGS) main.c $(OBJECTS_WITH_DIR) -L ./libs/ -lft -o $(NAME) -I $(INCLUDES)
+
+$(OBJ_DIR)/%.o: $(SOURCES_WITH_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(INCLUDES)
 
 start:
-	@if test -d $(O_DIR); then echo $(O_DIR) exist; else mkdir $(O_DIR); fi
+	@if test -d $(OBJ_DIR); then echo $(OBJ_DIR) exist; else mkdir $(OBJ_DIR); fi
 	@if test -d $(LIBS_DIR); then echo $(LIBS_DIR) exists; else mkdir $(LIBS_DIR); fi
 
 lib:
 	@make -C $(LIBFT)
-	@cp $(LIBFT)/libft.a ./libs/
-
-lexer:
-	@make -C $(LEXER)
-	@cp $(LEXER)/lexer.a ./libs/
-
-$(NAME): $(OBJECTS)
-	@$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME) libs/*.a
+	@cp $(LIBFT)/$(LIBFT_NAME) $(LIBS_DIR)
 
 clean:
-	$(RM) $(O_DIR)
+	$(RM) $(OBJ_DIR)
 	make clean -C $(LIBFT)
-	make clean -C $(LEXER)
 
 fclean: clean
-	@$(RM) $(NAME)
-	@make fclean -C $(LIBFT)
-	@make fclean -C $(LEXER)
+	$(RM) $(NAME)
+	make fclean -C $(LIBFT)
+	$(RM) $(LIBS_DIR)
 
 re: fclean all
 

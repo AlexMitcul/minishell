@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/19 17:56:32 by amitcul          ###   ########.fr       */
+/*   Created: 2023/02/19 17:13:28 by amitcul           #+#    #+#             */
+/*   Updated: 2023/02/19 17:54:55 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#include "../../libft/includes/libft.h"
+#include "../../includes/lexer.h"
 
 #include <stdio.h>
 
-#include "minishell.h"
-
-int lexer_utils(char *);
-int lexer(void);
-
-#endif
+int lexer(void) {
+	return (lexer_utils("42"));
+}
