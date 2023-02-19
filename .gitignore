@@ -4,7 +4,7 @@
 *.a
 .*
 *a.out
-./src/*/main.c
+main.c
 
 # not to be ignored
 !.gitignore
