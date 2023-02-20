@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/20 13:12:49 by amitcul          ###   ########.fr       */
+/*   Created: 2023/02/19 17:12:30 by amitcul           #+#    #+#             */
+/*   Updated: 2023/02/19 17:57:27 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#include "../../../libft/includes/libft.h"
+#include "../../../includes/lexer.h"
 
-#include <stdio.h>
-
-#include "minishell.h"
-
-int lexer_utils(char *);
-int lexer(void);
-
-#endif
+int lexer_utils(char *str) {
+	return ft_atoi(str);
+}

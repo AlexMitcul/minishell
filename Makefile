@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/18 21:57:55 by amitcul          ###   ########.fr        #
+#    Updated: 2023/02/20 12:13:48 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,46 +14,55 @@ NAME	=	minishell
 
 CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror
-RM		=	rm -f
-AR		=	ar rc
-RN		=	ranlib
+RM		=	rm -rf
 
-LIBS_DIR = ./libs
+LIBDIR = ./libft
+LIB = $(LIBDIR)/libft.a
 
-LIBFT	=	libft
-LEXER	=	src/lexer
+INCLUDES = ./includes/
+INCLUDES_LIB = ./libft/includes/
 
-O_DIR = ./obj
+HEADER += $(INCLUDES)minishell.h
+HEADER += $(INCLUDES)lexer.h
 
-SOURCES := src/main.c
-OBJECTS := $(SOURCES:.c=.o)
+SRCS += main.c
 
-all: start lib lexer $(NAME)
+# Lexer source files
+SRCS += lexer.c lexer_utils.c
 
-start:
-	@if test -d $(O_DIR); then echo $(O_DIR) exist; else mkdir $(O_DIR); fi
-	@if test -d $(LIBS_DIR); then echo $(LIBS_DIR) exists; else mkdir $(LIBS_DIR); fi
+OBJ_DIR = ./obj/
 
-lib:
-	@make -C $(LIBFT)
-	@cp $(LIBFT)/libft.a ./libs/
+vpath %.c src/
 
-lexer:
-	@make -C $(LEXER)
-	@cp $(LEXER)/lexer.a ./libs/
+vpath %.c src/lexer/
+vpath %.c src/lexer/lexer_utils/
 
-$(NAME): $(OBJECTS)
-	@$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME) libs/*.a
+OBJS = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))
 
-clean:
-	$(RM) $(O_DIR)
-	make clean -C $(LIBFT)
-	make clean -C $(LEXER)
+all: $(LIB)
+	$(MAKE) $(NAME)
 
-fclean: clean
-	@$(RM) $(NAME)
-	@make fclean -C $(LIBFT)
-	@make fclean -C $(LEXER)
+$(OBJS): $(OBJ_DIR)%.o: %.c $(HEADER)
+	$(CC) $(CFLAGS) -c $<  -I $(INCLUDES) -I $(INCLUDES_LIB) -o $@
 
-re: fclean all
+$(NAME): $(OBJ_DIR) $(OBJS)
+	@echo $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -I$(INCLUDES) -I$(INCLUDES_LIB) $(LIB_TERMCAP) -L./libft -lft -o $@
 
+$(OBJ_DIR):
+	mkdir $@
+
+$(LIB):
+	$(MAKE) -C $(LIBDIR)
+
+fclean : clean
+	$(MAKE) fclean -C $(LIBDIR)
+	$(RM) $(NAME)
+	$(RM) -R $(OBJ_DIR)
+
+clean : clean
+	$(MAKE) fclean -C $(LIBDIR)
+	$(RM) $(NAME)
+
+re : fclean
+	$(MAKE)
