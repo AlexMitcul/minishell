@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/19 17:57:53 by amitcul          ###   ########.fr        #
+#    Updated: 2023/02/20 12:13:48 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,50 +16,53 @@ CC		=	cc
 CFLAGS	=	-Wall -Wextra -Werror
 RM		=	rm -rf
 
-LIBS_DIR = ./libs
+LIBDIR = ./libft
+LIB = $(LIBDIR)/libft.a
 
-LIBFT	=	libft
-LIBFT_NAME = libft.a
+INCLUDES = ./includes/
+INCLUDES_LIB = ./libft/includes/
 
-LEXER	=	src/lexer
+HEADER += $(INCLUDES)minishell.h
+HEADER += $(INCLUDES)lexer.h
 
-OBJ_DIR = ./obj
+SRCS += main.c
 
-INCLUDES = includes
+# Lexer source files
+SRCS += lexer.c lexer_utils.c
 
-SRC_DIR	= src
-SOURCES_WITH_DIR := $(shell find $(SRC_DIR) -name "*.c")
-DIR = $(dir $(SOURCES_WITH_DIR))
-SOURCES := $(notdir $(shell find $(SRC_DIR) -name "*.c"))
+OBJ_DIR = ./obj/
 
-OBJECTS := $(SOURCES:.c=.o)
-OBJECTS_WITH_DIR = $(addprefix $(OBJ_DIR)/, $(OBJECTS))
+vpath %.c src/
 
-all: start lib $(NAME)
+vpath %.c src/lexer/
+vpath %.c src/lexer/lexer_utils/
 
-$(NAME): $(OBJECTS_WITH_DIR)
-	$(CC) $(CFLAGS) -o $(OBJECTS_WITH_DIR) -L ./libs/ -lft main.c
-# $(CC) $(CFLAGS) main.c $(OBJECTS_WITH_DIR) -L ./libs/ -lft -o $(NAME) -I $(INCLUDES)
+OBJS = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))
 
-$(OBJ_DIR)/%.o: $(SOURCES_WITH_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(INCLUDES)
+all: $(LIB)
+	$(MAKE) $(NAME)
 
-start:
-	@if test -d $(OBJ_DIR); then echo $(OBJ_DIR) exist; else mkdir $(OBJ_DIR); fi
-	@if test -d $(LIBS_DIR); then echo $(LIBS_DIR) exists; else mkdir $(LIBS_DIR); fi
+$(OBJS): $(OBJ_DIR)%.o: %.c $(HEADER)
+	$(CC) $(CFLAGS) -c $<  -I $(INCLUDES) -I $(INCLUDES_LIB) -o $@
 
-lib:
-	@make -C $(LIBFT)
-	@cp $(LIBFT)/$(LIBFT_NAME) $(LIBS_DIR)
+$(NAME): $(OBJ_DIR) $(OBJS)
+	@echo $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -I$(INCLUDES) -I$(INCLUDES_LIB) $(LIB_TERMCAP) -L./libft -lft -o $@
 
-clean:
-	$(RM) $(OBJ_DIR)
-	make clean -C $(LIBFT)
+$(OBJ_DIR):
+	mkdir $@
 
-fclean: clean
+$(LIB):
+	$(MAKE) -C $(LIBDIR)
+
+fclean : clean
+	$(MAKE) fclean -C $(LIBDIR)
 	$(RM) $(NAME)
-	make fclean -C $(LIBFT)
-	$(RM) $(LIBS_DIR)
+	$(RM) -R $(OBJ_DIR)
 
-re: fclean all
+clean : clean
+	$(MAKE) fclean -C $(LIBDIR)
+	$(RM) $(NAME)
 
+re : fclean
+	$(MAKE)
