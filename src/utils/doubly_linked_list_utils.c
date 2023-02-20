@@ -6,11 +6,37 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 15:24:35 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/18 20:38:43 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/20 14:22:29 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/utils.h"
+
+void	free_dll_list(t_dll_item *head_ref, void (*f)(void *))
+{
+	t_dll_item	*curr;
+	t_dll_item	*tmp;
+
+	curr = head_ref;
+	while (curr != NULL)
+	{
+		tmp = curr;
+		curr = curr->next;
+		f(tmp->data);
+		free(tmp);
+	}
+}
+
+void	print_dll_list(t_dll_item *head_ref, void (*f)(void *))
+{
+	if (head_ref == NULL)
+		printf("List is empty!\n");
+	while (head_ref)
+	{
+		f(head_ref->data);
+		head_ref = head_ref->next;
+	}
+}
 
 void	dll_push(t_dll_item **head_ref, void *new_data)
 {
