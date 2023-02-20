@@ -5,6 +5,7 @@
 .*
 *a.out
 main.c
+minishell
 
 # not to be ignored
 !.gitignore
