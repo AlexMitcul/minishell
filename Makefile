@@ -6,14 +6,14 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/20 12:13:48 by amitcul          ###   ########.fr        #
+#    Updated: 2023/02/20 13:48:17 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -g
 RM		=	rm -rf
 
 LIBDIR = ./libft
@@ -24,11 +24,16 @@ INCLUDES_LIB = ./libft/includes/
 
 HEADER += $(INCLUDES)minishell.h
 HEADER += $(INCLUDES)lexer.h
+HEADER += $(INCLUDES)utils.h
+
 
 SRCS += main.c
 
 # Lexer source files
 SRCS += lexer.c lexer_utils.c
+
+# Utils source files
+SRCS += doubly_linked_list_utils.c
 
 OBJ_DIR = ./obj/
 
@@ -36,6 +41,7 @@ vpath %.c src/
 
 vpath %.c src/lexer/
 vpath %.c src/lexer/lexer_utils/
+vpath %.c src/utils/
 
 OBJS = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))
 

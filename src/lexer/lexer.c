@@ -12,8 +12,6 @@
 
 #include "../../includes/lexer.h"
 
-#define DELIMETERS " <>;$\"\'`\\"
-
 char	*get_token(char **line)
 {
 	int		i;
@@ -26,7 +24,7 @@ char	*get_token(char **line)
 	j = i;
 	while ((*line)[j] && ft_strchr(DELIMETERS, (*line)[j]) == NULL)
 		j++;
-	if ((*line)[j] == '\0')
+	if ((*line)[j] == '\0' && j == 0)
 		return (NULL);
 	if (i - j == 0)
 		token = ft_substr(*line, i, 1);
@@ -36,19 +34,20 @@ char	*get_token(char **line)
 	return (token);
 }
 
-int	lexer(t_dll_item *list, char *input)
+t_dll_item	*lexer(char *input)
 {
+	t_dll_item	*list;
 	char		*token;
-	char		*copy_input;
 
-	copy_input = input;
-	token = get_token(&copy_input);
+	list = NULL;
+	token = get_token(&input);
 	while (token != NULL)
 	{
-		if (is_whitespace(token) == false)
-			dll_append(&list, (void *)token);
-		free(token);
-		token = get_token(&copy_input);
+		if (is_whitespace_line(token) == false)
+			dll_append(&list, token);
+		else
+			free(token);
+		token = get_token(&input);
 	}
-	return (EXIT_SUCCESS);
+	return (list);
 }
