@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/21 16:15:48 by amitcul          ###   ########.fr        #
+#    Updated: 2023/02/21 16:29:34 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ HEADER += $(INCLUDES)minishell.h
 HEADER += $(INCLUDES)lexer.h
 HEADER += $(INCLUDES)utils.h
 
+LIB_TERMCAP = -lreadline
 
 SRCS += main.c
 
