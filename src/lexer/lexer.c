@@ -43,10 +43,7 @@ t_dll_item	*lexer(char *input)
 	token = get_token(&input);
 	while (token != NULL)
 	{
-		if (is_whitespace_line(token) == false)
-			dll_append(&list, token);
-		else
-			free(token);
+		dll_append(&list, token);
 		token = get_token(&input);
 	}
 	return (list);

@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:12:30 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/21 16:15:56 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/21 16:36:22 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ void	free_lexer_token(void *token)
 	free((char *)token);
 }
 
+/*
+	Right now is unused function
+*/
 bool	is_whitespace_line(char	*line)
 {
 	if (line == NULL)
