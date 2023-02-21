@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/21 16:15:15 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/21 16:16:04 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 #ifndef LEXER_H
 # define LEXER_H
-# define LEXER_H
+
+# include <stdio.h>
 
 # include <stdio.h>
 
