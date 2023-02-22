@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/21 16:16:04 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/22 13:34:13 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "minishell.h"
 # include "utils.h"
 
-# define DELIMETERS " <>;$\"\'`\\"
+# define DELIMETERS " <>;$\"\'`\\|"
 
 t_dll_item	*lexer(char *input);
 
