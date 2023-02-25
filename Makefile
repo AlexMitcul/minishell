@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/21 16:29:34 by amitcul          ###   ########.fr        #
+#    Updated: 2023/02/25 18:59:47 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,10 +28,10 @@ HEADER += $(INCLUDES)utils.h
 
 LIB_TERMCAP = -lreadline
 
-SRCS += main.c
+# SRCS += main.c
 
 # Lexer source files
-SRCS += lexer.c lexer_utils.c
+SRCS += lexer.c utils.c states_handler.c types_handler.c
 
 # Utils source files
 SRCS += doubly_linked_list_utils.c
