@@ -6,10 +6,8 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 19:28:27 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 20:54:22 by amitcul          ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-
 /* ************************************************************************** */
 
 #ifndef LEXER_H
@@ -17,14 +15,8 @@
 
 # include <stdio.h>
 
-# include <stdio.h>
-
-# include <stdio.h>
-
 # include "minishell.h"
 # include "utils.h"
-
-# define DELIMETERS " <>;$\"\'`\\"
 
 enum e_state {
 	STATE_DEFAULT,
@@ -44,6 +36,7 @@ enum e_state {
  * LLESS -> [<<]
  * NONE -> End of line EOL
 */
+
 enum e_token_type {
 	DEFAULT = -1,
 	PIPE = '|',
@@ -63,6 +56,8 @@ typedef struct s_token
 	char			*data;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct s_app	t_app;
 
 /*
  * token -> sequence of parsed tokens
@@ -86,6 +81,8 @@ typedef struct s_lexer
 	int		type;
 }	t_lexer;
 
+void	lexer(t_app *self, char *line);
+
 //* Token handlers
 
 void	quotes_handler(t_lexer *lexer);
@@ -101,11 +98,12 @@ void	quotes_state_handler(t_lexer *lexer);
 
 //* Utils functions
 
+void	free_tokens(t_token *token);
 void	init_lexer(t_lexer *lexer, char *line);
 t_token	*init_token(int line_size);
 void	print_lexer_tokens(t_lexer *lexer);
 
 //* Expander
-// void	expand(t_app *self, t_token *token_list);
+void	expand(t_app *self, t_token *token_list);
 
 #endif

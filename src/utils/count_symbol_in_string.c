@@ -1,44 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   count_symbol_in_string.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/19 17:12:30 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 20:49:00 by amitcul          ###   ########.fr       */
+/*   Created: 2023/02/25 19:58:54 by amitcul           #+#    #+#             */
+/*   Updated: 2023/02/25 20:31:44 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/lexer.h"
-
-void	print_lexer_token(void *token)
+int	count_symbol_in_string(char *str, int ch)
 {
-	printf("%s\n", (char *)token);
-}
+	int	count;
 
-void	free_lexer_token(void *token)
-{
-	free((char *)token);
-}
-
-/*
-	Right now is unused function
-*/
-bool	is_whitespace_line(char	*line)
-{
-	if (line == NULL)
-		return (true);
-	while (*line)
+	count = 0;
+	if (!str)
+		return (count);
+	while (*str)
 	{
-		if (*line != ' ')
-			return (false);
-		line++;
+		if (*str == ch)
+			count++;
+		str++;
 	}
-	return (true);
-}
-
-void	free_lexer(t_lexer *lexer)
-{
-
+	return (count);
 }
