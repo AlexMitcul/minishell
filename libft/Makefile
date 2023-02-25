@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/29 12:26:23 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/12 19:16:02 by amitcul          ###   ########.fr        #
+#    Updated: 2023/02/18 21:54:33 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ AR			=	ar rcs
 
 OBJF		=	.cache_exists
 
-LIB_DIR		=	
+LIB_DIR		=
 LIB_SRC		=	ft_split ft_strchr ft_strdup ft_striteri ft_strjoin \
 				ft_strlcat ft_strlcpy ft_strlen ft_strmapi ft_strncmp \
 				ft_strnstr ft_strrchr ft_strtrim ft_substr \
@@ -36,26 +36,26 @@ SRC_FILES+=$(addprefix $(LIB_DIR),$(LIB_SRC))
 SRC 		= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ 		= 	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 
-all:		$(NAME)
+all: $(NAME)
 
-$(NAME):	$(OBJ)
-			@$(AR) $(NAME) $(OBJ)
+$(NAME): $(OBJ)
+	@$(AR) $(NAME) $(OBJ)
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJF)
-			@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
+	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(OBJF):
-			@mkdir -p $(OBJ_DIR)
-			@mkdir -p $(OBJ_DIR)$(LIB_DIR)
-			@touch $(OBJF)
+	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)$(LIB_DIR)
+	@touch $(OBJF)
 
 clean:
-			@$(RM) -r $(OBJ_DIR)
-			@$(RM) $(OBJF)
+	@$(RM) -r $(OBJ_DIR)
+	@$(RM) $(OBJF)
 
-fclean:		clean
-			@$(RM) $(NAME)
+fclean: clean
+	@$(RM) $(NAME)
 
-re:			fclean all
+re: fclean all
 
-.PHONY:		all clean fclean re
+.PHONY: all clean fclean re

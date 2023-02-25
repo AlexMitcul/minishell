@@ -4,7 +4,10 @@
 *.a
 .*
 *a.out
+minishell
+main.c
 
 # not to be ignored
 !.gitignore
 !.git
+# !.main.c
