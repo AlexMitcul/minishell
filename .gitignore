@@ -9,4 +9,4 @@ minishell
 # not to be ignored
 !.gitignore
 !.git
-!./src/main.c
+# !./src/main.c
