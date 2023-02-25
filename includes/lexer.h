@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 19:10:34 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 19:28:27 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,6 @@ enum e_token_type {
 	NONE = 0,
 };
 
-typedef struct s_app
-{
-	t_env_list	*env_list;
-	char		**envp;
-}	t_app;
-
 typedef struct s_token
 {
 	int				type;
@@ -112,6 +106,6 @@ t_token	*init_token(int line_size);
 void	print_lexer_tokens(t_lexer *lexer);
 
 //* Expander
-void	expand(t_app *self, t_token *token_list);
+// void	expand(t_app *self, t_token *token_list);
 
 #endif

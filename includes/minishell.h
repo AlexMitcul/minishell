@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/21 16:28:41 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 19:25:05 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,20 @@
 
 # include "lexer.h"
 # include "utils.h"
+
+typedef struct	s_env_list
+{
+	char				*key;
+	char				*value;
+	struct s_env_list	*next;
+}	t_env_list;
+
+typedef struct s_app
+{
+	t_env_list	*env_list;
+	char		**envp;
+}	t_app;
+
+void	fill_env_list(t_app *self, char **envp);
 
 #endif
