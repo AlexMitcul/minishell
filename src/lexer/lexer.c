@@ -57,17 +57,6 @@ void	lexer(t_app *self, char *line)
 	recognize_token(&lexer, line);
 	lexer.token = head;
 	print_lexer_tokens(&lexer);
-	// expand(self, lexer.token);
+	expand(self, lexer.token);
+	print_lexer_tokens(&lexer);
 }
-
-// int main()//(int argc, char **argv)
-// {
-// 	t_app	*app;
-
-// 	// if (argc == 1)
-// 	// 	return (printf("No arguments\n"), 0);
-// 	app = NULL;
-// 	// lexer(app, argv[1]);
-// 	lexer(app, "echo >< <<<< || >> $PATH>out | grep << in >> out2>>");
-// 	return (0);
-// }
