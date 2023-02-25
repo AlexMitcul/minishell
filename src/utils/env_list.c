@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:08:03 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 20:43:34 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 21:01:34 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,43 @@ void	fill_env_list(t_app *self, char **envp)
 		i--;
 	}
 	self->envp = envp;
+}
+
+void	remove_list_item_by_key(t_app *self, char *key)
+{
+	t_env_list	*tmp;
+	t_env_list	*prev;
+
+	tmp = self->env_list;
+	prev = NULL;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
+		{
+			if (prev == NULL)
+				self->env_list = tmp->next;
+			else
+				prev->next = tmp->next;
+			free(tmp->key);
+			free(tmp->value);
+			free(tmp);
+			return ;
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+}
+
+void	free_env_list(t_app *self)
+{
+	t_env_list	*tmp;
+
+	while (self->env_list)
+	{
+		tmp = self->env_list;
+		self->env_list = self->env_list->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
+	}
 }

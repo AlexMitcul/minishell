@@ -6,11 +6,11 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:01:22 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 20:42:48 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 20:55:17 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../includes/lexer.h"
 
 static char	*get_value(t_env_list *lst, char *key)
 {

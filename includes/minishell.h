@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 20:43:06 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 20:58:38 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,6 @@ typedef struct s_app
 }	t_app;
 
 void	fill_env_list(t_app *self, char **envp);
-int		count_symbol_in_string(char *str, int ch);
+void	free_env_list(t_app *self);
 
 #endif

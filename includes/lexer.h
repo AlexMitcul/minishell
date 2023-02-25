@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 20:43:20 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 20:54:22 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	quotes_state_handler(t_lexer *lexer);
 
 //* Utils functions
 
+void	free_tokens(t_token *token);
 void	init_lexer(t_lexer *lexer, char *line);
 t_token	*init_token(int line_size);
 void	print_lexer_tokens(t_lexer *lexer);

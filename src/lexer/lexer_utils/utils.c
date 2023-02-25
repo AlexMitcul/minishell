@@ -6,11 +6,24 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:49:35 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 16:32:39 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 20:57:19 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/lexer.h"
+
+void	free_tokens(t_token *token)
+{
+	t_token	*tmp;
+
+	while (token)
+	{
+		tmp = token;
+		token = token->next;
+		free(tmp->data);
+		free(tmp);
+	}
+}
 
 void	init_lexer(t_lexer *lexer, char *line)
 {
