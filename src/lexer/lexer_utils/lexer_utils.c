@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:12:30 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 20:49:00 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 21:54:28 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,4 @@ bool	is_whitespace_line(char	*line)
 		line++;
 	}
 	return (true);
-}
-
-void	free_lexer(t_lexer *lexer)
-{
-
 }
