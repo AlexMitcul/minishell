@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 19:04:21 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 19:09:01 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,6 @@ enum e_token_type {
 	LLESS = -3,
 	NONE = 0,
 };
-
-/*
- * env vars
-*/
-
-typedef struct s_env_list
-{
-	char				*key;
-	char				*value;
-	struct s_env_list	*next;
-}	t_env_list;
 
 typedef struct s_app
 {
