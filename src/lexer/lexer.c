@@ -12,42 +12,62 @@
 
 #include "../../includes/lexer.h"
 
-char	*get_token(char **line)
+int	get_type(char c)
 {
-	int		i;
-	int		j;
-	char	*token;
-
-	if (*line == NULL)
-		return (NULL);
-	i = 0;
-	j = i;
-	while ((*line)[j] && ft_strchr(DELIMETERS, (*line)[j]) == NULL)
-		j++;
-	if ((*line)[j] == '\0' && j == 0)
-		return (NULL);
-	if (i - j == 0)
-		token = ft_substr(*line, i, 1);
+	if (c == QUOTES
+		|| c == DQUOTES
+		|| c == PIPE
+		|| c == GREAT
+		|| c == LESS
+		|| c == WS
+		|| c == NONE)
+		return (c);
 	else
-		token = ft_substr(*line, i, j - i);
-	(*line) += ft_strlen(token);
-	return (token);
+		return (DEFAULT);
 }
 
-t_dll_item	*lexer(char *input)
+void	lexer_state_quote(t_lexer *lexer)
 {
-	t_dll_item	*list;
-	char		*token;
-
-	list = NULL;
-	token = get_token(&input);
-	while (token != NULL)
-	{
-		if (is_whitespace_line(token) == false)
-			dll_append(&list, token);
-		else
-			free(token);
-		token = get_token(&input);
-	}
-	return (list);
+	lexer->token->data[lexer->token_i] = lexer->curr_char;
+	if (lexer->type == QUOTES)
+		lexer->state = DEFAULT;
 }
+
+void	recognize_token(t_lexer *lexer, char *line)
+{
+	lexer->curr_char = line[lexer->line_i];
+	lexer->type = get_type(lexer->curr_char);
+	if (lexer->state == DEFAULT)
+		default_state_handler(lexer);
+	else if (lexer->state == QUOTES || lexer->state == DQUOTES)
+		quotes_state_handler(lexer);
+	lexer->line_i++;
+}
+
+void	lexer(t_app *self, char *line)
+{
+	t_lexer	lexer;
+	t_token	*head;
+
+	(void)self;
+	init_lexer(&lexer, line);
+	head = lexer.token;
+	while (line[lexer.line_i])
+		recognize_token(&lexer, line);
+	recognize_token(&lexer, line);
+	lexer.token = head;
+	print_lexer_tokens(&lexer);
+	// expand(self, lexer.token);
+}
+
+// int main()//(int argc, char **argv)
+// {
+// 	t_app	*app;
+
+// 	// if (argc == 1)
+// 	// 	return (printf("No arguments\n"), 0);
+// 	app = NULL;
+// 	// lexer(app, argv[1]);
+// 	lexer(app, "echo >< <<<< || >> $PATH>out | grep << in >> out2>>");
+// 	return (0);
+// }
