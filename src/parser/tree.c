@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 14:13:21 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 17:59:49 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/26 19:49:55 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,25 @@ static int	tree_depth(t_tree *node)
 	return (1 + right);
 }
 
+static char	*get_type(t_tree *node)
+{
+	if (node->type == PIPE_NODE)
+		return ("PIPE");
+	if (node->type == REDIRECT_IN_NODE)
+		return ("REDIRECT_IN_NODE");
+	if (node->type == REDIRECT_OUT_NODE)
+		return ("REDIRECT_OUT_NODE");
+	if (node->type == HEREDOC_NODE)
+		return ("HEREDOC_NODE");
+	if (node->type == APPEND_NODE)
+		return ("APPEND_NODE");
+	if (node->type == CMDPATH_NODE)
+		return ("CMDPATH_NODE");
+	if (node->type == ARGUMENT_NODE)
+		return ("ARGUMENT_NODE");
+	return ("NODE_DATA");
+}
+
 static void	pprint_tree(t_tree *node, int depth)
 {
 	int	i;
@@ -61,7 +80,7 @@ static void	pprint_tree(t_tree *node, int depth)
 		printf("\t");
 		i++;
 	}
-	printf("%s\n", node->data);
+	printf("%s|%s\n", get_type(node), node->data);
 	pprint_tree(node->left, depth + 1);
 	pprint_tree(node->right, depth + 1);
 }

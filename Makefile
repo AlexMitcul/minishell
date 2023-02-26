@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/26 17:33:04 by amitcul          ###   ########.fr        #
+#    Updated: 2023/02/26 19:08:49 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ all: $(LIB)
 	$(MAKE) $(NAME)
 
 $(OBJS): $(OBJ_DIR)%.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $<  -I $(INCLUDES) -I $(INCLUDES_LIB) -o $@
+	$(CC) $(CFLAGS) -c $< -I $(INCLUDES) -I $(INCLUDES_LIB) -o $@
 
 $(NAME): $(OBJ_DIR) $(OBJS)
 	@echo $(OBJS)

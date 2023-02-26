@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 18:01:13 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/26 19:08:46 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # include <stdbool.h>
 # include <limits.h>
+# include <stdio.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
