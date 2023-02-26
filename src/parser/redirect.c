@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 16:38:49 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 17:29:00 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/26 17:57:36 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ t_tree	*try_parse_redirect(t_parser *parser)
 	node = redirect(parser);
 	if (node)
 		return (node);
-	// parser->curr_token = begin;
-	// node = command(parser);
-	// if (node)
-	// 	return (node);
-	// parser->curr_token = begin;
+	parser->curr_token = begin;
+	node = command(parser);
+	if (node)
+		return (node);
+	parser->curr_token = begin;
 	return (NULL);
 }
 
@@ -80,7 +80,7 @@ t_tree	*identify_redirect_command_node(t_parser *parser)
 	return (NULL);
 }
 
-static t_tree	*try(t_parser *parser, int type)
+t_tree	*try(t_parser *parser, int type)
 {
 	t_tree	*node;
 	t_tree	*left;
@@ -100,25 +100,4 @@ static t_tree	*try(t_parser *parser, int type)
 	node->left = left;
 	node->right = right;
 	return (node);
-}
-
-t_tree	*redirect(t_parser *parser)
-{
-	t_tree	*node;
-	int		i;
-	int		redirect_set[4];
-
-	redirect_set[0] = LESS;
-	redirect_set[1] = GREAT;
-	redirect_set[3] = LLESS;
-	redirect_set[2] = GGREAT;
-	i = 0;
-	while (i < 4)
-	{
-		node = try(parser, redirect_set[i]);
-		if (node)
-			return (node);
-		i++;
-	}
-	return (NULL);
 }

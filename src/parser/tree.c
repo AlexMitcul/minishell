@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 14:13:21 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 17:47:57 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/26 17:59:49 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	pprint_tree(t_tree *node, int depth)
 		return ;
 	while (i < depth)
 	{
-		printf("  ");
+		printf("\t");
 		i++;
 	}
 	printf("%s\n", node->data);
