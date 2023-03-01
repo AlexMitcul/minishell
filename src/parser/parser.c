@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 16:38:56 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 19:43:54 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/01 15:41:50 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ t_tree	*redirect(t_parser *parser)
 
 	redirect_set[0] = LESS;
 	redirect_set[1] = GREAT;
-	redirect_set[3] = LLESS;
 	redirect_set[2] = GGREAT;
+	redirect_set[3] = LLESS;
 	begin = parser->curr_token;
 	i = 0;
 	while (i < 4)

@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 14:04:28 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 17:19:59 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/01 17:06:26 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ t_tree	*try_parse_pipe(t_parser *parser)
 		return (NULL);
 	if (!match(PIPE, NULL, parser))
 		return (tree_destroy(left), NULL);
-	right = try_parse_pipe(parser);
-	if (!right)
-		return (tree_destroy(right), NULL);
+	right = try_parse(parser);
+	if (!left)
+		return (tree_destroy(left), NULL);
 	node = init_node(PIPE);
 	node->left = left;
 	node->right = right;

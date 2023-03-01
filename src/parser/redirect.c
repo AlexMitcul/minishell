@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 16:38:49 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 19:46:50 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/01 15:43:29 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,24 +62,25 @@ t_tree	*get_redirect_command_node(t_parser *parser, int type)
 t_tree	*identify_redirect_command_node(t_parser *parser)
 {
 	t_tree	*node;
-	// t_token	*begin;
+	t_token	*begin;
 	int		i;
 	int		redirect_set[4];
 
 	redirect_set[0] = LESS;
 	redirect_set[1] = GREAT;
-	redirect_set[3] = LLESS;
 	redirect_set[2] = GGREAT;
-	// begin = parser->curr_token;
+	redirect_set[3] = LLESS;
+	begin = parser->curr_token;
 	i = 0;
 	while (i < 4)
 	{
-		// parser->curr_token = begin;
+		parser->curr_token = begin;
 		node = get_redirect_command_node(parser, redirect_set[i]);
 		if (node)
 			return (node);
 		i++;
 	}
+	parser->curr_token = begin;
 	return (NULL);
 }
 
@@ -97,7 +98,7 @@ t_tree	*try(t_parser *parser, int type)
 		return (tree_destroy(right), NULL);
 	if (!match(DEFAULT, &filename, parser))
 		return (free(filename), tree_destroy(right), NULL);
-	left = identify_redirect_command_node(parser); //
+	left = identify_redirect_command_node(parser);
 	node = init_node(get_node_type(type));
 	node->data = filename;
 	node->left = left;
