@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 14:13:21 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/01 17:07:11 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/02 14:45:11 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,38 +35,24 @@ void	tree_destroy(t_tree *node)
 	free(node);
 }
 
-// static int	tree_depth(t_tree *node)
-// {
-// 	int	left;
-// 	int	right;
-
-// 	if (!node)
-// 		return (0);
-// 	left = tree_depth(node->left);
-// 	right = tree_depth(node->right);
-// 	if (left > right)
-// 		return (1 + left);
-// 	return (1 + right);
-// }
-
-// static char	*get_type(t_tree *node)
-// {
-// 	if (node->type == PIPE_NODE)
-// 		return ("PIPE");
-// 	if (node->type == REDIRECT_IN_NODE)
-// 		return ("REDIRECT_IN_NODE");
-// 	if (node->type == REDIRECT_OUT_NODE)
-// 		return ("REDIRECT_OUT_NODE");
-// 	if (node->type == HEREDOC_NODE)
-// 		return ("HEREDOC_NODE");
-// 	if (node->type == APPEND_NODE)
-// 		return ("APPEND_NODE");
-// 	if (node->type == CMDPATH_NODE)
-// 		return ("CMDPATH_NODE");
-// 	if (node->type == ARGUMENT_NODE)
-// 		return ("ARGUMENT_NODE");
-// 	return ("NODE_DATA");
-// }
+static char	*get_type(t_tree *node)
+{
+	if (node->type == PIPE_NODE)
+		return ("PIPE");
+	if (node->type == REDIRECT_IN_NODE)
+		return ("REDIRECT_IN_NODE");
+	if (node->type == REDIRECT_OUT_NODE)
+		return ("REDIRECT_OUT_NODE");
+	if (node->type == HEREDOC_NODE)
+		return ("HEREDOC_NODE");
+	if (node->type == APPEND_NODE)
+		return ("APPEND_NODE");
+	if (node->type == CMDPATH_NODE)
+		return ("CMDPATH_NODE");
+	if (node->type == ARGUMENT_NODE)
+		return ("ARGUMENT_NODE");
+	return ("NODE_DATA");
+}
 
 void	print_tree(t_tree *root, int level)
 {
@@ -83,7 +69,7 @@ void	print_tree(t_tree *root, int level)
 			printf("  ");
 		i++;
 	}
-	printf("%s\n", root->data);
+	printf("%s = %s\n", get_type(root), root->data);
 	print_tree(root->left, level + 1);
 	print_tree(root->right, level + 1);
 }
