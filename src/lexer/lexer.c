@@ -57,6 +57,6 @@ t_token	*lexer(t_app *self, char *line)
 	recognize_token(lexer, line);
 	lexer->token = head;
 	expand(self, lexer->token);
-	print_lexer_tokens(lexer);
-	return (lexer->token);
+	free(lexer);
+	return (head);
 }
