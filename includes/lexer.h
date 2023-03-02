@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/02 13:44:25 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/02 17:54:36 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_env_list	t_env_list;
  * LLESS -> [<<]
  * NONE -> End of line EOL
 */
-
 enum e_token_type {
 	DEFAULT = -1,
 	PIPE = '|',
