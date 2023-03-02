@@ -44,7 +44,6 @@ void	recognize_token(t_lexer *lexer, char *line)
 	lexer->line_i++;
 }
 
-// free lexer
 t_token	*lexer(t_app *self, char *line)
 {
 	t_lexer	*lexer;
