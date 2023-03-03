@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/02/26 19:08:49 by amitcul          ###   ########.fr        #
+#    Updated: 2023/03/03 13:37:49 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ INCLUDES_LIB = ./libft/includes/
 HEADER += $(INCLUDES)minishell.h
 HEADER += $(INCLUDES)lexer.h
 HEADER += $(INCLUDES)utils.h
+HEADER += $(INCLUDES)executor.h
 
 LIB_TERMCAP = -lreadline
 
@@ -39,6 +40,9 @@ SRCS += parser.c pipe.c redirect.c command.c compare.c tree.c
 # Utils source files
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
 
+# Executor files
+SRCS += executor.c
+
 OBJ_DIR = ./obj/
 
 vpath %.c src/
@@ -49,6 +53,8 @@ vpath %.c src/lexer/lexer_utils/
 vpath %.c src/parser/
 
 vpath %.c src/utils/
+
+vpath %.c src/executor/
 
 OBJS = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))
 

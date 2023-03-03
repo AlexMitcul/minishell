@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 19:08:46 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/03 13:34:33 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "lexer.h"
 # include "parser.h"
 # include "utils.h"
+# include "executor.h"
 
 typedef struct s_app		t_app;
 typedef struct s_tree		t_tree;
