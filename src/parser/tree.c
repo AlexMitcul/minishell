@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 14:13:21 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 17:59:49 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/02 15:29:07 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,38 +35,41 @@ void	tree_destroy(t_tree *node)
 	free(node);
 }
 
-static int	tree_depth(t_tree *node)
+static char	*get_type(t_tree *node)
 {
-	int	left;
-	int	right;
-
-	if (!node)
-		return (0);
-	left = tree_depth(node->left);
-	right = tree_depth(node->right);
-	if (left > right)
-		return (1 + left);
-	return (1 + right);
+	if (node->type == PIPE_NODE)
+		return ("PIPE");
+	if (node->type == REDIRECT_IN_NODE)
+		return ("REDIRECT_IN_NODE");
+	if (node->type == REDIRECT_OUT_NODE)
+		return ("REDIRECT_OUT_NODE");
+	if (node->type == HEREDOC_NODE)
+		return ("HEREDOC_NODE");
+	if (node->type == APPEND_NODE)
+		return ("APPEND_NODE");
+	if (node->type == CMDPATH_NODE)
+		return ("CMDPATH_NODE");
+	if (node->type == ARGUMENT_NODE)
+		return ("ARGUMENT_NODE");
+	return ("NODE_DATA");
 }
 
-static void	pprint_tree(t_tree *node, int depth)
+void	print_tree(t_tree *root, int level)
 {
 	int	i;
 
-	i = 0;
-	if (!node)
+	if (root == NULL)
 		return ;
-	while (i < depth)
+	i = 0;
+	while (i < level)
 	{
-		printf("\t");
+		if (i == level - 1)
+			printf("|-");
+		else
+			printf("  ");
 		i++;
 	}
-	printf("%s\n", node->data);
-	pprint_tree(node->left, depth + 1);
-	pprint_tree(node->right, depth + 1);
-}
-
-void	print_tree(t_tree *node)
-{
-	pprint_tree(node, tree_depth(node));
+	printf("%s = %s\n", get_type(root), root->data);
+	print_tree(root->left, level + 1);
+	print_tree(root->right, level + 1);
 }

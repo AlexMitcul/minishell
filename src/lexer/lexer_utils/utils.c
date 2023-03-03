@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 14:49:35 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 17:47:08 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/02 13:44:13 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,10 @@ static char	*get_string_type(int type)
 	return ("NONE");
 }
 
-void	print_lexer_tokens(t_lexer *lexer)
+void	print_lexer_tokens(t_token *token)
 {
-	t_token	*token;
 	int		i;
 
-	token = lexer->token;
 	i = 0;
 	printf("=== TOKEN LIST ===\n");
 	while (token)

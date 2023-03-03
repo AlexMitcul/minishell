@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:01:22 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 21:48:31 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/02 16:44:34 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	*get_value(t_env_list *lst, char *key)
 {
 	while (lst)
 	{
-		if (ft_strncmp(lst->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(lst->key, key, ft_strlen(key) + 1) == 0)
 			return (lst->value);
 		lst = lst->next;
 	}

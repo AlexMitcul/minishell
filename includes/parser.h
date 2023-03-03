@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 14:21:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 18:00:38 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/01 16:05:18 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ struct s_tree
 /* parser.c */
 int		parse(t_token *tokens, t_tree **astree);
 t_tree	*redirect(t_parser *parser);
+t_tree	*try_parse(t_parser *parser);
 
 /* tree.c */
 t_tree	*init_node(int type);
 void	tree_destroy(t_tree *node);
-void	print_tree(t_tree *node);
+void	print_tree(t_tree *root, int level);
 
 /* compare.c */
 bool	match(int token_type, char **buffer, t_parser *parser);
