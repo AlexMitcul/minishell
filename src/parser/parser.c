@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 16:38:56 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/02 17:23:52 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/04 15:09:26 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,13 @@ int	parse(t_token *tokens, t_tree **astree)
 
 t_tree	*redirect(t_parser *parser)
 {
-	t_tree	*node;
-	t_token	*begin;
-	int		i;
-	int		redirect_set[4];
+	t_tree		*node;
+	t_token		*begin;
+	int			i;
+	static int	redirect_set[4] = {
+		LESS, LLESS, GREAT, GGREAT
+	};
 
-	redirect_set[0] = LESS;
-	redirect_set[1] = GREAT;
-	redirect_set[2] = GGREAT;
-	redirect_set[3] = LLESS;
 	begin = parser->curr_token;
 	i = 0;
 	while (i < 4)
