@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+         #
+#    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/03/04 19:17:52 by amenses-         ###   ########.fr        #
+#    Updated: 2023/03/04 19:33:57 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ HEADER += $(INCLUDES)utils.h
 
 LIB_TERMCAP = -lreadline
 
-# SRCS += main.c
+SRCS += main.c
 
 # Lexer source files
 SRCS += lexer.c utils.c states_handler.c types_handler.c expand.c
