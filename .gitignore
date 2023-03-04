@@ -5,9 +5,8 @@
 .*
 *a.out
 minishell
-main.c
+m.c
 
 # not to be ignored
 !.gitignore
 !.git
-# !.main.c
