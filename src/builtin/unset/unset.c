@@ -6,76 +6,92 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 20:02:37 by amenses-          #+#    #+#             */
-/*   Updated: 2023/02/25 20:58:21 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/03/03 20:04:41 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-static int	argsmatch(char var_name, t_env_list *list)
-{
-	t_env_list	*t;
+extern int g_exit_status; // extern
 
-	t = list;
-	while (list)
-	{
-		if (!ft_strncmp(var_name, list->key, ft_strlen(var_name)))
-			return (1);
-		list = list->next;
-	}
-	list = t;
-	return (0);
-}
-
-static int argsmatch_1(char var_name, char **args)
+static int	isalphanum_(char *arg)
 {
 	int	i;
 
 	i = 0;
-	while (args[i])
+	while (arg[i])
 	{
-		if (!ft_strncmp(args[i], var_name, ft_strlen(args[i])))
-			return (1);
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
-static void	remove_env_node(t_app **self)
+static int	check_args(char **args)
 {
-	
+	int	i;
+	int	status;
+
+	i = 0;
+	status = 1;
+	while (args[i])
+	{
+		if (!isalphanum_(args[i]))
+		{
+			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
+			ft_putstr_fd(args[i], STDERR_FILENO);
+			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+			status = 0;
+		}
+		i++;
+	}
+	return (status);
 }
 
-void	unset(t_app **self, char **args)
+int	ft_unset(t_app **self, char **args)
 {
 	int	i;
 
+	if (check_args(args) == 0)
+	{
+		g_exit_status = 1;
+		return (g_exit_status);
+	}
 	i = 0;
 	while (args[i])
 	{
-		if (argsmatch(args[i], (*self)->env_list))
-			remove_env_node(self);
+		remove_list_item_by_key(*self, args[i]);
 		i++;
 	}
+	g_exit_status = 0;
+	return (g_exit_status);
 }
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+/* void	print_env_list(t_app *self)
 {
-	while (*s1 != '\0' && *s2 != '\0' && n > 0)
+	t_env_list	*tmp;
+
+	tmp = self->env_list;
+	while (tmp)
 	{
-		if (*s1 != *s2)
-			break ;
-		s1++;
-		s2++;
-		n--;
+		printf("%s=%s\n", tmp->key, tmp->value);
+		tmp = tmp->next;
 	}
-	if (n == 0)
-		return (0);
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-int main(void)
+int	main(int argc, char **argv, char **envp)
 {
-	printf("%d\n", ft_strncmp("ola", "ola", 3));
-	return (0);
-}
+	t_app	*app;
+	int		status;
+
+	(void)argc;
+	app = malloc(sizeof(t_app));
+	fill_env_list(app, envp);
+	print_env_list(app);
+	printf("====================\n");
+	status = ft_unset(&app, argv + 1);
+	// print_env_list(app);
+	printf("(status: %d)\n", status);
+	return (status);
+} */

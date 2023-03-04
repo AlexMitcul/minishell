@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 20:58:38 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/25 23:52:03 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,7 @@ typedef struct s_app
 
 void	fill_env_list(t_app *self, char **envp);
 void	free_env_list(t_app *self);
+void	remove_list_item_by_key(t_app *self, char *key);
+int	env(t_app **self, char **args);
 
 #endif
