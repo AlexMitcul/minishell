@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 20:54:22 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/02 17:54:36 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ enum e_state {
 	STATE_DQUOTES,
 };
 
+typedef struct s_app		t_app;
+typedef struct s_tree		t_tree;
+typedef struct s_parser		t_parser;
+typedef struct s_token		t_token;
+typedef struct s_lexer		t_lexer;
+typedef struct s_env_list	t_env_list;
+
 /*
  * TEXT -> Plain text, line "echo" command
  * PIPE -> [|]
@@ -36,7 +43,6 @@ enum e_state {
  * LLESS -> [<<]
  * NONE -> End of line EOL
 */
-
 enum e_token_type {
 	DEFAULT = -1,
 	PIPE = '|',
@@ -50,14 +56,12 @@ enum e_token_type {
 	NONE = 0,
 };
 
-typedef struct s_token
+struct s_token
 {
 	int				type;
 	char			*data;
 	struct s_token	*next;
-}	t_token;
-
-typedef struct s_app	t_app;
+};
 
 /*
  * token -> sequence of parsed tokens
@@ -69,7 +73,7 @@ typedef struct s_app	t_app;
  * curr_char ->
  * type -> type of token e_token_type
 */
-typedef struct s_lexer
+struct s_lexer
 {
 	t_token	*token;
 	int		state;
@@ -79,9 +83,9 @@ typedef struct s_lexer
 	int		token_i;
 	char	curr_char;
 	int		type;
-}	t_lexer;
+};
 
-void	lexer(t_app *self, char *line);
+t_token	*lexer(t_app *self, char *line);
 
 //* Token handlers
 
@@ -99,9 +103,9 @@ void	quotes_state_handler(t_lexer *lexer);
 //* Utils functions
 
 void	free_tokens(t_token *token);
-void	init_lexer(t_lexer *lexer, char *line);
+t_lexer	*init_lexer(char *line);
 t_token	*init_token(int line_size);
-void	print_lexer_tokens(t_lexer *lexer);
+void	print_lexer_tokens(t_token *token);
 
 //* Expander
 void	expand(t_app *self, t_token *token_list);

@@ -6,7 +6,7 @@
 #    By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/03/04 01:36:51 by amenses-         ###   ########.fr        #
+#    Updated: 2023/03/04 19:17:52 by amenses-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,9 @@ LIB_TERMCAP = -lreadline
 # Lexer source files
 SRCS += lexer.c utils.c states_handler.c types_handler.c expand.c
 
+# Parser source files
+SRCS += parser.c pipe.c redirect.c command.c compare.c tree.c
+
 # Utils source files
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
 
@@ -45,6 +48,9 @@ vpath %.c src/
 
 vpath %.c src/lexer/
 vpath %.c src/lexer/lexer_utils/
+
+vpath %.c src/parser/
+
 vpath %.c src/utils/
 vpath %.c src/builtin/unset
 vpath %.c src/builtin/env
@@ -61,7 +67,7 @@ all: $(LIB)
 	$(MAKE) $(NAME)
 
 $(OBJS): $(OBJ_DIR)%.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $<  -I $(INCLUDES) -I $(INCLUDES_LIB) -o $@
+	$(CC) $(CFLAGS) -c $< -I $(INCLUDES) -I $(INCLUDES_LIB) -o $@
 
 $(NAME): $(OBJ_DIR) $(OBJS)
 	@echo $(OBJS)

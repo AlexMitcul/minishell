@@ -1,39 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   compare.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/19 17:12:30 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 21:54:28 by amitcul          ###   ########.fr       */
+/*   Created: 2023/02/26 14:00:28 by amitcul           #+#    #+#             */
+/*   Updated: 2023/02/26 17:32:22 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/lexer.h"
+#include "../../includes/parser.h"
 
-void	print_lexer_token(void *token)
+bool	match(int token_type, char **buffer, t_parser *parser)
 {
-	printf("%s\n", (char *)token);
-}
+	t_token	*token;
 
-void	free_lexer_token(void *token)
-{
-	free((char *)token);
-}
-
-/*
-	Right now is unused function
-*/
-bool	is_whitespace_line(char	*line)
-{
-	if (line == NULL)
-		return (true);
-	while (*line)
+	token = parser->curr_token;
+	if (!token)
+		return (false);
+	if (token->type == token_type)
 	{
-		if (*line != ' ')
-			return (false);
-		line++;
+		if (buffer)
+			*buffer = ft_strdup(token->data);
+		parser->curr_token = token->next;
+		return (true);
 	}
-	return (true);
+	parser->curr_token = token->next;
+	return (false);
 }

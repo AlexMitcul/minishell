@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:08:03 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 21:26:45 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/03/04 19:20:24 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,25 @@ static void	push_front(t_app *self, t_env_list *new)
 	self->env_list = new;
 }
 
+//! check case when we add "export x"
 void	fill_env_list(t_app *self, char **envp)
 {
 	int		i;
 	int		index;
-	char	*start;
+	char	*key;
+	char	*value;
 
 	i = 0;
 	while (envp[i + 1])
 		i++;
-	while (envp[i])
+	while (i >= 0)
 	{
-		start = ft_strchr(envp[i], '=');
-		index = (int)(start - envp[i]);
-		if (start == NULL)
-			index = ft_strlen(envp[i]);
-		push_front(self, init(ft_substr(envp[i], 0, index),
-				ft_substr(envp[i], index + 1, ft_strlen(envp[i]))));
+		index = 0;
+		while (envp[i][index] != '=')
+			index++;
+		key = ft_substr(envp[i], 0, index);
+		value = ft_substr(envp[i], index + 1, ft_strlen(envp[i]) - index);
+		push_front(self, init(key, value));
 		i--;
 	}
 	self->envp = envp;
@@ -86,13 +88,17 @@ void	remove_list_item_by_key(t_app *self, char *key)
 void	free_env_list(t_app *self)
 {
 	t_env_list	*tmp;
+	t_env_list	*next;
 
-	while (self->env_list)
+	tmp = self->env_list;
+	while (tmp)
 	{
-		tmp = self->env_list;
-		self->env_list = self->env_list->next;
-		free(tmp->key);
-		free(tmp->value);
+		next = tmp->next;
+		if (tmp->key)
+			free(tmp->key);
+		if (tmp->value)
+			free(tmp->value);
 		free(tmp);
+		tmp = next;
 	}
 }

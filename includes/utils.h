@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:37:55 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 20:54:05 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/02/26 18:01:06 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ void	dll_append(t_dll_item **head_ref, void *new_data);
 void	dll_push(t_dll_item **head_ref, void *new_data);
 void	free_dll_list(t_dll_item *head_ref, void (*f)(void *));
 
-int	count_symbol_in_string(char *str, int ch);
+int		count_symbol_in_string(char *str, int ch);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:01:22 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 20:55:17 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/02 16:44:34 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	*get_value(t_env_list *lst, char *key)
 {
 	while (lst)
 	{
-		if (ft_strncmp(lst->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(lst->key, key, ft_strlen(key) + 1) == 0)
 			return (lst->value);
 		lst = lst->next;
 	}
@@ -28,8 +28,8 @@ static void	join_and_set_splitted_array(t_token *token, char **splitted)
 	char	*res;
 	int		i;
 
-	res = ft_strdup(splitted[0]);
-	i = 1;
+	res = NULL;
+	i = 0;
 	while (splitted[i])
 	{
 		res = ft_strjoin(res, splitted[i]);
@@ -63,7 +63,7 @@ static void	try_to_expand(t_app *self, t_token *token)
 		i = 1;
 	while (splitted[i])
 	{
-		tmp = get_value(self->env_list, splitted[i]);
+		tmp = ft_strdup(get_value(self->env_list, splitted[i]));
 		free(splitted[i]);
 		splitted[i] = tmp;
 		i++;
