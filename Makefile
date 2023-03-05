@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/03/03 13:37:49 by amitcul          ###   ########.fr        #
+#    Updated: 2023/03/05 15:18:05 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ HEADER += $(INCLUDES)executor.h
 
 LIB_TERMCAP = -lreadline
 
-SRCS += main.c
+SRCS += m.c
 
 # Lexer source files
 SRCS += lexer.c utils.c states_handler.c types_handler.c expand.c
@@ -41,7 +41,7 @@ SRCS += parser.c pipe.c redirect.c command.c compare.c tree.c
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
 
 # Executor files
-SRCS += executor.c
+SRCS += executor.c command_funcs.c
 
 OBJ_DIR = ./obj/
 

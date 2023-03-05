@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/03 13:34:33 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/05 15:02:49 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_parser		t_parser;
 typedef struct s_token		t_token;
 typedef struct s_lexer		t_lexer;
 typedef struct s_env_list	t_env_list;
+// typedef struct s_command	t_command;
+typedef struct s_exec		t_exec;
 
 struct s_env_list
 {
