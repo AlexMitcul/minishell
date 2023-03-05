@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 15:05:07 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/05 15:37:32 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/05 15:48:10 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,21 @@ void	command_init(t_tree *root, t_exec *exec)
 
 static bool	try_run_our_builtin(t_app *self, t_exec *exec)
 {
-	static char	*our_functions = {
+	static char	*our_functions[BUILTINS_COUNT] = {
 		"echo", "cd", "pwd", "export", "unset", "env", "exit"
 	};
-	static int (*fparr[5])(void) = { func, func, func, func, func };
+	static int (*ft_builtins[BUILTINS_COUNT])(t_app *, char **) = {
+		ft_echo, ft_cd, ft_pwd, ft_export, ft_unset, ft_env, ft_exit
+	};
 	int	i;
 
 	i = 0;
-	while (i < 7)
+	while (i < BUILTINS_COUNT)
 	{
 		if (ft_strncmp(our_functions[i], exec->args[0],
 			ft_strlen(parse) + 1) == 0)
 		{
-			// run func
+			ft_builtins[i](self, exec->args);
 			return (true);
 		}
 		i++;
