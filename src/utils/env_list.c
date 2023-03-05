@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:08:03 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 21:51:29 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/04 19:20:24 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	remove_list_item_by_key(t_app *self, char *key)
 	prev = NULL;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(tmp->key, key, ft_strlen(key) + 1) == 0)
 		{
 			if (prev == NULL)
 				self->env_list = tmp->next;

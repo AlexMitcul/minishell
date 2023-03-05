@@ -6,9 +6,10 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/03/05 15:18:05 by amitcul          ###   ########.fr        #
+#    Updated: 2023/03/05 15:37:32 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 NAME	=	minishell
 
@@ -40,6 +41,9 @@ SRCS += parser.c pipe.c redirect.c command.c compare.c tree.c
 # Utils source files
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
 
+# Builtins source files
+SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
+
 # Executor files
 SRCS += executor.c command_funcs.c
 
@@ -53,6 +57,14 @@ vpath %.c src/lexer/lexer_utils/
 vpath %.c src/parser/
 
 vpath %.c src/utils/
+vpath %.c src/builtin/unset
+vpath %.c src/builtin/env
+vpath %.c src/builtin/echo
+vpath %.c src/builtin/export
+vpath %.c src/builtin/pwd
+vpath %.c src/builtin/exit
+vpath %.c src/builtin/cd
+vpath %.c src/builtin/
 
 vpath %.c src/executor/
 
