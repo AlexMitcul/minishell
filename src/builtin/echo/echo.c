@@ -6,22 +6,23 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 23:39:39 by amenses-          #+#    #+#             */
-/*   Updated: 2023/03/03 22:22:18 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:22:46 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	g_exit_status; // extern
+extern int	g_exit_status; // extern
 
-int	ft_echo(char **args)
+int	ft_echo(t_app *self, char **args)
 {
 	int	i;
 	int	n_flag;
 
-	i = 0;
+	(void)self;
+	i = 1;
 	n_flag = 0;
-	if (args[0] && ft_strncmp(args[0], "-n", 3) == 0)
+	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
 	{
 		n_flag = 1;
 		i++;

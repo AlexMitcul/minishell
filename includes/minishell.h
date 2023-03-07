@@ -25,6 +25,7 @@
 # include "lexer.h"
 # include "parser.h"
 # include "utils.h"
+# include "builtins.h"
 
 typedef struct s_app		t_app;
 typedef struct s_tree		t_tree;

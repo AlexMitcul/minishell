@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 20:02:37 by amenses-          #+#    #+#             */
-/*   Updated: 2023/03/03 20:04:41 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:21:43 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	check_args(char **args)
 	int	i;
 	int	status;
 
-	i = 0;
+	i = 1;
 	status = 1;
 	while (args[i])
 	{
@@ -49,7 +49,7 @@ static int	check_args(char **args)
 	return (status);
 }
 
-int	ft_unset(t_app **self, char **args)
+int	ft_unset(t_app *self, char **args)
 {
 	int	i;
 
@@ -58,10 +58,10 @@ int	ft_unset(t_app **self, char **args)
 		g_exit_status = 1;
 		return (g_exit_status);
 	}
-	i = 0;
+	i = 1;
 	while (args[i])
 	{
-		remove_list_item_by_key(*self, args[i]);
+		remove_list_item_by_key(self, args[i]);
 		i++;
 	}
 	g_exit_status = 0;

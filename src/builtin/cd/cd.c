@@ -6,13 +6,12 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 01:46:06 by amenses-          #+#    #+#             */
-/*   Updated: 2023/03/03 20:04:23 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/03/05 18:00:02 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// use exit() instead of return? that way it sets the system exit status to our internal one
 extern int	g_exit_status; // extern
 
 static int count_args(char **args)
@@ -96,20 +95,20 @@ int ft_cd(t_app *self, char **args) // not considering paths in CDPATH which doe
 	char	*oldpwd;
 
 	oldpwd = ft_strdup(get_env_value(self->env_list, "PWD"));
-	if (count_args(args) > 1)
+	if (count_args(args) > 2)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
 		g_exit_status = 1;
 		return (g_exit_status);
 	}
-	if (!args || args[0] == NULL)
+	if (args[1] == NULL)
 		chto_home(self->env_list, oldpwd);
 	else
 	{
-		if (chdir(args[0]) != EXIT_SUCCESS)
+		if (chdir(args[1]) != EXIT_SUCCESS)
 		{
 			ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-			ft_putstr_fd(args[0], STDERR_FILENO);
+			ft_putstr_fd(args[1], STDERR_FILENO);
 			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 			g_exit_status = 1;
 			return (g_exit_status);

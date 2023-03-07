@@ -6,16 +6,15 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 20:07:47 by amenses-          #+#    #+#             */
-/*   Updated: 2023/03/04 19:12:19 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:12:35 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <signal.h>
 
 extern int	g_exit_status;
 
-void	ctrl_c(int sig)
+static void	ctrl_c(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -29,8 +28,8 @@ void	ctrl_c(int sig)
 	}
 }
 
-// int	sig_config(void)
-/* int	main()
+int	sig_config(void)
+// int	main()
 {
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
@@ -40,10 +39,5 @@ void	ctrl_c(int sig)
 	sigemptyset(&sa_int.sa_mask);
 	sigaction(SIGINT, &sa_int, NULL);
 	sigaction(SIGQUIT, &sa_quit, NULL);
-	while(1)
-		printf("a");
-	while (1) // remove this
-		pause();
 	return (EXIT_SUCCESS);
 }
- */
