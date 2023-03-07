@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/05 15:53:03 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/07 15:10:10 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "executor.h"
 
 # define BUILTINS_COUNT 7
+# include "builtins.h"
 
 typedef struct s_app		t_app;
 typedef struct s_tree		t_tree;

@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 22:41:34 by amenses-          #+#    #+#             */
-/*   Updated: 2023/03/04 19:14:44 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/03/05 18:08:22 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,25 +83,23 @@ int	get_exit_status(char *arg)
 
 int	ft_exit(t_app *self, char **args) //  review inputs ! everything should be destroyable
 {
-	int	i;
 	int	status;
 
-	(void)self; // review !
-	i = 0;
+	(void)self;
 	status = g_exit_status; // as per the man, default should be the previous exit status in storage, 0 if none
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
-	if (args[0] && verify_num_arg(args[0]) == 0)
+	if (args[1] && verify_num_arg(args[1]) == 0)
 		status = 2;
-	else if (args[0] && verify_num_arg(args[0]) == 1)
+	else if (args[1] && verify_num_arg(args[1]) == 1)
 	{
-		if (args[1])
+		if (args[2])
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 			g_exit_status = 127; // set exit status in global
 			return (g_exit_status); // exit instead of return? (bash does not actually exit in this case, but sets the exit status to 1)
 		}
 		else
-			status = get_exit_status(args[0]);
+			status = get_exit_status(args[1]);
 	}
 	// terminate(all) function // free all the freeables and clear history!
 	rl_clear_history(); // clear history can be incorporated in terminate() is it necessary tho?

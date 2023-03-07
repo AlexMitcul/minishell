@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 23:09:01 by amenses-          #+#    #+#             */
-/*   Updated: 2023/03/03 20:04:46 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/03/05 18:07:47 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 extern int	g_exit_status; // extern
 
-int	ft_env(t_app **self, char **args)
+int	ft_env(t_app *self, char **args)
 {
 	t_env_list	*tmp;
 
-	if (args[0])
+	if (args[1])
 	{
 		ft_putstr_fd("env: ", STDERR_FILENO);
-		ft_putstr_fd(args[0], STDERR_FILENO);
+		ft_putstr_fd(args[1], STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 		g_exit_status = 127;
-		return (g_exit_status); // exit?
+		return (g_exit_status);
 	}
-	tmp = (*self)->env_list;
+	tmp = self->env_list;
 	while (tmp)
 	{
 		ft_putstr_fd(tmp->key, STDOUT_FILENO);
