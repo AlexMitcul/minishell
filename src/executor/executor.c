@@ -6,17 +6,20 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 13:29:20 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/05 15:23:24 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/19 16:43:38 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
 
-int	execute_pipe(t_app *self, t_tree *tree)
+void	execute_simple_command(t_app *self, t_tree *tree, t_exec exec)
 {
-	(void)tree;
-	(void)self;
-	return (EXIT_SUCCESS);
+	t_command	command;
+
+	command = (t_command){0, NULL, false, false, 0, 0, 0, 0};
+	command_init(tree, &command, exec);
+	command_execute(self, &command);
+	command_destroy(&command);
 }
 
 bool	is_redirect(int type)
@@ -29,19 +32,7 @@ bool	is_redirect(int type)
 	return (false);
 }
 
-void	execute_simple_command(t_app *self, t_tree *node, t_exec exec)
-{
-	int	i;
-
-	command_init(node, &exec);
-	command_execute(self, &exec);
-	i = 0;
-	while (exec.args && exec.args[i])
-		free(exec.args[i++]);
-	free(exec.args);
-}
-
-int	execute_command(t_app *self, t_tree *tree)
+int	execute_command(t_app *self, t_tree *tree, t_exec exec)
 {
 	if (is_redirect(tree->type))
 	{
@@ -50,8 +41,7 @@ int	execute_command(t_app *self, t_tree *tree)
 			(t_exec){NULL, false, false, 0, 0});
 	}
 	else if (tree->type == CMDPATH_NODE)
-	execute_simple_command(self, tree,
-			(t_exec){NULL, false, false, 0, 0});
+		execute_simple_command(self, tree, exec);
 	return (EXIT_SUCCESS);
 }
 
@@ -65,6 +55,7 @@ int	execute_tree(t_app *self, t_tree *tree)
 	if (tree->type == PIPE_NODE)
 		status = execute_pipe(self, tree);
 	else
-		status = execute_command(self, tree);
+		status = execute_command(self, tree,
+			(t_exec){false, false, 0, 0, 0, 0});
 	return (status);
 }
