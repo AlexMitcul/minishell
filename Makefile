@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/03/05 15:37:32 by amitcul          ###   ########.fr        #
+#    Updated: 2023/03/19 17:27:52 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
 SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
 
 # Executor files
-SRCS += executor.c command_funcs.c
+SRCS += executor.c command_utils.c executor_builtin.c run.c
 
 OBJ_DIR = ./obj/
 

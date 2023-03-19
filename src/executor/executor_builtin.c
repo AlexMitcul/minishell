@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 16:56:42 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/19 16:57:55 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/19 17:38:55 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_bin	*get_builtin(char *path)
 {
-	static t_bin_prot	buitins[7] = {
+	static t_bin_def	builtins[7] = {
 		{"echo", ft_echo},
 		{"cd", ft_cd},
 		{"pwd", ft_pwd},
@@ -22,7 +22,7 @@ t_bin	*get_builtin(char *path)
 		{"unset", ft_unset},
 		{"env", ft_env},
 		{"exit", ft_exit},
-	}
+	};
 	int					i;
 
 	i = 0;
@@ -30,7 +30,7 @@ t_bin	*get_builtin(char *path)
 	{
 		if (ft_strncmp(path, builtins[i].name, ft_strlen(path)) == 0)
 			return (builtins[i].builtin);
-		i++:
+		i++;
 	}
 	return (NULL);
 }

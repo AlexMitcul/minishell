@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/19 17:24:41 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/19 17:41:15 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 # include <stdbool.h>
 # include <limits.h>
 # include <stdio.h>
+# include <errno.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -26,6 +30,7 @@
 # include "parser.h"
 # include "utils.h"
 # include "builtins.h"
+# include "executor.h"
 
 typedef struct s_app		t_app;
 typedef struct s_tree		t_tree;

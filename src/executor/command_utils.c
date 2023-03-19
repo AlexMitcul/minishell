@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 16:43:50 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/19 16:53:14 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/19 17:38:22 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static	bool	is_node_argument(t_tree *node)
 	return (node->type == ARGUMENT_NODE || node->type == CMDPATH_NODE);
 }
 
-static	void	command_fill(t_command *command, t_exec exec)
+static	void	command_fill(t_command *command, t_exec executor)
 {
 	command->stdin_pipe = executor.stdin_pipe;
 	command->stdout_pipe = executor.stdout_pipe;
@@ -54,21 +54,37 @@ void	command_init(t_tree *root, t_command *command, t_exec exec)
 	}
 	command->argv[i] = NULL;
 	command->argc = i;
-	command_fill(command, executor);
+	command_fill(command, exec);
 }
 
 void	command_execute(t_app *self, t_command *command)
 {
 	t_bin	*prog;
-	int		status;
+	// int		status;
+	(void)self;
 
 	if (command->argc < 0)
 		return ;
 	prog = get_builtin(*command->argv);
-	if (!prog)
-		prog = run;
+	// if (!prog)
+	// 	prog = run;
 	// status = prog(comma)
 	// handle status
+}
+
+void	redirect_free(t_io **io)
+{
+	t_io	*tmp;
+
+	if (!io)
+		return ;
+	while (*io)
+	{
+		tmp = *io;
+		*io = (*io)->next;
+		free(tmp->data);
+		free(tmp);
+	}
 }
 
 void	command_destroy(t_command *command)

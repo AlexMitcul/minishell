@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 13:29:20 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/19 16:43:38 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/19 17:27:17 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ int	execute_command(t_app *self, t_tree *tree, t_exec exec)
 {
 	if (is_redirect(tree->type))
 	{
-		// execute_redirect();
-		execute_simple_command(self, tree,
-			(t_exec){NULL, false, false, 0, 0});
+		;
 	}
 	else if (tree->type == CMDPATH_NODE)
 		execute_simple_command(self, tree, exec);
@@ -53,7 +51,7 @@ int	execute_tree(t_app *self, t_tree *tree)
 		return (EXIT_FAILURE);
 	status = EXIT_SUCCESS;
 	if (tree->type == PIPE_NODE)
-		status = execute_pipe(self, tree);
+		; // status = execute_pipe(self, tree);
 	else
 		status = execute_command(self, tree,
 			(t_exec){false, false, 0, 0, 0, 0});

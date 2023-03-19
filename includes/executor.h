@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 13:29:37 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/19 16:43:12 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/19 17:37:31 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,17 @@ typedef struct s_lexer		t_lexer;
 typedef struct s_env_list	t_env_list;
 // typedef struct s_command	t_command;
 typedef struct s_exec		t_exec;
-typedef struct s_data		t_data;
+typedef struct s_io			t_io;
 typedef struct s_command	t_command;
+typedef struct s_bin_def	t_bin_def;
+
+typedef int (t_bin)(t_app *, char **);
+
+struct	s_bin_def
+{
+	char	*name;
+	t_bin	*builtin;
+};
 
 struct s_command
 {
@@ -34,31 +43,36 @@ struct s_command
 	bool	stdout_pipe;
 	int		pipe_read;
 	int		pipe_write;
-	t_data	*redirect_in;
-	t_data	*redirect_out;
+	t_io	*redirect_in;
+	t_io	*redirect_out;
 };
 
-struct s_data
+struct s_io
 {
-	int				type;
-	char			data;
-	struct s_data	*next;
+	int		type;
+	char	*data;
+	t_io	*next;
 };
 
 struct s_exec
 {
-	bool	in_pipe;
-	bool	out_pipe;
-	int		read_fd;
-	int		write_fd;
-	t_data	*in;
-	t_data	*out;
+	bool	stdin_pipe;
+	bool	stdout_pipe;
+	int		pipe_read;
+	int		pipe_write;
+	t_io	*redirect_in;
+	t_io	*redirect_out;
 };
 
 int	execute_tree(t_app *self, t_tree *tree);
 
 /* command_funcs.c */
-// void	command_init(t_tree *root, t_exec *exec);
-// void	command_execute(t_app *self, t_exec *exec);
+void	command_init(t_tree *root, t_command *command, t_exec exec);
+void	command_execute(t_app *self, t_command *command);
+void	command_destroy(t_command *command);
+
+int		run(t_app *self, t_command *command);
+
+t_bin	*get_builtin(char *path);
 
 #endif
