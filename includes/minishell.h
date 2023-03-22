@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/19 17:41:15 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/22 14:56:22 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <errno.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -54,9 +53,11 @@ struct s_app
 	char		**envp;
 };
 
+/* utils.c */
 void	fill_env_list(t_app *self, char **envp);
 void	free_env_list(t_app *self);
 void	remove_list_item_by_key(t_app *self, char *key);
-
+char	*find_list_value_by_key(t_env_list *list, char *key);
+void	free_array(char **arr);
 
 #endif

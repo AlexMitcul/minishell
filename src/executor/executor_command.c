@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 12:51:23 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/22 12:59:02 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/22 14:46:57 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	get_depth(t_tree *node)
 	int	depth;
 
 	if (node == NULL)
-		return 0;
+		return (0);
 	depth = 1;
 	while (node->right)
 	{
@@ -48,7 +48,8 @@ t_command	*build_command(t_tree *root)
 
 	command = malloc(sizeof(t_command));
 	command->argc = get_depth(root);
-	command->argv = ft_calloc(command->argc, sizeof(char *) * (command->argc + 1));
+	command->argv = ft_calloc(command->argc,
+			sizeof(char *) * (command->argc + 1));
 	node = root;
 	i = 0;
 	while (node)
