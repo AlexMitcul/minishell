@@ -6,13 +6,12 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:31:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/22 14:54:36 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/23 14:46:42 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/executor.h"
 
-//! handle error on line 113
 void	execute_command(t_app *self, t_command *command)
 {
 	char		*path;
@@ -31,7 +30,11 @@ void	execute_command(t_app *self, t_command *command)
 			command->argv[0] = path;
 		}
 		else
-			printf("Error\n");
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(command->argv[0], STDERR_FILENO);
+			ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		}
 	}
 }
 
