@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:31:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/23 14:46:42 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/23 14:59:29 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	execute_command(t_app *self, t_command *command)
 		{
 			free(command->argv[0]);
 			command->argv[0] = path;
+			run_builtin(self, command);
 		}
 		else
 		{

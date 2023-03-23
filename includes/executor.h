@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 13:29:37 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/22 14:53:21 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/03/23 15:00:17 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,8 @@ char		*find_builtin_path(t_app *self, char *command_name);
 
 /* executor_utils.c */
 void		print_command(t_command *command);
+
+/* run.c */
+void	run_builtin(t_app *self, t_command *command);
 
 #endif
