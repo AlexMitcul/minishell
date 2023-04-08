@@ -16,4 +16,17 @@ void	run_builtin(t_app *self, t_command *command)
 {
 	(void)self;
 	(void)command;
+
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+		printf("error when forking\n");
+	else if (pid == 0)
+	{
+		if (execve(command->argv[0], command->argv, self->envp) < 0)
+		{
+			printf("error when executing\n");
+		}
+	}
 }

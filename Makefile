@@ -46,7 +46,8 @@ SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c \
 SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
 
 # Executor files
-SRCS += executor.c executor_command.c executor_command_utils.c builtins.c
+SRCS += executor.c executor_command.c executor_command_utils.c builtins.c \
+		run.c
 
 OBJ_DIR = ./obj/
 
