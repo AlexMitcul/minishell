@@ -31,10 +31,25 @@ void	run_builtin(t_app *self, t_command *command)
 		;
 	}
 
-	//! Need to handle this status code and replace with our global variable I guess
+	/*
+	WIFEXITED(status)
+		returns true if the child terminated normally, that is, by calling 
+		exit(3) or _exit(2), or by returning from main().
+
+   WEXITSTATUS(status)
+		returns  the  exit status of the child.  This consists of the least 
+		significant 8 bits of the status argument that the child specified in 
+		a call to exit(3) or _exit(2) or as the argument for a
+		return statement in main().  This macro should be employed only 
+		if WIFEXITED returned true.
+	*/
+
+	// ! Need to handle this status code and replace with our global variable I guess
+	// ! Like g_status = WEXITSTATUS(status);
 	pid = waitpid(pid, &status, 0);
 	if (pid < 0)
 		printf("Error uccured\n");
 	// Debug print
-	printf("Status code: %d\n", status);
+	if (WIFEXITED(status))
+        printf("exit status = %d\n", WEXITSTATUS(status));
 }
