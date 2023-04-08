@@ -14,10 +14,8 @@
 
 void	run_builtin(t_app *self, t_command *command)
 {
-	(void)self;
-	(void)command;
-
 	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	if (pid < 0)
@@ -28,5 +26,15 @@ void	run_builtin(t_app *self, t_command *command)
 		{
 			printf("error when executing\n");
 		}
+	} else {
+		/* parent sub programm */
+		;
 	}
+
+	//! Need to handle this status code and replace with our global variable I guess
+	pid = waitpid(pid, &status, 0);
+	if (pid < 0)
+		printf("Error uccured\n");
+	// Debug print
+	printf("Status code: %d\n", status);
 }

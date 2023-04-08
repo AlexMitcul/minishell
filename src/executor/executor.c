@@ -50,4 +50,8 @@ void	executor(t_app *self, t_tree *root)
 		print_command(command);
 		free_command(command);
 	}
+	else if (root->type == PIPE_NODE)
+	{
+		;
+	}
 }
