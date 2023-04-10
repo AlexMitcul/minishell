@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*   By: amitcul <amitcul@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 13:29:37 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/23 15:00:17 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/04/10 17:13:38 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,18 @@ typedef struct s_builtin_def
 	t_builtin	*func;
 }	t_builtin_def;
 
+
 typedef struct s_command
 {
 	int		argc;
 	char	**argv;
+	struct s_command *next;
 }	t_command;
+
+typedef struct	s_command_list
+{
+	t_command	*command;
+}	t_command_list;
 
 void		executor(t_app *self, t_tree *root);
 
@@ -53,5 +60,8 @@ void		print_command(t_command *command);
 
 /* run.c */
 void	run_builtin(t_app *self, t_command *command);
+
+/* build_commands.c */
+t_command_list  *build_command_list(t_app *self, t_tree *root);
 
 #endif

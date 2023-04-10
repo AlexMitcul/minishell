@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
+#    By: amitcul <amitcul@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/03/22 14:55:47 by amitcul          ###   ########.fr        #
+#    Updated: 2023/04/10 17:05:22 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
 
 # Executor files
 SRCS += executor.c executor_command.c executor_command_utils.c builtins.c \
-		run.c
+		run.c build_commands.c
 
 OBJ_DIR = ./obj/
 

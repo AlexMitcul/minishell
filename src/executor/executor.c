@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*   By: amitcul <amitcul@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:31:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/23 14:59:29 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/04/10 17:08:40 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ void	executor(t_app *self, t_tree *root)
 	}
 	else if (root->type == PIPE_NODE)
 	{
-		;
+		build_command_list(self, root);
 	}
 }

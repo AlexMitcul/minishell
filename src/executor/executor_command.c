@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*   By: amitcul <amitcul@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 12:51:23 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/22 14:46:57 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/04/10 17:27:14 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_command	*build_command(t_tree *root)
 	t_tree		*node;
 	t_command	*command;
 
-	command = malloc(sizeof(t_command));
+	command = ft_calloc(sizeof(t_command), 1);
 	command->argc = get_depth(root);
 	command->argv = ft_calloc(command->argc,
 			sizeof(char *) * (command->argc + 1));
