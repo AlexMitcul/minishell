@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:31:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/04/10 17:08:40 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/04/10 17:39:52 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	executor(t_app *self, t_tree *root)
 		print_command(command);
 		free_command(command);
 	}
-	else if (root->type == PIPE_NODE)
+	else if (root->type == PIPE_NODE || root->type == REDIRECT_OUT_NODE)
 	{
 		build_command_list(self, root);
 	}
