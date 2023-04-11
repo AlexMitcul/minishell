@@ -1,5 +1,5 @@
 # to be ignored
-.vscode
+.vscode/
 *.o
 *.a
 .*
