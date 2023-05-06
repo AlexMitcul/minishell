@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 21:31:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/04/10 17:39:52 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/05/06 16:10:54 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	execute_command(t_app *self, t_command *command)
 {
 	char		*path;
-	t_builtin	*builtin;
+	t_builtin	*builtin = NULL;
 
 	path = NULL;
-	builtin = is_our_builtin(command->argv[0]);
+	// builtin = is_our_builtin(command->argv[0]);
 	if (builtin != NULL)
 		;
 	else
@@ -28,7 +28,7 @@ void	execute_command(t_app *self, t_command *command)
 		{
 			free(command->argv[0]);
 			command->argv[0] = path;
-			run_builtin(self, command);
+			// run_builtin(self, command);
 		}
 		else
 		{
@@ -38,6 +38,8 @@ void	execute_command(t_app *self, t_command *command)
 		}
 	}
 }
+
+void traverse_tree(t_tree *root);
 
 void	executor(t_app *self, t_tree *root)
 {
@@ -50,8 +52,8 @@ void	executor(t_app *self, t_tree *root)
 		print_command(command);
 		free_command(command);
 	}
-	else if (root->type == PIPE_NODE || root->type == REDIRECT_OUT_NODE)
+	else if (root->type == PIPE_NODE)
 	{
-		build_command_list(self, root);
+		traverse_tree(root);
 	}
 }

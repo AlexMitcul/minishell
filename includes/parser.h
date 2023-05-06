@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 14:21:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/04/10 17:30:28 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/05/06 16:10:30 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_tree	*try_parse(t_parser *parser);
 /* tree.c */
 t_tree	*init_node(int type);
 void	tree_destroy(t_tree *node);
-void	print_tree(t_tree *root, int level, char level_char);
+void	print_tree(t_tree *root, int level, char ch);
 
 /* compare.c */
 bool	match(int token_type, char **buffer, t_parser *parser);

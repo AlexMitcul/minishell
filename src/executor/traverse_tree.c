@@ -1,39 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   traverse_tree.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/19 17:12:30 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 21:54:28 by amitcul          ###   ########.fr       */
+/*   Created: 2023/04/24 13:12:03 by amitcul           #+#    #+#             */
+/*   Updated: 2023/04/24 13:16:58 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/lexer.h"
+#include "../../includes/executor.h"
 
-void	print_lexer_token(void *token)
+void traverse_tree(t_tree *root)
 {
-	printf("%s\n", (char *)token);
-}
+	// t_command *cmd_list = NULL;
 
-void	free_lexer_token(void *token)
-{
-	free((char *)token);
-}
-
-/*
-	Right now is unused function
-*/
-bool	is_whitespace_line(char	*line)
-{
-	if (line == NULL)
-		return (true);
-	while (*line)
-	{
-		if (*line != ' ')
-			return (false);
-		line++;
+	if (root->type == PIPE_NODE) {
+		// add_node(&cmd_list, root->left);
+		// traverse_tree(root->right);
 	}
-	return (true);
+
 }

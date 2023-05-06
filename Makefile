@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amitcul <amitcul@student.42.fr>            +#+  +:+       +#+         #
+#    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/04/10 17:05:22 by amitcul          ###   ########.fr        #
+#    Updated: 2023/05/06 16:10:21 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,11 +43,11 @@ SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c \
 		env_list_utils.c array_utils.c
 
 # Builtins source files
-SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
+# SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
 
 # Executor files
 SRCS += executor.c executor_command.c executor_command_utils.c builtins.c \
-		run.c build_commands.c
+		traverse_tree.c
 
 OBJ_DIR = ./obj/
 

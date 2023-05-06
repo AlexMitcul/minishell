@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 13:29:37 by amitcul           #+#    #+#             */
-/*   Updated: 2023/04/10 17:13:38 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/05/06 16:10:47 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ typedef struct s_builtin_def
 
 typedef struct s_command
 {
-	int		argc;
-	char	**argv;
-	struct s_command *next;
+	int					argc;
+	char				**argv;
+	struct s_command	*next;
 }	t_command;
 
 typedef struct	s_command_list

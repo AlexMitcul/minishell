@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 14:13:21 by amitcul           #+#    #+#             */
-/*   Updated: 2023/04/10 17:30:16 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/05/06 16:11:02 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*get_type(t_tree *node)
 	return ("NODE_DATA");
 }
 
-void	print_tree(t_tree *root, int level, char level_char)
+void	print_tree(t_tree *root, int level, char ch)
 {
 	int	i;
 
@@ -64,12 +64,14 @@ void	print_tree(t_tree *root, int level, char level_char)
 	while (i < level)
 	{
 		if (i == level - 1)
-			printf("%c-", level_char);
+			printf("%c ", ch);
 		else
 			printf("  ");
 		i++;
 	}
 	printf("%s = %s\n", get_type(root), root->data);
+	print_tree(root->left, level + 1, 'L');
+	print_tree(root->right, level + 1, 'R');
 	print_tree(root->left, level + 1, 'L');
 	print_tree(root->right, level + 1, 'R');
 }
