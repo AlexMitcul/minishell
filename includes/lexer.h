@@ -5,109 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 20:42:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/02 17:54:36 by amitcul          ###   ########.fr       */
+/*   Created: 2023/05/06 11:48:16 by amitcul           #+#    #+#             */
+/*   Updated: 2023/05/06 16:04:08 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
 
-# include <stdio.h>
-
 # include "minishell.h"
-# include "utils.h"
+# include "structs.h"
 
-enum e_state {
-	STATE_DEFAULT,
-	STATE_QUOTES,
-	STATE_DQUOTES,
-};
+# define L_RESET 1
+# define L_QUOTES_ERR 2
+# define L_TOKEN_ERR 3
 
-typedef struct s_app		t_app;
-typedef struct s_tree		t_tree;
-typedef struct s_parser		t_parser;
-typedef struct s_token		t_token;
-typedef struct s_lexer		t_lexer;
-typedef struct s_env_list	t_env_list;
+int	lexer(t_app *app);
 
-/*
- * TEXT -> Plain text, line "echo" command
- * PIPE -> [|]
- * QUOTE -> Single quote [']
- * DQUOTE -> Double quote ["]
- * WS -> Whitespace [ ]
- * GREAT -> [>]
- * GGREAT -> [>>]
- * LESS -> [<]
- * LLESS -> [<<]
- * NONE -> End of line EOL
-*/
-enum e_token_type {
-	DEFAULT = -1,
-	PIPE = '|',
-	QUOTES = '\'',
-	DQUOTES = '\"',
-	WS = ' ',
-	GREAT = '>',
-	GGREAT = -2,
-	LESS = '<',
-	LLESS = -3,
-	NONE = 0,
-};
+// quotes
+int	check_quotes(char *line);
+int	handle_quotes(int start, char *str, char quote);
 
-struct s_token
-{
-	int				type;
-	char			*data;
-	struct s_token	*next;
-};
+// utils
+int	add_node(char *str, t_token_type token_type, t_lexer_token **list);
+t_lexer_token	*get_lexer_new_node(char *str, int token_type);
 
-/*
- * token -> sequence of parsed tokens
- * state -> current state of parsed subline
- * line -> copy of input line
- * line_size -> length of input line
- * line_i -> current index in input line
- * token_i -> current index when completing token data
- * curr_char ->
- * type -> type of token e_token_type
-*/
-struct s_lexer
-{
-	t_token	*token;
-	int		state;
-	char	*line;
-	int		line_size;
-	int		line_i;
-	int		token_i;
-	char	curr_char;
-	int		type;
-};
-
-t_token	*lexer(t_app *self, char *line);
-
-//* Token handlers
-
-void	quotes_handler(t_lexer *lexer);
-void	whitespace_handler(t_lexer *lexer);
-void	redirect_handler(t_lexer *lexer);
-void	default_handler(t_lexer *lexer);
-void	end_token(t_lexer *lexer);
-
-//* State handlers
-
-void	default_state_handler(t_lexer *lexer);
-void	quotes_state_handler(t_lexer *lexer);
-
-//* Utils functions
-
-void	free_tokens(t_token *token);
-t_lexer	*init_lexer(char *line);
-t_token	*init_token(int line_size);
-void	print_lexer_tokens(t_token *token);
-
-//* Expander
-void	expand(t_app *self, t_token *token_list);
+// tokens
+int	get_tokens(t_app *app);
 
 #endif
