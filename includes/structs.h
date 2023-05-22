@@ -22,7 +22,8 @@ typedef struct s_env_list
 
 typedef enum s_token_type
 {
-	PIPE = 1,
+    WORD = 0,
+	PIPE,
 	GREAT,
 	G_GREAT,
 	LESS,
@@ -31,7 +32,7 @@ typedef enum s_token_type
 
 typedef struct s_lexer_token
 {
-	int						index;
+	size_t 					index;
 	char					*str;
 	t_token_type			token_type;
 	struct s_lexer_token	*next;
@@ -46,7 +47,6 @@ typedef struct s_app
 	char				*input;
 	t_lexer_token		*lexer_tokens;
 	struct s_command	*commands_list;
-
 	int					pipes_count;
 } t_app;
 

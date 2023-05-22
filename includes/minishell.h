@@ -51,4 +51,6 @@ void	remove_list_item_by_key(t_app *self, char *key);
 char	*find_list_value_by_key(t_env_list *list, char *key);
 void	free_array(char **arr);
 
+int parser(t_app *app);
+
 #endif

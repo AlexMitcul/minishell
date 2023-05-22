@@ -1,3 +1,57 @@
-//
-// Created by Alexandru Mitcul on 22/05/2023.
-//
+
+
+
+#include "parser.h"
+#include "lexer.h"
+
+static void push_back(t_lexer_token **list, t_lexer_token *new)
+{
+    t_lexer_token *curr;
+
+    if (*list == NULL)
+    {
+        new->prev = NULL;
+        *list = new;
+        return ;
+    }
+    curr = *list;
+    while (curr->next != NULL)
+        curr = curr->next;
+    curr->next = new;
+    new->prev = curr;
+}
+
+void add_new_redirect(t_parser *parser, t_lexer_token *token)
+{
+    t_lexer_token *new;
+    size_t first;
+    size_t second;
+
+    new = get_lexer_new_node(ft_strdup(token->next->str), token->token_type);
+    if (!new)
+        return ; // handle this error
+    push_back(&parser->lexer_list, new);
+    first = token->index;
+    second = token->next->index;
+    delete_node_by_index(&parser->lexer_list, first);
+    delete_node_by_index(&parser->lexer_list, second);
+    parser->redirs_count += 1;
+}
+
+void collect_redirections(t_parser *parser)
+{
+    t_lexer_token *curr;
+
+    curr = parser->lexer_list;
+    while (curr && curr->token_type == WORD)
+        curr = curr->next;
+    if (curr == NULL || curr->token_type == PIPE)
+        return ;
+    if (curr->next == NULL)
+        parser_error(PLACEHOLDER, NULL); // pipe or redirect on the end of sequence
+    if (curr->next->token_type > WORD)
+        parser_error(PLACEHOLDER, NULL); // two tokens
+    if (curr->token_type >= GREAT && curr->token_type <= L_LESS)
+        add_new_redirect(parser, curr);
+    collect_redirections(parser);
+}

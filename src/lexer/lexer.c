@@ -12,9 +12,6 @@
 
 #include "lexer.h"
 
-/*
-	returns error code or 0 if OK
-*/
 int	lexer(t_app *app)
 {
 	char	*t;
@@ -24,8 +21,6 @@ int	lexer(t_app *app)
 	t = ft_strtrim(app->input, " ");
 	free(app->input);
 	app->input = t;
-	if (!app->input)
-		ft_putendl_fd("exit", STDOUT_FILENO), exit(EXIT_SUCCESS);
 	if (app->input[0] == '\0')
 		return (L_RESET);
 	add_history(app->input);
