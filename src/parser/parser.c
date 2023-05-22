@@ -5,70 +5,175 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/26 16:38:56 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/04 15:09:26 by amitcul          ###   ########.fr       */
+/*   Created: 2023/05/16 20:13:05 by amitcul           #+#    #+#             */
+/*   Updated: 2023/05/21 12:22:27 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser.h"
+#include "parser.h"
 
-t_tree	*try_parse(t_parser *parser)
+typedef struct	s_parser
 {
-	t_token	*begin;
-	t_tree	*node;
+	t_lexer_token	*lexer_list;
+	t_lexer_token	*redirs;
+	int				redirs_count;
+	struct s_app	*app;
+}	t_parser;
 
-	begin = parser->curr_token;
-	node = try_parse_pipe(parser);
-	if (node)
-		return (node);
-	parser->curr_token = begin;
-	node = try_parse_redirect(parser);
-	if (node)
-		return (node);
-	parser->curr_token = begin;
-	return (NULL);
+typedef struct s_command
+{
+	char				**str;
+	// int					(*builtin);
+	int					redirs_count;
+	char				*filename;
+	t_lexer_token		*redirs;
+	struct s_command	*next;
+	struct s_command	*prev;
+}	t_command;
+
+void	count_pipes(t_app *app)
+{
+	t_lexer_token	*tmp;
+
+	tmp = app->lexer_tokens;
+	app->pipes_count = 0;
+	while (tmp)
+	{
+		if (tmp->token_type == PIPE)
+			app->pipes_count += 1;
+		tmp = tmp->next;
+	}
 }
 
-//TODO: Confirm that exit status is correct
-// // * It should be [2]?, right now it's [1]
-//* 2 => Syntax error
-int	parse(t_token *tokens, t_tree **astree)
+typedef enum s_parser_error
 {
-	t_parser	parser;
+	SYNTAX_ERROR = 42,
+	MEMORY_ERROR
+}	t_parser_error;
 
-	if (!tokens)
-		return (-1);
-	parser.curr_token = tokens;
-	*astree = try_parse(&parser);
-	if (parser.curr_token && parser.curr_token->type)
+int	parser_error(t_parser_error error, void *data)
+{
+	(void)error;
+	(void)data;
+	return EXIT_FAILURE;
+}
+
+t_parser	*init_parser(t_app *app)
+{
+	t_parser	*parser;
+
+	parser = (t_parser *) malloc(sizeof(t_parser));
+	parser->app = app;
+	parser->lexer_list = app->lexer_tokens;
+	parser->redirs = NULL;
+	parser->redirs_count = 0;
+	return (parser);
+}
+
+// int	add_new_redir(t_lexer_token *tmp, t_parser *parser)
+// {
+// 	t_lexer_token	*curr;
+// 	int				i;
+// 	int				j;
+// }
+
+void	remove_redir(t_parser *parser)
+{
+	t_lexer_token	*tmp;
+
+	tmp = parser->lexer_list;
+	while (tmp && tmp->token_type == 0)
+		tmp = tmp->next;
+	if (!tmp || tmp->token_type == PIPE)
+		return ;
+	if (!tmp->next)
+		parser_error(SYNTAX_ERROR, NULL);
+	if (tmp->next->token_type)
+		parser_error(0, 0); //! handle this error
+	// if (tmp->token_type >= GREAT && tmp->token_type <= L_LESS)
+	// 	add_new_redir(tmp, parser);
+	remove_redir(parser);
+}
+
+size_t	count_args(t_lexer_token *list)
+{
+	size_t			i;
+
+	i = 0;
+	while (list && list->token_type != PIPE)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
-		ft_putstr_fd(parser.curr_token->data, STDERR_FILENO);
-		ft_putendl_fd("'", STDERR_FILENO);
-		return (2);
+		if (list->index >= 0)
+			i += 1;
+		list = list->next;
+	}
+	return (i);
+}
+
+t_command	*init_command(t_parser *parser)
+{
+	char			**str;
+	int				index;
+	size_t			args_size;
+	t_lexer_token	*tmp;
+
+	index = 0;
+	remove_redir(parser);
+	args_size = count_args(parser->lexer_list);
+	str = ft_calloc(args_size + 1, sizeof(char *));
+	if (!str)
+		parser_error(MEMORY_ERROR, NULL);
+	tmp = parser->lexer_list;
+	while (args_size > 0)
+	{
+		if (tmp->str)
+		{
+			str[index++] = ft_strdup(tmp->str);
+			lexerdel_one(&parser->lexer_list, tmp->index);
+			tmp = parser->lexer_list;
+		}
+		args_size -= 1;
+	}
+	return (create_simple_command(str, parser->redirs_count, parser->redirs));
+}
+
+static void	push_back(t_command **list, t_command *new)
+{
+	t_command	*tmp;
+
+	if (*list == NULL)
+	{
+		*list = new;
+		return ;
+	}
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+	new->prev = tmp;
+}
+
+int	parser(t_app *app)
+{
+	t_command	*command;
+	t_parser	*parser;
+
+	if (app->lexer_tokens->token_type == PIPE)
+		return parser_error(SYNTAX_ERROR, &PIPE);
+	app->commands = NULL;
+	count_pipes(app);
+	while (app->lexer_tokens)
+	{
+		if (app->lexer_tokens && app->lexer_tokens->token_type == PIPE)
+			lexerdel_one();
+		// if () handle pipe error
+		parser = init_parser(app);
+		command = init_command(parser);
+		if (!command)
+			parser_error();
+		if (!app->commads_list)
+			app->commands_list = command;
+		else
+			push_back(app->commands_list, command);
+		app->lexer_list = parser->lexer_list;
 	}
 	return (EXIT_SUCCESS);
-}
-
-t_tree	*redirect(t_parser *parser)
-{
-	t_tree		*node;
-	t_token		*begin;
-	int			i;
-	static int	redirect_set[4] = {
-		LESS, LLESS, GREAT, GGREAT
-	};
-
-	begin = parser->curr_token;
-	i = 0;
-	while (i < 4)
-	{
-		parser->curr_token = begin;
-		node = try(parser, redirect_set[i]);
-		if (node)
-			return (node);
-		i++;
-	}
-	return (NULL);
 }

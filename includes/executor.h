@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 13:29:37 by amitcul           #+#    #+#             */
-/*   Updated: 2023/05/06 16:10:47 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/05/21 12:12:23 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 # include "minishell.h"
 
 typedef struct s_app		t_app;
-typedef struct s_tree		t_tree;
-typedef struct s_parser		t_parser;
-typedef struct s_token		t_token;
-typedef struct s_lexer		t_lexer;
-typedef struct s_env_list	t_env_list;
+// typedef struct s_tree		t_tree;
+// typedef struct s_parser		t_parser;
+// typedef struct s_token		t_token;
+// typedef struct s_lexer		t_lexer;
+// typedef struct s_env_list	t_env_list;
 
 # define BUILTINS_COUNT 7
 

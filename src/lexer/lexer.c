@@ -6,11 +6,11 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 11:45:45 by amitcul           #+#    #+#             */
-/*   Updated: 2023/05/06 16:04:29 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/05/16 20:15:31 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/lexer.h"
+#include "lexer.h"
 
 /*
 	returns error code or 0 if OK

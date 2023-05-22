@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 12:50:52 by amitcul           #+#    #+#             */
-/*   Updated: 2023/05/06 14:53:44 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/05/16 20:10:37 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	push_back(t_lexer_token **list, t_lexer_token *node)
 	t_lexer_token	*curr;
 
 	curr = *list;
-	if (!list)
+	if (curr == NULL)
 	{
 		*list = node;
 		return ;

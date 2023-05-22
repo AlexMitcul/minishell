@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 14:39:34 by amitcul           #+#    #+#             */
-/*   Updated: 2023/05/06 14:41:32 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/05/21 11:27:41 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ typedef struct s_app
 	char				**envp;
 	char				*input;
 	t_lexer_token		*lexer_tokens;
+	struct s_command	*commands_list;
+
+	int					pipes_count;
 } t_app;
 
 #endif

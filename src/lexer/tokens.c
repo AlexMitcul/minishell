@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 11:54:30 by amitcul           #+#    #+#             */
-/*   Updated: 2023/05/06 14:52:57 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/05/16 20:32:02 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ int	handle_token(char *str, int start, t_lexer_token **list)
 		token_type = L_LESS;
 	if (!add_node(NULL, token_type, list))
 		return (-1);
-	return (1);
+    if (token_type == G_GREAT || token_type == L_LESS)
+        return (2);
+    return (1);
 }
 
 int	read_word(int start, char *str, t_lexer_token **list)

@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/05/06 14:41:18 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/05/21 12:13:08 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@
 # include "lexer.h"
 # include "parser.h"
 # include "utils.h"
-# include "builtins.h"
-# include "executor.h"
+// # include "builtins.h"
+// # include "executor.h"
 
 # include "structs.h"
 
 typedef struct s_app		t_app;
-typedef struct s_tree		t_tree;
-typedef struct s_parser		t_parser;
-typedef struct s_token		t_token;
-typedef struct s_lexer		t_lexer;
+// typedef struct s_tree		t_tree;
+// typedef struct s_parser		t_parser;
+// typedef struct s_token		t_token;
+// typedef struct s_lexer		t_lexer;
 typedef struct s_env_list	t_env_list;
 // typedef struct s_command	t_command;
-typedef struct s_exec		t_exec;
+// typedef struct s_exec		t_exec;
 
 # define PROMPT "$> "
 

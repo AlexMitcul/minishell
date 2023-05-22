@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/05/06 16:11:31 by amitcul          ###   ########.fr        #
+#    Updated: 2023/05/22 11:46:19 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 NAME	=	minishell
 
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror -g
+CFLAGS	=	-fdiagnostics-color=always -g -Wall -Wextra -Werror
 RM		=	rm -rf
 
 LIBDIR = ./libft
@@ -37,7 +37,7 @@ SRCS += m.c
 SRCS += lexer.c quotes.c tokens.c lexer_utils.c
 
 # Parser source files
-# SRCS += parser.c pipe.c redirect.c command.c compare.c tree.c
+# SRCS += parser.c
 
 # Utils source files
 # SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c \
@@ -69,7 +69,7 @@ vpath %.c src/lexer/
 # vpath %.c src/builtin/cd
 # vpath %.c src/builtin/
 
-vpath %.c src/executor/
+# vpath %.c src/executor/
 
 OBJS = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))
 
