@@ -38,6 +38,10 @@ void add_new_redirect(t_parser *parser, t_lexer_token *token)
     parser->redirs_count += 1;
 }
 
+/*
+ * Не удаляет строку имя куда редирект происходит, проверить работу функции delete_node_by_index
+ * Скорее всего, неправильно связывает ссылки после удаления в середине списка
+ */
 void collect_redirections(t_parser *parser)
 {
     t_lexer_token *curr;
@@ -48,9 +52,9 @@ void collect_redirections(t_parser *parser)
     if (curr == NULL || curr->token_type == PIPE)
         return ;
     if (curr->next == NULL)
-        parser_error(PLACEHOLDER, NULL); // pipe or redirect on the end of sequence
+        parser_error(PLACEHOLDER, NULL, 0, 0); // pipe or redirect on the end of sequence
     if (curr->next->token_type > WORD)
-        parser_error(PLACEHOLDER, NULL); // two tokens
+        parser_error(PLACEHOLDER, NULL, 0, 0); // two tokens
     if (curr->token_type >= GREAT && curr->token_type <= L_LESS)
         add_new_redirect(parser, curr);
     collect_redirections(parser);

@@ -1,0 +1,1 @@
+echo "The quick brown fox jumps over the lazy dog" | tr ' ' '\n' | grep -o . | sort | uniq -c | sort -nr | awk '{print $2}' | xargs | sed 's/ //g' | rev | sed 's/\(.\)/\1\n/g' | awk '!a[$0]++' | rev | tr -d '\n'

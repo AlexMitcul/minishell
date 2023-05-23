@@ -21,6 +21,11 @@
 typedef enum s_parser_error
 {
     SYNTAX_ERROR = 42,
+    COMMAND_NOT_FOUND,
+    PERMISSION_DENIED,
+    NO_SUCH_FILE_OR_DIR,
+    VAR_NOT_FOUND,
+    REDIRECT,
     MEMORY_ERROR,
     PLACEHOLDER
 }	t_parser_error;
@@ -37,8 +42,8 @@ typedef struct s_command
 {
     char				**str;
     // int					(*builtin);
+    char                *heredoc;
     size_t				redirs_count;
-    char				*filename;
     t_lexer_token		*redirs;
     struct s_command	*next;
     struct s_command	*prev;
@@ -47,7 +52,8 @@ typedef struct s_command
 t_command *get_command(t_parser *parser);
 void add_command_to_list(t_app *app, t_command *new);
 
-void    parser_error(t_parser_error error, void *data);
+void	parser_error(t_parser_error error, t_app *app, t_parser *parser,
+                     t_lexer_token *curr);
 
 void delete_node_by_index(t_lexer_token **list, size_t index);
 

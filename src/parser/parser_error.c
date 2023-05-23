@@ -12,10 +12,43 @@
 
 #include "parser.h"
 
-void	parser_error(t_parser_error error, void *data)
+
+char *get_redirect_str(t_lexer_token *token)
 {
-    (void)error;
-    (void)data;
-//    return EXIT_FAILURE;
+    t_token_type type;
+
+    type = token->token_type;
+    if (type == PIPE)
+        return "|";
+    else if (type == GREAT)
+        return ">";
+    else if (type == G_GREAT)
+        return ">>";
+    else if (type == LESS)
+        return "<";
+    else if (type == L_LESS)
+        return "<<";
+    else
+        return "";
+}
+
+void	parser_error(t_parser_error error, t_app *app, t_parser *parser,
+                     t_lexer_token *curr)
+{
+    (void) app;
+    (void) parser;
+    (void) curr;
+    if (error == SYNTAX_ERROR)
+    {
+        ft_putstr_fd("minishell: syntax error near unexpected token '", STDERR_FILENO);
+        ft_putstr_fd(curr->str, STDERR_FILENO);
+        ft_putstr_fd("'\n", STDERR_FILENO);
+    }
+    else if (error == REDIRECT)
+    {
+        ft_putstr_fd("minishell: syntax error near unexpected token '", STDERR_FILENO);
+        ft_putstr_fd(get_redirect_str(curr), STDERR_FILENO);
+        ft_putstr_fd("'\n", STDERR_FILENO);
+    }
     exit(EXIT_FAILURE);
 }

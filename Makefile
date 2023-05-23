@@ -90,6 +90,10 @@ $(OBJ_DIR):
 $(LIB):
 	$(MAKE) -C $(LIBDIR)
 
+test: $(LIB) $(OBJ_DIR) $(OBJS)
+	@echo $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -D DEBUG -I$(INCLUDES) -I$(INCLUDES_LIB) $(LIB_TERMCAP) -o $@
+
 fclean : clean
 	$(MAKE) fclean -C $(LIBDIR)
 	$(RM) $(NAME)

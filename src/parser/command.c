@@ -11,6 +11,7 @@ t_command *init_command(char **str, size_t redirs_count, t_lexer_token *redirs)
     if (!command)
         return (NULL);
     command->str = str;
+    command->heredoc = NULL;
 //    command->builtin =
     command->redirs_count = redirs_count;
     command->redirs = redirs;
@@ -43,7 +44,7 @@ t_command *get_command(t_parser *parser)
     args_count = count_args(parser->lexer_list);
     str = (char **) ft_calloc(args_count + 1, sizeof(char *));
     if (!str)
-        parser_error(PLACEHOLDER, NULL);
+        parser_error(PLACEHOLDER, NULL, 0, 0);
     curr = parser->lexer_list;
     i = 0;
     while (args_count > 0)

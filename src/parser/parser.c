@@ -43,22 +43,24 @@ int parser(t_app *app)
     t_parser *parser;
     t_command *command;
 
+    parser = NULL;
+    command = NULL;
     if (app->lexer_tokens->token_type == PIPE)
-        parser_error(PLACEHOLDER, NULL); // PIPE can't be the first token
+        parser_error(REDIRECT, app, parser, app->lexer_tokens);
     count_pipes(app);
     while (app->lexer_tokens)
     {
         if (app->lexer_tokens->token_type == PIPE)
             delete_node_by_index(&app->lexer_tokens, app->lexer_tokens->index);
-        // two pipes error
+        if (app->lexer_tokens->token_type == PIPE)
+            parser_error(REDIRECT, app, parser, app->lexer_tokens);
         parser = init_parser(app);
         command = get_command(parser);
         if (!command)
-            parser_error(PLACEHOLDER, NULL);
+            parser_error(PLACEHOLDER, NULL, 0,0);
         add_command_to_list(app, command);
         app->lexer_tokens = parser->lexer_list;
     }
-
     return (EXIT_SUCCESS);
 }
 
