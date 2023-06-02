@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/05/22 11:46:19 by amitcul          ###   ########.fr        #
+#    Updated: 2023/06/02 21:37:06 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,9 @@ HEADER += $(INCLUDES)parser.h
 LIB_TERMCAP = -lreadline -L./libft -lft
 
 SRCS += m.c
+TEST_SRC = test.c
 
+SRCS += $(TEST_SRC)
 # Lexer source files
 # SRCS += lexer.c utils.c states_handler.c types_handler.c expand.c
 SRCS += lexer.c quotes.c tokens.c lexer_utils.c
@@ -92,12 +94,13 @@ $(LIB):
 
 test: $(LIB) $(OBJ_DIR) $(OBJS)
 	@echo $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -D DEBUG -I$(INCLUDES) -I$(INCLUDES_LIB) $(LIB_TERMCAP) -o $@
+	$(CC) $(CFLAGS) $(OBJS) -D DEBUG -I$(INCLUDES) -I$(INCLUDES_LIB) $(LIB_TERMCAP) -o minishell_$@
 
 fclean : clean
 	$(MAKE) fclean -C $(LIBDIR)
 	$(RM) $(NAME)
 	$(RM) -R $(OBJ_DIR)
+	$(RM) minishell_test
 
 clean : clean
 	$(MAKE) fclean -C $(LIBDIR)
