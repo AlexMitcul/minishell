@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../includes/minishell.h"
+#include "../../includes/parser.h"
 
 void	count_pipes(t_app *app)
 {

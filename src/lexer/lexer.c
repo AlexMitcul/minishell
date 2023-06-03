@@ -10,21 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "../../includes/lexer.h"
 
 int	lexer(t_app *app)
 {
 	char	*t;
 
-	#ifdef DEBUG
-	(void)t;
-	#else
 	ft_putstr_fd("hello", STDOUT_FILENO);
 	app->input = readline(PROMPT);
 	t = ft_strtrim(app->input, " ");
 	free(app->input);
 	app->input = t;
-	#endif
 	if (app->input[0] == '\0')
 		return (L_RESET);
 	add_history(app->input);

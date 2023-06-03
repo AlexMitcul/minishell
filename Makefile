@@ -34,7 +34,7 @@ LIB_TERMCAP = -lreadline -L./libft -lft
 SRCS += m.c
 TEST_SRC = test.c
 
-SRCS += $(TEST_SRC)
+#SRCS += $(TEST_SRC)
 # Lexer source files
 # SRCS += lexer.c utils.c states_handler.c types_handler.c expand.c
 SRCS += lexer.c quotes.c tokens.c lexer_utils.c
@@ -80,11 +80,11 @@ all: $(LIB)
 	$(MAKE) $(NAME)
 
 $(OBJS): $(OBJ_DIR)%.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $< -I $(INCLUDES) -I $(INCLUDES_LIB) -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -fPIE -I $(INCLUDES) -I $(INCLUDES_LIB)
 
 $(NAME): $(OBJ_DIR) $(OBJS)
 	@echo $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -I$(INCLUDES) -I$(INCLUDES_LIB) $(LIB_TERMCAP) -o $@
+	$(CC) $(CFLAGS) $(OBJS) -o $@ -fPIE $(LIB_TERMCAP)
 
 $(OBJ_DIR):
 	mkdir $@

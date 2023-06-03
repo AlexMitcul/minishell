@@ -1,6 +1,3 @@
-
-
-
 #include "parser.h"
 #include "lexer.h"
 
@@ -30,7 +27,7 @@ void add_new_redirect(t_parser *parser, t_lexer_token *token)
     new = get_lexer_new_node(ft_strdup(token->next->str), token->token_type);
     if (!new)
         return ; // handle this error
-    push_back(&parser->lexer_list, new);
+    push_back(&parser->redirs, new);
     first = token->index;
     second = token->next->index;
     delete_node_by_index(&parser->lexer_list, first);
@@ -50,12 +47,12 @@ void collect_redirections(t_parser *parser)
     while (curr && curr->token_type == WORD)
         curr = curr->next;
     if (curr == NULL || curr->token_type == PIPE)
-        return ;
+        return ; // It will exit here, because curr will be NULL (in while we will pass all elements)
     if (curr->next == NULL)
-        parser_error(PLACEHOLDER, NULL, 0, 0); // pipe or redirect on the end of sequence
+        parser_error(PLACEHOLDER, NULL, 0, 0); //!!!//! // pipe or redirect on the end of sequence
     if (curr->next->token_type > WORD)
         parser_error(PLACEHOLDER, NULL, 0, 0); // two tokens
     if (curr->token_type >= GREAT && curr->token_type <= L_LESS)
-        add_new_redirect(parser, curr);
+        add_new_redirect(parser, curr); // Here need to save collected redirect to parser->redirs
     collect_redirections(parser);
 }
