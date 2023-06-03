@@ -28,21 +28,24 @@
 # include "lexer.h"
 # include "parser.h"
 # include "utils.h"
-// # include "builtins.h"
-// # include "executor.h"
-
+# include "builtins.h"
+# include "expander.h"
+# include "executor.h"
 # include "structs.h"
 
+//typedef struct s_status
+//{
+//
+//} t_status;
+//
+//t_status g_status;
+
 typedef struct s_app		t_app;
-// typedef struct s_tree		t_tree;
-// typedef struct s_parser		t_parser;
-// typedef struct s_token		t_token;
-// typedef struct s_lexer		t_lexer;
 typedef struct s_env_list	t_env_list;
-// typedef struct s_command	t_command;
-// typedef struct s_exec		t_exec;
 
 # define PROMPT "$> "
+
+# define HEREDOC_MSG "\033[1;34m> \033[0m"
 
 /* utils.c */
 void	fill_env_list(t_app *self, char **envp);
@@ -52,5 +55,9 @@ char	*find_list_value_by_key(t_env_list *list, char *key);
 void	free_array(char **arr);
 
 int parser(t_app *app);
+
+
+
+int reset(t_app *app);
 
 #endif

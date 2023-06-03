@@ -38,10 +38,12 @@ typedef struct	s_parser
     struct s_app	*app;
 }	t_parser;
 
+
+
 typedef struct s_command
 {
     char				**str;
-    // int					(*builtin);
+	int 				(*builtin)(t_app *, char **);
     char                *heredoc;
     size_t				redirs_count;
     t_lexer_token		*redirs;
@@ -51,6 +53,8 @@ typedef struct s_command
 
 t_command *get_command(t_parser *parser);
 void add_command_to_list(t_app *app, t_command *new);
+
+char *delete_quotes(char *str, char c);
 
 void	parser_error(t_parser_error error, t_app *app, t_parser *parser,
                      t_lexer_token *curr);

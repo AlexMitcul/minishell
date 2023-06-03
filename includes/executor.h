@@ -16,52 +16,16 @@
 # include "minishell.h"
 
 typedef struct s_app		t_app;
-// typedef struct s_tree		t_tree;
-// typedef struct s_parser		t_parser;
-// typedef struct s_token		t_token;
-// typedef struct s_lexer		t_lexer;
-// typedef struct s_env_list	t_env_list;
 
 # define BUILTINS_COUNT 7
 
-typedef int (t_builtin)(t_app *, char **);
-
-typedef struct s_builtin_def
-{
-	char		*name;
-	t_builtin	*func;
-}	t_builtin_def;
 
 
-typedef struct s_command
-{
-	int					argc;
-	char				**argv;
-	struct s_command	*next;
-}	t_command;
+int executor(t_app *app);
 
-typedef struct	s_command_list
-{
-	t_command	*command;
-}	t_command_list;
+int send_heredoc(t_app *app, t_command *command);
 
-void		executor(t_app *self, t_tree *root);
-
-/* command.c */
-t_command	*build_command(t_tree *root);
-void		free_command(t_command *command);
-
-/* builtins.c */
-t_builtin	*is_our_builtin(char *command);
-char		*find_builtin_path(t_app *self, char *command_name);
-
-/* executor_utils.c */
-void		print_command(t_command *command);
-
-/* run.c */
-void	run_builtin(t_app *self, t_command *command);
-
-/* build_commands.c */
-t_command_list  *build_command_list(t_app *self, t_tree *root);
+int handle_infile(char *file);
+int handle_outfile(t_lexer_token *token);
 
 #endif

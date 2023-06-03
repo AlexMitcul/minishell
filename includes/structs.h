@@ -13,6 +13,8 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
+#include <stdbool.h>
+
 typedef struct s_env_list
 {
 	char				*key;
@@ -44,10 +46,15 @@ typedef struct s_app
 {
 	t_env_list			*env_list;
 	char				**envp;
+	char 				**paths;
 	char				*input;
 	t_lexer_token		*lexer_tokens;
 	struct s_command	*commands_list;
 	int					pipes_count;
+
+	int *pid;
+	bool heredoc;
+	bool reset;
 } t_app;
 
 #endif
