@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/06/02 21:37:06 by amitcul          ###   ########.fr        #
+#    Updated: 2023/06/03 22:15:50 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ HEADER += $(INCLUDES)expander.h
 
 LIB_TERMCAP = -lreadline -L./libft -lft
 
-SRCS += m.c signal_handlers.c utils.c
+SRCS += main.c signal_handlers.c utils.c
 TEST_SRC = test.c
 
 # Lexer source files
