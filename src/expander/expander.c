@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/03 21:44:17 by amitcul           #+#    #+#             */
+/*   Updated: 2023/06/03 21:46:54 by amitcul          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/expander.h"
+#include "../../includes/global.h"
 
 size_t	sign(char *str)
 {
@@ -31,7 +43,7 @@ size_t	handle_after_sign(size_t start, char *str)
 size_t	question_mark(char **tmp)
 {
 	free(*tmp);
-	*tmp = ft_itoa(42); //! PUT HERE GLOBAL ERROR CODE
+	*tmp = ft_itoa(g_status.error_num);
 	return (ft_strlen(*tmp) + 1);
 }
 
@@ -49,31 +61,31 @@ size_t	equal_sign(char *str)
 	return (0);
 }
 
-size_t after_dol_length(char *str, size_t start)
+size_t	after_dol_length(char *str, size_t start)
 {
-	size_t i;
+	size_t	i;
 
 	i = start + 1;
 	while (str[i] != '\0' && str[i] != '$' && str[i] != ' '
-		   && str[i] != '\"' && str[i] != '\'' && str[i] != '=' && str[i] != '-'
-		   && str[i] != ':')
+		&& str[i] != '\"' && str[i] != '\'' && str[i] != '=' && str[i] != '-'
+		&& str[i] != ':')
 		i++;
 	return (i);
 }
 
 size_t	loop_if_sign(t_app *app, char *str, char **t1, size_t start)
 {
-	int	i;
-	int ret;
-	char *t2;
-	char *t3;
+	int		i;
+	int		ret;
+	char	*t2;
+	char	*t3;
 
 	i = 0;
 	ret = 0;
 	while (app->envp[i])
 	{
-		if (ft_strncmp(str + i + 1, app->envp[i], equal_sign(app->envp[i]) - 1) &&
-			after_dol_length(str, start) - start == equal_sign(app->envp[i]))
+		if (ft_strncmp(str + i + 1, app->envp[i], equal_sign(app->envp[i]) - 1)
+			&& after_dol_length(str, start) - start == equal_sign(app->envp[i]))
 		{
 			t2 = ft_strdup(app->envp[i] + equal_sign(app->envp[i]));
 			t3 = ft_strjoin(*t1, t2);
@@ -89,7 +101,7 @@ size_t	loop_if_sign(t_app *app, char *str, char **t1, size_t start)
 	return (ret);
 }
 
-char *char_to_string(char c)
+char	*char_to_string(char c)
 {
 	char	*str;
 
@@ -98,12 +110,12 @@ char *char_to_string(char c)
 	return (str);
 }
 
-char *detect_sign(t_app *app, char *str)
+char	*detect_sign(t_app *app, char *str)
 {
 	size_t	i;
 	char	*t1;
-	char 	*t2;
-	char 	*t3;
+	char	*t2;
+	char	*t3;
 
 	i = 0;
 	t1 = ft_strdup("\0");
@@ -112,7 +124,8 @@ char *detect_sign(t_app *app, char *str)
 		i += handle_after_sign(i, str);
 		if (str[i] == '$' && str[i + 1] == '?')
 			i += question_mark(&t1);
-		else if (str[i] == '$' && str[i + 1] != ' ' && (str[i + 1] != '"' || str[i + 2] != '\0') && str[i + 1] != '\0')
+		else if (str[i] == '$' && str[i + 1] != ' '
+			&& (str[i + 1] != '"' || str[i + 2] != '\0') && str[i + 1] != '\0')
 			i += loop_if_sign(app, str, &t1, i);
 		else
 		{
@@ -126,7 +139,7 @@ char *detect_sign(t_app *app, char *str)
 	return (t1);
 }
 
-char *delete_quotes(char *str, char c)
+char	*delete_quotes(char *str, char c)
 {
 	size_t	i;
 	size_t	j;
@@ -149,14 +162,15 @@ char *delete_quotes(char *str, char c)
 
 char	**expander(t_app *app, char **str)
 {
-	int	i;
+	int		i;
 	char	*tmp;
 
 	tmp = NULL;
 	i = 0;
 	while (str[i] != NULL)
 	{
-		if (sign(str[i]) != 0 && str[i][sign(str[i])] && str[i][sign(str[i]) - 2] != '\'')
+		if (sign(str[i]) != 0 && str[i][sign(str[i])]
+			&& str[i][sign(str[i]) - 2] != '\'')
 		{
 			tmp = detect_sign(app, str[i]);
 			free(str[i]);

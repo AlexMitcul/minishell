@@ -6,13 +6,15 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 11:54:30 by amitcul           #+#    #+#             */
-/*   Updated: 2023/05/16 20:32:02 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/03 21:47:52 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/lexer.h"
 
-//! Need to move this function to libft
+/**
+* Need to move this function to libft
+*/
 int	ft_iswhitespace(char c)
 {
 	return (c == ' ' || (c > 8 && c < 14));
@@ -25,7 +27,7 @@ t_token_type	is_token(char c)
 	else if (c == '>')
 		return (GREAT);
 	else if (c == '<')
-		return LESS;
+		return (LESS);
 	return (0);
 }
 
@@ -42,9 +44,9 @@ int	handle_token(char *str, int start, t_lexer_token **list)
 		token_type = L_LESS;
 	if (!add_node(NULL, token_type, list))
 		return (-1);
-    if (token_type == G_GREAT || token_type == L_LESS)
-        return (2);
-    return (1);
+	if (token_type == G_GREAT || token_type == L_LESS)
+		return (2);
+	return (1);
 }
 
 int	read_word(int start, char *str, t_lexer_token **list)
@@ -81,7 +83,7 @@ int	get_tokens(t_app *app)
 		else
 			j = read_word(i, app->input, &app->lexer_tokens);
 		if (j < 0)
-			return 0;
+			return (0);
 		i += j;
 	}
 	return (1);

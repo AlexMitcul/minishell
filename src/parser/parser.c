@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 20:13:05 by amitcul           #+#    #+#             */
-/*   Updated: 2023/05/21 12:22:27 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/03 21:56:46 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_parser	*init_parser(t_app *app)
 {
 	t_parser	*parser;
 
-	parser = (t_parser *) malloc(sizeof(t_parser));
+	parser = (t_parser *)malloc(sizeof(t_parser));
 	parser->app = app;
 	parser->lexer_list = app->lexer_tokens;
 	parser->redirs = NULL;
@@ -39,39 +39,31 @@ t_parser	*init_parser(t_app *app)
 	return (parser);
 }
 
-int parser(t_app *app)
+int	parser(t_app *app)
 {
-    t_parser *parser;
-    t_command *command;
+	t_parser	*parser;
+	t_command	*command;
 
-    parser = NULL;
-    command = NULL;
-    if (app->lexer_tokens->token_type == PIPE)
-		return (parser_double_token_error(app, app->lexer_tokens, app->lexer_tokens->token_type));
-    count_pipes(app);
-    while (app->lexer_tokens)
-    {
-        if (app->lexer_tokens->token_type == PIPE)
-            delete_node_by_index(&app->lexer_tokens, app->lexer_tokens->index);
-        if (app->lexer_tokens->token_type == PIPE)
+	parser = NULL;
+	if (app->lexer_tokens->token_type == PIPE)
+		return (parser_double_token_error(app, app->lexer_tokens,
+				app->lexer_tokens->token_type));
+	count_pipes(app);
+	while (app->lexer_tokens)
+	{
+		if (app->lexer_tokens->token_type == PIPE)
+			delete_node_by_index(&app->lexer_tokens, app->lexer_tokens->index);
+		if (app->lexer_tokens->token_type == PIPE)
 			return (EXIT_FAILURE);
-        parser = init_parser(app);
-        command = get_command(parser);
-        if (!command)
+		parser = init_parser(app);
+		command = get_command(parser);
+		if (!command)
 			parser_error(0, app, parser->lexer_list);
 		if (!app->commands_list)
 			app->commands_list = command;
 		else
 			add_command_to_list(app, command);
-        app->lexer_tokens = parser->lexer_list;
-    }
-    return (EXIT_SUCCESS);
+		app->lexer_tokens = parser->lexer_list;
+	}
+	return (EXIT_SUCCESS);
 }
-
-
-
-
-
-
-
-

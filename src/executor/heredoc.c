@@ -1,15 +1,23 @@
-//
-// Created by amitcul on 6/3/23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/03 21:37:49 by amitcul           #+#    #+#             */
+/*   Updated: 2023/06/03 21:39:08 by amitcul          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/executor.h"
 #include "../../includes/global.h"
 
-static char *create_heredoc_filename(void)
+static char	*create_heredoc_filename(void)
 {
-	static int i = 0;
-	char *num;
-	char *filename;
+	static int	i = 0;
+	char		*num;
+	char		*filename;
 
 	num = ft_itoa(i);
 	filename = ft_strjoin(".tmp_heredoc_file_", num);
@@ -17,14 +25,16 @@ static char *create_heredoc_filename(void)
 	return (filename);
 }
 
-int create_heredoc(t_lexer_token *heredoc, bool quotes, t_app *app, char *filename)
+int	create_heredoc(t_lexer_token *heredoc, bool quotes, t_app *app,
+	char *filename)
 {
-	int fd;
-	char *line;
+	int		fd;
+	char	*line;
 
 	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	line = readline(HEREDOC_MSG);
-	while (line && ft_strncmp(heredoc->str, line, ft_strlen(heredoc->str)) && !g_status.stop_heredoc)
+	while (line && ft_strncmp(heredoc->str, line, ft_strlen(heredoc->str))
+		&& !g_status.stop_heredoc)
 	{
 		if (quotes == false)
 			line = expander_str(app, line);
@@ -40,15 +50,17 @@ int create_heredoc(t_lexer_token *heredoc, bool quotes, t_app *app, char *filena
 	return (EXIT_SUCCESS);
 }
 
-int heredoc(t_app *app, t_lexer_token *heredoc, char *filename)
+int	heredoc(t_app *app, t_lexer_token *heredoc, char *filename)
 {
-	bool quotes;
-	int status;
+	bool	quotes;
+	int		status;
 
 	status = EXIT_SUCCESS;
 	quotes = false;
-	if ((heredoc->str[0] == '\"' && heredoc->str[ft_strlen(heredoc->str) - 1] == '\"')
-		|| (heredoc->str[0] == '\'' && heredoc->str[ft_strlen(heredoc->str) - 1] == '\''))
+	if ((heredoc->str[0] == '\"'
+			&& heredoc->str[ft_strlen(heredoc->str) - 1] == '\"')
+		|| (heredoc->str[0] == '\''
+			&& heredoc->str[ft_strlen(heredoc->str) - 1] == '\''))
 		quotes = true;
 	delete_quotes(heredoc->str, '\"');
 	delete_quotes(heredoc->str, '\'');
@@ -60,10 +72,10 @@ int heredoc(t_app *app, t_lexer_token *heredoc, char *filename)
 	return (status);
 }
 
-int send_heredoc(t_app *app, t_command *command)
+int	send_heredoc(t_app *app, t_command *command)
 {
-	t_lexer_token *token;
-	int status;
+	t_lexer_token	*token;
+	int				status;
 
 	token = command->redirs;
 	status = EXIT_SUCCESS;

@@ -1,13 +1,23 @@
-//
-// Created by amitcul on 6/3/23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error_handling.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/03 21:42:41 by amitcul           #+#    #+#             */
+/*   Updated: 2023/06/03 21:43:21 by amitcul          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/error.h"
 
-
-// ! Move to lexer
+/**
+ * move this to lexer
+*/
 void	ft_lexerclear(t_lexer_token **lst)
 {
-	t_lexer_token 	*tmp;
+	t_lexer_token	*tmp;
 
 	if (!*lst)
 		return ;
@@ -29,10 +39,10 @@ void	parser_error(int error, t_app *app, t_lexer_token *lexer_list)
 }
 
 int	parser_double_token_error(t_app *app, t_lexer_token *lexer_list,
-								 t_token_type token)
+								t_token_type token)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token ",
-				 STDERR_FILENO);
+		STDERR_FILENO);
 	if (token == GREAT)
 		ft_putstr_fd("'>'\n", STDERR_FILENO);
 	else if (token == G_GREAT)

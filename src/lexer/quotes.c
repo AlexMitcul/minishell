@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 11:54:21 by amitcul           #+#    #+#             */
-/*   Updated: 2023/05/06 14:44:38 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/03 21:47:09 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	check_quotes(char *line)
 	return (1);
 }
 
-int handle_quotes(int start, char *str, char quote)
+int	handle_quotes(int start, char *str, char quote)
 {
 	int	i;
 

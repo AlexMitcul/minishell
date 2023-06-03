@@ -1,58 +1,66 @@
-#include "parser.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/03 21:56:58 by amitcul           #+#    #+#             */
+/*   Updated: 2023/06/03 21:58:25 by amitcul          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "lexer.h"
+#include "parser.h"
 
-static void push_back(t_lexer_token **list, t_lexer_token *new)
+static void	push_back(t_lexer_token **list, t_lexer_token *new)
 {
-    t_lexer_token *curr;
+	t_lexer_token	*curr;
 
-    if (*list == NULL)
-    {
-        new->prev = NULL;
-        *list = new;
-        return ;
-    }
-    curr = *list;
-    while (curr->next != NULL)
-        curr = curr->next;
-    curr->next = new;
-    new->prev = curr;
+	if (*list == NULL)
+	{
+		new->prev = NULL;
+		*list = new;
+		return ;
+	}
+	curr = *list;
+	while (curr->next != NULL)
+		curr = curr->next;
+	curr->next = new;
+	new->prev = curr;
 }
 
-void add_new_redirect(t_parser *parser, t_lexer_token *token)
+void	add_new_redirect(t_parser *parser, t_lexer_token *token)
 {
-    t_lexer_token *new;
-    size_t first;
-    size_t second;
+	t_lexer_token	*new;
+	size_t			first;
+	size_t			second;
 
-    new = get_lexer_new_node(ft_strdup(token->next->str), token->token_type);
-    if (!new)
-        return ; // handle this error
-    push_back(&parser->redirs, new);
-    first = token->index;
-    second = token->next->index;
-    delete_node_by_index(&parser->lexer_list, first);
-    delete_node_by_index(&parser->lexer_list, second);
-    parser->redirs_count += 1;
+	new = get_lexer_new_node(ft_strdup(token->next->str), token->token_type);
+	if (!new)
+		return ; // handle this error
+	push_back(&parser->redirs, new);
+	first = token->index;
+	second = token->next->index;
+	delete_node_by_index(&parser->lexer_list, first);
+	delete_node_by_index(&parser->lexer_list, second);
+	parser->redirs_count += 1;
 }
 
-/*
- * Не удаляет строку имя куда редирект происходит, проверить работу функции delete_node_by_index
- * Скорее всего, неправильно связывает ссылки после удаления в середине списка
- */
-void collect_redirections(t_parser *parser)
+void	collect_redirections(t_parser *parser)
 {
-    t_lexer_token *curr;
+	t_lexer_token	*curr;
 
-    curr = parser->lexer_list;
-    while (curr && curr->token_type == WORD)
-        curr = curr->next;
-    if (curr == NULL || curr->token_type == PIPE)
-        return ; // It will exit here, because curr will be NULL (in while we will pass all elements)
-    if (curr->next == NULL)
+	curr = parser->lexer_list;
+	while (curr && curr->token_type == WORD)
+		curr = curr->next;
+	if (curr == NULL || curr->token_type == PIPE)
+		return ;
+	if (curr->next == NULL)
 		exit(1); // handle this
-    if (curr->next->token_type > WORD)
+	if (curr->next->token_type > WORD)
 		exit(1); // handle this
-    if (curr->token_type >= GREAT && curr->token_type <= L_LESS)
-        add_new_redirect(parser, curr); // Here need to save collected redirect to parser->redirs
-    collect_redirections(parser);
+	if (curr->token_type >= GREAT && curr->token_type <= L_LESS)
+		add_new_redirect(parser, curr);
+	collect_redirections(parser);
 }
