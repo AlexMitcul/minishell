@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
+#include "../../../includes/global.h"
 
-extern int g_exit_status; // extern
+//extern int g_exit_status; // extern
 
 int	ft_pwd(t_app *self, char **args) // this function does not require inputs, review inputs
 {
@@ -29,8 +30,8 @@ int	ft_pwd(t_app *self, char **args) // this function does not require inputs, r
 	ft_putstr_fd(pwd, STDOUT_FILENO);
 	ft_putstr_fd("\n", STDOUT_FILENO);
 	free(pwd);
-	g_exit_status = 0;
-	return (g_exit_status);
+	g_status.error_num = 0;
+	return (g_status.error_num);
 }
 
 /* int	main(int argc, char **argv, char **envp)

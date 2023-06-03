@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
-
-extern int	g_exit_status; // extern
+#include "../../../includes/minishell.h"
+#include "../../../includes/global.h"
+//extern int	g_exit_status; // extern
 
 int	ft_echo(t_app *self, char **args)
 {
@@ -36,8 +36,8 @@ int	ft_echo(t_app *self, char **args)
 	}
 	if (n_flag == 0)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	g_exit_status = 0;
-	return (g_exit_status);
+	g_status.error_num = 0;
+	return (g_status.error_num);
 }
 
 /* int	main(int argc, char **argv, char **envp)

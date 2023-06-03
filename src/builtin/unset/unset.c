@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
+#include "../../../includes/global.h"
 
 extern int g_exit_status; // extern
 
@@ -55,8 +56,8 @@ int	ft_unset(t_app *self, char **args)
 
 	if (check_args(args) == 0)
 	{
-		g_exit_status = 1;
-		return (g_exit_status);
+		g_status.error_num = 1;
+		return (g_status.error_num);
 	}
 	i = 1;
 	while (args[i])
@@ -64,8 +65,8 @@ int	ft_unset(t_app *self, char **args)
 		remove_list_item_by_key(self, args[i]);
 		i++;
 	}
-	g_exit_status = 0;
-	return (g_exit_status);
+	g_status.error_num = 0;
+	return (g_status.error_num);
 }
 
 /* void	print_env_list(t_app *self)

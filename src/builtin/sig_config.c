@@ -11,8 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include "../../includes/global.h"
 
-extern int	g_exit_status;
+//extern int	g_exit_status;
 
 static void	ctrl_c(int sig)
 {
@@ -22,9 +23,9 @@ static void	ctrl_c(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		g_exit_status = 128 + SIGINT;
+		g_status.error_num = 128 + SIGINT;
 		// kill(0, SIGKILL); // kill all processes in the process group of the calling process
-		exit(g_exit_status); // set system exit status
+		exit(g_status.error_num); // set system exit status
 	}
 }
 

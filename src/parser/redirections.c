@@ -49,9 +49,9 @@ void collect_redirections(t_parser *parser)
     if (curr == NULL || curr->token_type == PIPE)
         return ; // It will exit here, because curr will be NULL (in while we will pass all elements)
     if (curr->next == NULL)
-        parser_error(PLACEHOLDER, NULL, 0, 0); //!!!//! // pipe or redirect on the end of sequence
+		exit(1); // handle this
     if (curr->next->token_type > WORD)
-        parser_error(PLACEHOLDER, NULL, 0, 0); // two tokens
+		exit(1); // handle this
     if (curr->token_type >= GREAT && curr->token_type <= L_LESS)
         add_new_redirect(parser, curr); // Here need to save collected redirect to parser->redirs
     collect_redirections(parser);

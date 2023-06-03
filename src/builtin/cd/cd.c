@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
+#include "../../../includes/global.h"
 
-extern int	g_exit_status; // extern
+//extern int	g_exit_status; // extern
 
 static int count_args(char **args)
 {
@@ -74,20 +75,20 @@ static int	chto_home(t_env_list *env_list, char *oldpwd)
 	if (home == NULL)
 	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", STDERR_FILENO);
-		g_exit_status = 2;
-		return (g_exit_status);
+		g_status.error_num = 2;
+		return (g_status.error_num);
 	}
 	if (chdir(home) != EXIT_SUCCESS)
 	{
 		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 		ft_putstr_fd(home, STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		g_exit_status = 1;
-		return (g_exit_status);
+		g_status.error_num = 1;
+		return (g_status.error_num);
 	}
 	set_pwd(env_list, oldpwd);
-	g_exit_status = 0;
-	return (g_exit_status);
+	g_status.error_num = 0;
+	return (g_status.error_num);
 }
 
 int ft_cd(t_app *self, char **args) // not considering paths in CDPATH which does not seem to be available in these pcs bash
@@ -98,8 +99,8 @@ int ft_cd(t_app *self, char **args) // not considering paths in CDPATH which doe
 	if (count_args(args) > 2)
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
-		g_exit_status = 1;
-		return (g_exit_status);
+		g_status.error_num = 1;
+		return (g_status.error_num);
 	}
 	if (args[1] == NULL)
 		chto_home(self->env_list, oldpwd);
@@ -110,13 +111,13 @@ int ft_cd(t_app *self, char **args) // not considering paths in CDPATH which doe
 			ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 			ft_putstr_fd(args[1], STDERR_FILENO);
 			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-			g_exit_status = 1;
-			return (g_exit_status);
+			g_status.error_num = 1;
+			return (g_status.error_num);
 		}
 		set_pwd(self->env_list, oldpwd);
-		g_exit_status = 0;
+		g_status.error_num = 0;
 	}
-	return (g_exit_status);
+	return (g_status.error_num);
 }
 
 /* static void	export_display(t_env_list *env_list)

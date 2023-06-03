@@ -32,6 +32,8 @@
 # include "expander.h"
 # include "executor.h"
 # include "structs.h"
+# include "error.h"
+# include "signal_handlers.h"
 
 //typedef struct s_status
 //{

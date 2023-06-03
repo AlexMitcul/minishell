@@ -56,9 +56,6 @@ void add_command_to_list(t_app *app, t_command *new);
 
 char *delete_quotes(char *str, char c);
 
-void	parser_error(t_parser_error error, t_app *app, t_parser *parser,
-                     t_lexer_token *curr);
-
 void delete_node_by_index(t_lexer_token **list, size_t index);
 
 void collect_redirections(t_parser *parser);

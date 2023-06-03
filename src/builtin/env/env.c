@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-extern int	g_exit_status; // extern
+#include "../../../includes/global.h"
+//extern int	g_exit_status; // extern
 
 int	ft_env(t_app *self, char **args)
 {
@@ -23,8 +23,8 @@ int	ft_env(t_app *self, char **args)
 		ft_putstr_fd("env: ", STDERR_FILENO);
 		ft_putstr_fd(args[1], STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		g_exit_status = 127;
-		return (g_exit_status);
+		g_status.error_num = 127;
+		return (g_status.error_num);
 	}
 	tmp = self->env_list;
 	while (tmp)
@@ -35,8 +35,8 @@ int	ft_env(t_app *self, char **args)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		tmp = tmp->next;
 	}
-	g_exit_status = 0;
-	return (g_exit_status);
+	g_status.error_num = 0;
+	return (g_status.error_num);
 }
 
 /* int	main(int argc, char **argv, char **envp)

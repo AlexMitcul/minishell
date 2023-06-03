@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
+#include "../../../includes/global.h"
 
-extern int	g_exit_status; // extern long long
+//extern int	g_exit_status; // extern long long
 
 static int	verify_num_arg(char *arg)
 {
@@ -86,7 +87,7 @@ int	ft_exit(t_app *self, char **args) //  review inputs ! everything should be d
 	int	status;
 
 	(void)self;
-	status = g_exit_status; // as per the man, default should be the previous exit status in storage, 0 if none
+	status = g_status.error_num; // as per the man, default should be the previous exit status in storage, 0 if none
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (args[1] && verify_num_arg(args[1]) == 0)
 		status = 2;
@@ -95,17 +96,17 @@ int	ft_exit(t_app *self, char **args) //  review inputs ! everything should be d
 		if (args[2])
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
-			g_exit_status = 127; // set exit status in global
-			return (g_exit_status); // exit instead of return? (bash does not actually exit in this case, but sets the exit status to 1)
+			g_status.error_num = 127; // set exit status in global
+			return (g_status.error_num); // exit instead of return? (bash does not actually exit in this case, but sets the exit status to 1)
 		}
 		else
 			status = get_exit_status(args[1]);
 	}
 	// terminate(all) function // free all the freeables and clear history!
 	rl_clear_history(); // clear history can be incorporated in terminate() is it necessary tho?
-	g_exit_status = status;
-	exit(g_exit_status); // not status but current exit status in the global var
-	return (g_exit_status);
+	g_status.error_num = status;
+	exit(g_status.error_num); // not status but current exit status in the global var
+	return (g_status.error_num);
 }
 
 /* int	main(int argc, char **argv, char **envp)

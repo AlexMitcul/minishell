@@ -142,16 +142,16 @@ void simple_command(t_app *app, t_command *command)
 
 	command = app->commands_list;
 	app->commands_list = pre_expand(app, command);
-//	if (command->builtin == ft_cd || command->builtin == ft_exit
-//		|| command->builtin == ft_export || command->builtin == ft_unset)
-//	{
-//		g_status.error_num = command->builtin(app, command->str);
-//		return ;
-//	}
+	if (command->builtin == ft_cd || command->builtin == ft_exit
+		|| command->builtin == ft_export || command->builtin == ft_unset)
+	{
+		g_status.error_num = command->builtin(app, command->str);
+		return ;
+	}
 	send_heredoc(app, command);
 	pid = fork();
 	if (pid < 0)
-		exit(2); // handle error
+		ft_error(5, app);
 	if (pid == 0)
 		handle_command(command, app);
 	waitpid(pid, &status, 0);
@@ -161,7 +161,7 @@ void simple_command(t_app *app, t_command *command)
 
 int executor(t_app *app)
 {
-	// signal
+	signal(SIGQUIT, sigquit_handler);
 	g_status.in_cmd = 1;
 	if (app->pipes_count == 0)
 		simple_command(app, app->commands_list);
@@ -169,7 +169,7 @@ int executor(t_app *app)
 	{
 		app->pid = ft_calloc(sizeof(int), app->pipes_count + 2);
 		if (!app->pid)
-			exit(1); // Handle this
+			return (ft_error(1, app));
 		execute(app);
 	}
 	g_status.in_cmd = 0;
@@ -179,10 +179,10 @@ int executor(t_app *app)
 void	dup_cmd(t_command *cmd, t_app *app, int end[2], int fd_in)
 {
 	if (cmd->prev && dup2(fd_in, STDIN_FILENO) < 0)
-		exit(1); // handle
+		ft_error(4, app);
 	close(end[0]);
 	if (cmd->next && dup2(end[1], STDOUT_FILENO) < 0)
-		exit(1); // handle
+		ft_error(4, app);
 	close(end[1]);
 	if (cmd->prev)
 		close(fd_in);
@@ -200,7 +200,7 @@ int try_fork(t_app *app, int end[2], int fd_in, t_command *command)
 	}
 	app->pid[i] = fork();
 	if (app->pid[i] < 0)
-		exit(1); // handle this error
+		ft_error(5, app);
 	if (app->pid[i] == 0)
 		dup_cmd(command, app, end, fd_in);
 	i++;

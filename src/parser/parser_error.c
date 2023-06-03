@@ -31,24 +31,3 @@ char *get_redirect_str(t_lexer_token *token)
     else
         return "";
 }
-
-void	parser_error(t_parser_error error, t_app *app, t_parser *parser,
-                     t_lexer_token *curr)
-{
-    (void) app;
-    (void) parser;
-    (void) curr;
-    if (error == SYNTAX_ERROR)
-    {
-        ft_putstr_fd("minishell: syntax error near unexpected token '", STDERR_FILENO);
-        ft_putstr_fd(curr->str, STDERR_FILENO);
-        ft_putstr_fd("'\n", STDERR_FILENO);
-    }
-    else if (error == REDIRECT)
-    {
-        ft_putstr_fd("minishell: syntax error near unexpected token '", STDERR_FILENO);
-        ft_putstr_fd(get_redirect_str(curr), STDERR_FILENO);
-        ft_putstr_fd("'\n", STDERR_FILENO);
-    }
-    exit(EXIT_FAILURE);
-}

@@ -44,7 +44,7 @@ t_command *get_command(t_parser *parser)
     args_count = count_args(parser->lexer_list);
     str = (char **) ft_calloc(args_count + 1, sizeof(char *));
     if (!str)
-        parser_error(PLACEHOLDER, NULL, 0, 0);
+		exit(2); // Handle
     curr = parser->lexer_list;
     i = 0;
     while (args_count > 0)

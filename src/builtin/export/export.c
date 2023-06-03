@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
+#include "../../../includes/global.h"
 
-extern int	g_exit_status; // extern
+//extern int	g_exit_status; // extern
 
 /* static void	print_env_list(t_env_list *self)
 {
@@ -63,6 +64,7 @@ static int	validate_key(char *arg)
 		index = (int)(del - arg);
 	if (index == 0)
 		return (0);
+	// Logical expression is always true \/
 	if (arg[0] == '*' && (arg[1] != '\0' || arg[1] != ';'))
 		return (0);
 	else if (!ft_isalpha(arg[0]) && arg[0] != '_')
@@ -183,8 +185,8 @@ int	ft_export(t_app *self, char **args)
 		}
 		i++;
 	}
-	g_exit_status = status;
-	return (g_exit_status);
+	g_status.error_num = status;
+	return (g_status.error_num);
 }
 
 /* int main(int argc, char **argv, char **envp)
