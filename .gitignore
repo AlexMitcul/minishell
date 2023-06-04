@@ -7,7 +7,8 @@
 minishell
 m.c
 ms
-
+utils/
+out
 # not to be ignored
 !.gitignore
 !.git
