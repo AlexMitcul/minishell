@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/03/04 19:33:57 by amitcul          ###   ########.fr        #
+#    Updated: 2023/06/05 17:31:19 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,18 +23,23 @@ INCLUDES = ./includes/
 INCLUDES_LIB = ./libft/includes/
 
 HEADER += $(INCLUDES)minishell.h
-HEADER += $(INCLUDES)lexer.h
 HEADER += $(INCLUDES)utils.h
+HEADER += $(INCLUDES)lexer.h
+HEADER += $(INCLUDES)parser.h
+HEADER += $(INCLUDES)expander.h
 
 LIB_TERMCAP = -lreadline
 
 SRCS += main.c
 
 # Lexer source files
-SRCS += lexer.c utils.c states_handler.c types_handler.c expand.c
+SRCS += quotes.c tokens.c lexer_utils.c
 
 # Parser source files
-SRCS += parser.c pipe.c redirect.c command.c compare.c tree.c
+SRCS += parser.c parser_error.c command.c parser_utils.c redirections.c
+
+# Expander files
+SRCS += expander.c
 
 # Utils source files
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
@@ -47,9 +52,8 @@ OBJ_DIR = ./obj/
 vpath %.c src/
 
 vpath %.c src/lexer/
-vpath %.c src/lexer/lexer_utils/
-
 vpath %.c src/parser/
+vpath %.c src/expander/
 
 vpath %.c src/utils/
 vpath %.c src/builtin/unset

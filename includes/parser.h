@@ -6,75 +6,43 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 14:21:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/01 16:05:18 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/05 17:29:09 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-# include "minishell.h"
-# include "../libft/includes/libft.h"
+#include <stdlib.h>
 
-# include <stdlib.h>
+# include "structs.h"
+# include "libft.h"
 
-typedef struct s_app		t_app;
-typedef struct s_tree		t_tree;
-typedef struct s_parser		t_parser;
-typedef struct s_token		t_token;
-typedef struct s_lexer		t_lexer;
-typedef struct s_env_list	t_env_list;
-
-typedef enum e_node
+typedef struct	s_parser
 {
-	PIPE_NODE = 1,
-	REDIRECT_IN_NODE,
-	REDIRECT_OUT_NODE,
-	HEREDOC_NODE,
-	APPEND_NODE,
-	CMDPATH_NODE,
-	ARGUMENT_NODE,
-	NODE_DATA,
-}	t_node;
+    t_lexer_token	*lexer_list;
+    t_lexer_token	*redirs;
+    int				redirs_count;
+    struct s_app	*app;
+}	t_parser;
 
-struct s_parser
+typedef struct s_command
 {
-	t_token	*curr_token;
-};
+    char				**str;
+	int 				(*builtin)(t_app *, char **);
+    char                *heredoc;
+    size_t				redirs_count;
+    t_lexer_token		*redirs;
+    struct s_command	*next;
+    struct s_command	*prev;
+}	t_command;
 
-struct s_tree
-{
-	int				type;
-	char			*data;
-	struct s_tree	*left;
-	struct s_tree	*right;
-};
+int	parser(t_app *app);
 
-/* parser.c */
-int		parse(t_token *tokens, t_tree **astree);
-t_tree	*redirect(t_parser *parser);
-t_tree	*try_parse(t_parser *parser);
-
-/* tree.c */
-t_tree	*init_node(int type);
-void	tree_destroy(t_tree *node);
-void	print_tree(t_tree *root, int level);
-
-/* compare.c */
-bool	match(int token_type, char **buffer, t_parser *parser);
-
-/* pipe.c */
-t_tree	*try_parse_pipe(t_parser *parser);
-
-/* redirect.c */
-t_tree	*try(t_parser *parser, int type);
-t_tree	*try_parse_redirect(t_parser *parser);
-t_tree	*identify_redirect_command_node(t_parser *parser);
-t_tree	*redirect(t_parser *parser);
-t_tree	*get_redirect_command_node(t_parser *parser, int type);
-
-/* command.c */
-t_tree	*command(t_parser *parser);
-t_tree	*try_get_token_list(t_parser *parser);
+t_command *get_command(t_parser *parser);
+void add_command_to_list(t_app *app, t_command *new);
+char *delete_quotes(char *str, char c);
+void delete_node_by_index(t_lexer_token **list, size_t index);
+void collect_redirections(t_parser *parser);
 
 #endif

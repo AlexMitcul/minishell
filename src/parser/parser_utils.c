@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/19 17:12:30 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/25 21:54:28 by amitcul          ###   ########.fr       */
+/*   Created: 2023/06/03 21:57:03 by amitcul           #+#    #+#             */
+/*   Updated: 2023/06/03 21:57:06 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/lexer.h"
+#include "parser.h"
 
-void	print_lexer_token(void *token)
+void	delete_node_by_index(t_lexer_token **list, size_t index)
 {
-	printf("%s\n", (char *)token);
-}
+	t_lexer_token	*curr;
 
-void	free_lexer_token(void *token)
-{
-	free((char *)token);
-}
-
-/*
-	Right now is unused function
-*/
-bool	is_whitespace_line(char	*line)
-{
-	if (line == NULL)
-		return (true);
-	while (*line)
+	if (*list == NULL)
+		return ;
+	curr = *list;
+	while (curr != NULL)
 	{
-		if (*line != ' ')
-			return (false);
-		line++;
+		if (curr->index == index)
+		{
+			if (curr->prev != NULL)
+				curr->prev->next = curr->next;
+			else
+				*list = curr->next;
+			if (curr->next != NULL)
+				curr->next->prev = curr->prev;
+		}
+		curr = curr->next;
 	}
-	return (true);
 }

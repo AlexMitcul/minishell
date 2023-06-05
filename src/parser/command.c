@@ -5,52 +5,83 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/26 17:22:33 by amitcul           #+#    #+#             */
-/*   Updated: 2023/02/26 17:31:09 by amitcul          ###   ########.fr       */
+/*   Created: 2023/06/03 21:53:35 by amitcul           #+#    #+#             */
+/*   Updated: 2023/06/03 21:54:59 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
 
-t_tree	*try_get_token(t_parser *parser)
+t_command	*init_command(char **str, size_t redirs_count,
+		t_lexer_token *redirs)
 {
-	t_tree	*node;
-	t_tree	*right;
-	char	*data;
+	t_command	*command;
 
-	if (!match(DEFAULT, &data, parser))
+	command = (t_command *)malloc(sizeof(t_command));
+	if (!command)
 		return (NULL);
-	right = try_get_token_list(parser);
-	node = init_node(ARGUMENT_NODE);
-	node->data = data;
-	node->right = right;
-	return (node);
+	command->str = str;
+	command->heredoc = NULL;
+	command->redirs_count = redirs_count;
+	command->redirs = redirs;
+	command->next = NULL;
+	command->prev = NULL;
+	return (command);
 }
 
-t_tree	*try_get_token_list(t_parser *parser)
+static size_t	count_args(t_lexer_token *list)
 {
-	t_token	*begin;
-	t_tree	*node;
+	size_t	count;
 
-	begin = parser->curr_token;
-	node = try_get_token(parser);
-	if (node)
-		return (node);
-	parser->curr_token = begin;
-	return (NULL);
+	count = 0;
+	while (list && list->token_type != PIPE)
+	{
+		count += 1;
+		list = list->next;
+	}
+	return (count);
 }
 
-t_tree	*command(t_parser *parser)
+t_command	*get_command(t_parser *parser)
 {
-	t_tree	*node;
-	t_tree	*right;
-	char	*path;
+	char			**str;
+	size_t			i;
+	size_t			args_count;
+	t_lexer_token	*curr;
 
-	if (!match(DEFAULT, &path, parser))
-		return (NULL);
-	right = try_get_token_list(parser);
-	node = init_node(CMDPATH_NODE);
-	node->data = path;
-	node->right = right;
-	return (node);
+	collect_redirections(parser);
+	args_count = count_args(parser->lexer_list);
+	str = (char **)ft_calloc(args_count + 1, sizeof(char *));
+	if (!str)
+		exit(2); //! Handle
+	curr = parser->lexer_list;
+	i = 0;
+	while (args_count > 0)
+	{
+		if (curr->str)
+		{
+			str[i] = ft_strdup(curr->str);
+			delete_node_by_index(&parser->lexer_list, curr->index);
+			curr = parser->lexer_list;
+			i++;
+		}
+		args_count -= 1;
+	}
+	return (init_command(str, parser->redirs_count, parser->redirs));
+}
+
+void	add_command_to_list(t_app *app, t_command *new)
+{
+	t_command	*curr;
+
+	if (app->commands_list == NULL)
+	{
+		app->commands_list = new;
+		return ;
+	}
+	curr = app->commands_list;
+	while (curr->next != NULL)
+		curr = curr->next;
+	curr->next = new;
+	new->prev = curr;
 }
