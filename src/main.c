@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:32:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/05 17:30:20 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/05 21:23:30 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ int loop(t_app *app)
 		return (reset(app));
 	add_history(app->input);
 	if (!check_quotes(app->input))
-		// return (ft_error(2, app));
+		return (ft_error(2, app));
 	if (!get_tokens(app))
-		// return (ft_error(1, app));
+		return (ft_error(1, app));
 	parser(app);
 	// executor(app);
 	reset(app);

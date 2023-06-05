@@ -6,7 +6,7 @@
 #    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/06/05 17:31:19 by amitcul          ###   ########.fr        #
+#    Updated: 2023/06/05 21:23:21 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,9 @@ LIB_TERMCAP = -lreadline
 
 SRCS += main.c
 
+# Error files
+SRCS += error.c
+
 # Lexer source files
 SRCS += quotes.c tokens.c lexer_utils.c
 
@@ -45,25 +48,27 @@ SRCS += expander.c
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
 
 # Builtins source files
-SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
+# SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
 
 OBJ_DIR = ./obj/
 
 vpath %.c src/
+
+vpath %.c src/error/
 
 vpath %.c src/lexer/
 vpath %.c src/parser/
 vpath %.c src/expander/
 
 vpath %.c src/utils/
-vpath %.c src/builtin/unset
-vpath %.c src/builtin/env
-vpath %.c src/builtin/echo
-vpath %.c src/builtin/export
-vpath %.c src/builtin/pwd
-vpath %.c src/builtin/exit
-vpath %.c src/builtin/cd
-vpath %.c src/builtin/
+# vpath %.c src/builtin/unset
+# vpath %.c src/builtin/env
+# vpath %.c src/builtin/echo
+# vpath %.c src/builtin/export
+# vpath %.c src/builtin/pwd
+# vpath %.c src/builtin/exit
+# vpath %.c src/builtin/cd
+# vpath %.c src/builtin/
 
 OBJS = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))
 

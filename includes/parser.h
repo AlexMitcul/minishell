@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 14:21:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/05 17:29:09 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/05 20:52:22 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ typedef struct	s_parser
     int				redirs_count;
     struct s_app	*app;
 }	t_parser;
+
+
+/*
+    echo $PATH hello $home hello world
+    {"echo", "...", "hello", "..."}
+*/
 
 typedef struct s_command
 {

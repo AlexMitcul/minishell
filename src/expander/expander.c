@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 21:44:17 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/05 17:32:52 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/05 20:53:07 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ size_t	handle_after_sign(size_t start, char *str)
 size_t	question_mark(char **tmp)
 {
 	free(*tmp);
-	// *tmp = ft_itoa(g_status.error_num);
+	// *tmp = ft_itoa(global_error_code);
 	return (ft_strlen(*tmp) + 1);
 }
 

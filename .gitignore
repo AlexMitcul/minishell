@@ -6,6 +6,8 @@
 *a.out
 minishell
 m.c
+ms
+ms/
 
 # not to be ignored
 !.gitignore

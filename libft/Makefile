@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amenses- <amenses-@student.42porto.com>    +#+  +:+       +#+         #
+#    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/29 12:26:23 by amitcul           #+#    #+#              #
-#    Updated: 2023/03/07 14:43:49 by amenses-         ###   ########.fr        #
+#    Updated: 2023/06/05 20:52:19 by amitcul          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ LIB_SRC		=	ft_split ft_strchr ft_strdup ft_striteri ft_strjoin \
 				ft_putchar_fd ft_putendl_fd ft_putnbr_fd ft_putstr_fd \
 				ft_bzero ft_calloc ft_memchr ft_memcmp ft_memmove ft_memset ft_memcpy \
 				ft_isalnum ft_isalpha ft_isascii ft_isdigit ft_isprint \
-				get_next_line get_next_line_utils
+				get_next_line get_next_line_utils ft_iswhitespace
 
 SRC_FILES+=$(addprefix $(LIB_DIR),$(LIB_SRC))
 

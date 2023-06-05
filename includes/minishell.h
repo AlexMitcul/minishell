@@ -6,7 +6,7 @@
 /*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/05 17:31:55 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/05 21:22:49 by amitcul          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include "utils.h"
 # include "builtins.h"
 # include "structs.h"
+# include "error.h"
 
 // typedef struct s_app		t_app;
 // typedef struct s_tree		t_tree;
