@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 #define PROMPT "$>"
 
@@ -66,21 +66,30 @@ int loop(t_app *app)
 	return (1);
 }
 
+int lexer_test(t_app *app);
 int	main(int argc, char **argv, char **envp)
 {
 	t_app	*app;
-	int		status;
+//	int		status;
 
 	(void)envp;
-	if (argc != 1 || argv[1])
-		exit(1);
+	(void)argv;
+	(void)argc;
+
+
+
+//	if (argc != 1 || argv[1])
+//		exit(1);
 	app = malloc(sizeof(t_app));
 	if (!app)
 		exit(1);
-	// app->envp = envp_dup(envp);
+//	 app->envp = envp_dup(envp);
 	init_app(app);
-	status = loop(app);
-	return (status);
+	lexer_test(app);
+//	status = loop(app);
+//	return (status);
+
+	return (0); //! TEST
 }
 
 // int	g_exit_status;

@@ -36,7 +36,7 @@ SRCS += main.c
 SRCS += error.c
 
 # Lexer source files
-SRCS += quotes.c tokens.c lexer_utils.c
+SRCS += quotes.c tokens.c lexer_utils.c lexer_tester.c
 
 # Parser source files
 SRCS += parser.c parser_error.c command.c parser_utils.c redirections.c
@@ -76,11 +76,11 @@ all: $(LIB)
 	$(MAKE) $(NAME)
 
 $(OBJS): $(OBJ_DIR)%.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $< -I $(INCLUDES) -I $(INCLUDES_LIB) -o $@
+	$(CC) $(CFLAGS) -c $< -I $(INCLUDES) -I $(INCLUDES_LIB) -o $@ -fPIE
 
 $(NAME): $(OBJ_DIR) $(OBJS)
 	@echo $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -I$(INCLUDES) -I$(INCLUDES_LIB) $(LIB_TERMCAP) -L./libft -lft -o $@
+	$(CC) $(CFLAGS) $(OBJS) -I$(INCLUDES) -I$(INCLUDES_LIB) $(LIB_TERMCAP) -L./libft -lft -o $@ -fPIE
 
 $(OBJ_DIR):
 	mkdir $@

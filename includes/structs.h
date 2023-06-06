@@ -14,6 +14,7 @@
 # define STRUCTS_H
 
 #include <stdbool.h>
+#include <stddef.h>
 
 typedef struct s_env_list
 {
@@ -29,7 +30,8 @@ typedef enum s_token_type
 	GREAT,
 	G_GREAT,
 	LESS,
-	L_LESS
+	L_LESS,
+	BLANK
 }	t_token_type;
 
 typedef struct s_lexer_token

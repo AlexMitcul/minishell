@@ -10,12 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error.h"
+#include "../includes/error.h"
 
+#include <stdio.h>
 static void reset(t_app *app)
 {
 	if (app)
-		;
+		printf("Reset\n");
 }
 
 void	parser_error(int error, t_app *app, t_lexer_token *lexer_list)
