@@ -1,22 +1,23 @@
 #include "../../includes/minishell.h"
 #include "../../includes/error.h"
 
+void print_lexer_list(t_lexer_token *list);
 static void print_commands_list(t_command *list)
 {
 	while (list)
 	{
-		char *s = list->str;
-		if (!s) {
+		char **s = list->str;
+		if (!s || !(*s)) {
 			printf("Arguments list in empty\n");
 		} else {
-			while (s) {
-				printf("%s ", s);
+			while (*s) {
+				printf("%s ", *s);
 				s++;
 			}
 			printf("\n");
 		}
 		printf("Redirs list: \n");
-		// print_lexer_tokens(list->redirs);
+		print_lexer_list(list->redirs);
 		printf("\n\n");
 		list = list->next;
 	}

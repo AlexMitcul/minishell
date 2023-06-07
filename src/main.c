@@ -85,7 +85,8 @@ int	main(int argc, char **argv, char **envp)
 		exit(1);
 //	 app->envp = envp_dup(envp);
 	init_app(app);
-	lexer_test(app);
+//	lexer_test(app);
+	parser_test();
 //	status = loop(app);
 //	return (status);
 
