@@ -38,10 +38,11 @@ void print_lexer_list(t_lexer_token *list)
 
 int lexer_test(t_app *app)
 {
-	char *inputs[1] = {
-			"echo $PATH > >out | cat out"
+	char *inputs[2] = {
+			"echo $PATH> <out || cat out",
+			"echo >> >> $PATH << out"
 	};
-	for (size_t i = 0; i < sizeof(inputs); ++i) {
+	for (size_t i = 0; inputs[i]; ++i) {
 		printf("%zu\n", i);
 		app->input = ft_strdup(inputs[i]);
 		if (!check_quotes(app->input))
@@ -50,6 +51,7 @@ int lexer_test(t_app *app)
 		if (status <= 0)
 			return (ft_error(1, app));
 		print_lexer_list(app->lexer_tokens);
+		ft_lexerclear(&app->lexer_tokens);
 	}
 	return (0);
 }
