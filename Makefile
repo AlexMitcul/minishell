@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+         #
+#    By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/06/08 21:12:26 by amitcul          ###   ########.fr        #
+#    Updated: 2023/06/08 20:44:43 by amenses-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,13 +36,14 @@ SRCS += main.c
 SRCS += error.c
 
 # Lexer source files
+
 SRCS += quotes.c tokens.c lexer_utils.c lexer_test.c
 
 # Parser source files
 SRCS += parser.c parser_test.c command.c parser_utils.c redirections.c
 
 # Expander files
-SRCS += expander.c expander_utils.c
+SRCS += expander.c
 
 # Utils source files
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
