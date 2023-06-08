@@ -36,10 +36,11 @@ SRCS += main.c
 SRCS += error.c
 
 # Lexer source files
-SRCS += quotes.c tokens.c lexer_utils.c
+
+SRCS += quotes.c tokens.c lexer_utils.c lexer_test.c
 
 # Parser source files
-SRCS += parser.c parser_error.c command.c parser_utils.c redirections.c
+SRCS += parser.c parser_test.c command.c parser_utils.c redirections.c
 
 # Expander files
 SRCS += expander.c

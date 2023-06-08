@@ -8,6 +8,7 @@ minishell
 m.c
 ms
 ms/
+out*
 
 # not to be ignored
 !.gitignore
