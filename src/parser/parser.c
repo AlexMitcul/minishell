@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "../../includes/parser.h"
 
 void	count_pipes(t_app *app)
 {
@@ -46,21 +45,19 @@ int	parser(t_app *app)
 
 	parser = NULL;
 	if (app->lexer_tokens->token_type == PIPE)
-		exit(2);
-		// return (parser_double_token_error(app, app->lexer_tokens,
-		// 		app->lexer_tokens->token_type));
+		 return (parser_double_token_error(app, app->lexer_tokens,
+		 		app->lexer_tokens->token_type));
 	count_pipes(app);
 	while (app->lexer_tokens)
 	{
 		if (app->lexer_tokens->token_type == PIPE)
 			delete_node_by_index(&app->lexer_tokens, app->lexer_tokens->index);
-		if (app->lexer_tokens->token_type == PIPE)
+		if (handle_pipe_errors(app, app->lexer_tokens->token_type))
 			return (EXIT_FAILURE);
 		parser = init_parser(app);
 		command = get_command(parser);
 		if (!command)
-			exit(2);
-			// parser_error(0, app, parser->lexer_list);
+			parser_error(0, app, parser->lexer_list);
 		if (!app->commands_list)
 			app->commands_list = command;
 		else

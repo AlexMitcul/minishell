@@ -16,7 +16,7 @@ static char *get_token_name(t_token_type type)
 	} else if (type == LESS) {
 		return ("LESS");
 	} else if (type == G_GREAT) {
-		return ("G_GREAT");
+		return ("Gec_GREAT");
 	} else if (type == L_LESS) {
 		return ("L_LESS");
 	}

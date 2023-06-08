@@ -30,15 +30,51 @@ int init_app(t_app *app)
 	return (1);
 }
 
+void free_2d_array(char** array) {
+	if (array == NULL) {
+		return;
+	}
+
+	for (int i = 0; array[i] != NULL; i++) {
+		free(array[i]);
+	}
+
+	free(array);
+}
+
+void clear_commands(t_command **list)
+{
+	t_command 	*tmp;
+	t_lexer_token 			*redirections_tmp;
+
+	if (!(*list))
+		return ;
+	while (*list)
+	{
+		tmp = (*list)->next;
+		redirections_tmp = (*list)->redirs;
+		ft_lexerclear(&redirections_tmp);
+		if ((*list)->str)
+			free_2d_array((*list)->str);
+		free(*list);
+		*list = tmp;
+	}
+	*list = NULL;
+}
+
 int loop(t_app *app);
 int reset(t_app *app)
 {
-	/*
-	reset and clear all structs
-	*/
+	clear_commands(&app->commands_list);
+	free(app->input);
+	app->commands_list = NULL;
+	app->lexer_tokens = NULL;
 	loop(app);
 	return (EXIT_SUCCESS);
 }
+
+int lexer_test(t_app *app);
+void parser_test(t_app *app);
 
 int loop(t_app *app)
 {
@@ -60,13 +96,14 @@ int loop(t_app *app)
 		return (ft_error(2, app));
 	if (!get_tokens(app))
 		return (ft_error(1, app));
-	parser(app);
+//	parser(app);
+	parser_test(app);
 	// executor(app);
 	reset(app);
 	return (1);
 }
 
-int lexer_test(t_app *app);
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_app	*app;
@@ -78,15 +115,17 @@ int	main(int argc, char **argv, char **envp)
 
 
 
-//	if (argc != 1 || argv[1])
-//		exit(1);
+	if (argc != 1 || argv[1])
+		exit(1);
 	app = malloc(sizeof(t_app));
 	if (!app)
 		exit(1);
-//	 app->envp = envp_dup(envp);
+//	app->envp = envp_dup(envp);
 	init_app(app);
+	loop(app);
+//	lexer(app);
 //	lexer_test(app);
-	parser_test();
+//	parser_test(app);
 //	status = loop(app);
 //	return (status);
 

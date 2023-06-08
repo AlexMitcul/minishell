@@ -39,10 +39,10 @@ SRCS += error.c
 SRCS += quotes.c tokens.c lexer_utils.c lexer_tester.c
 
 # Parser source files
-SRCS += parser.c parser_error.c command.c parser_utils.c redirections.c parser_test.c
+SRCS += parser.c command.c parser_utils.c redirections.c parser_test.c
 
 # Expander files
-SRCS += expander.c
+SRCS += expander.c expander_utils.c
 
 # Utils source files
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c

@@ -11,12 +11,29 @@
 /* ************************************************************************** */
 
 #include "../includes/error.h"
+#include "../includes/structs.h"
 
 #include <stdio.h>
 static void reset(t_app *app)
 {
 	if (app)
 		printf("Reset\n");
+}
+
+int	handle_pipe_errors(t_app *app, t_token_type token_type)
+{
+	if (token_type == PIPE)
+	{
+		parser_double_token_error(app, app->lexer_tokens,
+								  app->lexer_tokens->token_type);
+		return (EXIT_FAILURE);
+	}
+	if (!app->lexer_tokens)
+	{
+		parser_error(0, app, app->lexer_tokens);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
 void	parser_error(int error, t_app *app, t_lexer_token *lexer_list)

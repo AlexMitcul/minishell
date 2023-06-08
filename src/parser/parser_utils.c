@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../includes/parser.h"
 
 void	delete_node_by_index(t_lexer_token **list, size_t index)
 {

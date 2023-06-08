@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
-#include "parser.h"
+#include "../../includes/lexer.h"
+#include "../../includes/parser.h"
 
 static void	push_back(t_lexer_token **list, t_lexer_token *new)
 {
@@ -38,7 +38,7 @@ void	add_new_redirect(t_parser *parser, t_lexer_token *token)
 
 	new = get_lexer_new_node(ft_strdup(token->next->str), token->token_type);
 	if (!new)
-		return ; // handle this error
+		parser_error(1, parser->app, parser->lexer_list);
 	push_back(&parser->redirs, new);
 	first = token->index;
 	second = token->next->index;
@@ -57,9 +57,10 @@ void	collect_redirections(t_parser *parser)
 	if (curr == NULL || curr->token_type == PIPE)
 		return ;
 	if (curr->next == NULL)
-		exit(1); // handle this
+		parser_error(0, parser->app, parser->lexer_list);
 	if (curr->next->token_type > WORD)
-		exit(1); // handle this
+		parser_double_token_error(parser->app,
+			parser->lexer_list, curr->next->token_type);
 	if (curr->token_type >= GREAT && curr->token_type <= L_LESS)
 		add_new_redirect(parser, curr);
 	collect_redirections(parser);
