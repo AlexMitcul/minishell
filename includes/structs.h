@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 14:39:34 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/05 20:56:30 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/06 18:09:27 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-#include <stdbool.h>
-#include <stddef.h>
+# include <stdbool.h>
 
 typedef struct s_env_list
 {
@@ -30,8 +29,7 @@ typedef enum s_token_type
 	GREAT,
 	G_GREAT,
 	LESS,
-	L_LESS,
-	BLANK
+	L_LESS
 }	t_token_type;
 
 typedef struct s_lexer_token
