@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/expander.h"
+#include "../../includes/error.h"
 
 size_t	loop_if_sign(t_app *app, char *str, char **t1, size_t start)
 {

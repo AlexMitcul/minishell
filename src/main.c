@@ -207,9 +207,9 @@ int	redirector(t_command *commands_list)
 
 void	print_commands_fd(t_command *cmd)
 {
-	t_command	*tmp;
-	
-	tmp = cmd;
+//	t_command	*tmp;
+//
+//	tmp = cmd;
 	while (cmd)
 	{
 		printf("cmd: %s, ", cmd->str[0]);

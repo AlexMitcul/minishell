@@ -11,9 +11,15 @@
 /* ************************************************************************** */
 
 #include "../includes/error.h"
-#include "../includes/structs.h"
 
 #include <stdio.h>
+
+void	parser_error(int error, t_app *app, t_lexer_token *lexer_list)
+{
+	ft_lexerclear(&lexer_list);
+	ft_error(error, app);
+}
+
 static void reset(t_app *app)
 {
 	if (app)
@@ -36,11 +42,7 @@ int	handle_pipe_errors(t_app *app, t_token_type token_type)
 	return (EXIT_SUCCESS);
 }
 
-void	parser_error(int error, t_app *app, t_lexer_token *lexer_list)
-{
-	ft_lexerclear(&lexer_list);
-	ft_error(error, app);
-}
+
 
 int	parser_double_token_error(t_app *app, t_lexer_token *lexer_list,
 								t_token_type token)

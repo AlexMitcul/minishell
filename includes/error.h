@@ -15,6 +15,7 @@
 
 # include "minishell.h"
 
+void	parser_error(int error, t_app *app, t_lexer_token *lexer_list);
 void	lexer_error(int error, t_app *app);
 int		ft_error(int error, t_app *app);
 int		parser_double_token_error(t_app *app, t_lexer_token *lexer_list,
