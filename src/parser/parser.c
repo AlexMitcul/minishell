@@ -66,9 +66,3 @@ int	parser(t_app *app)
 	}
 	return (EXIT_SUCCESS);
 }
-
-vector<int> v;
-
-for (iterator<vector::iterator> *it v.begin(); it != v.end(); it++) {
-	
-}

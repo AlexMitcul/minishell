@@ -37,7 +37,6 @@ typedef struct s_command
 	int					fd[2]; // N
 	char				**str;
 	int 				(*builtin)(t_app *, char **);
-	char                *heredoc;
 	size_t				redirs_count;
 	t_lexer_token		*redirs;
 	struct s_command	*next;
