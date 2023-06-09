@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:32:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/08 20:43:48 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/09 21:11:23 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,7 @@ int	red_out(t_command *cmd, t_lexer_token *red)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(red->str, STDERR_FILENO);
 		perror(": ");
-		// ft_putendl_fd(": Permission denied", STDERR_FILENO);
-		// EXITSTATUS = 1
+		g_exit_status = 1;
 	}
 	return (fd);
 }
@@ -108,7 +107,7 @@ int	red_append(t_command *cmd, t_lexer_token *red)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(red->str, STDERR_FILENO);
 		perror(": ");
-		// EXITSTATUS = 1
+		g_exit_status = 1;
 	}
 	return (fd);
 }
@@ -124,7 +123,7 @@ int	red_in(t_command *cmd, t_lexer_token *red)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(red->str, STDERR_FILENO);
 		perror(": ");
-		// EXITSTATUS = 1
+		g_exit_status = 1;
 	}
 	return (fd);
 }
@@ -141,7 +140,7 @@ int	red_heredoc(t_command *cmd, t_lexer_token *red)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(red->str, STDERR_FILENO);
 		perror(": ");
-		// EXITSTATUS = 1
+		g_exit_status = 1;
 		return (-1);
 	}
 	while (1)
@@ -150,26 +149,24 @@ int	red_heredoc(t_command *cmd, t_lexer_token *red)
 		if (ft_strncmp(l, red->str, ft_strlen(red->str) + 1) == 0)
 			break ;
 		ft_putendl_fd(l, fd);
-		// ft_putstr_fd(l, fd);
-		// ft_putstr_fd("\n", fd);
 		free(l);
 	}
 	free(l);
 	close (fd);
 	fd = open("tmp_XmXiXnXiXsXhXeXlXl", O_RDONLY);
-	if (fd == -1)
+	if (fd == -1 || unlink("tmp_XmXiXnXiXsXhXeXlXl") == -1)
+	{
 		perror("minishell: tmp_XmXiXnXiXsXhXeXlXl: ");
-	unlink("tmp_XmXiXnXiXsXhXeXlXl"); // confirm
-		// EXITSTATUS = 1
+		g_exit_status = 1;
+	}
 	return (fd);
 }
 
-int	upd_fd(t_command *cmd, t_lexer_token *red, int (*f)(t_command*, t_lexer_token*), int io)
+int	set_fd(t_command *cmd, t_lexer_token *red, int (*f)(t_command*, t_lexer_token*), int io)
 {
 	if (cmd->fd[io] != io)
 		close(cmd->fd[io]);
 	cmd->fd[io] = f(cmd, red);
-	printf("==fd[%d] = %d\n", io, cmd->fd[io]);
 	return (cmd->fd[io]);
 }
 
@@ -182,22 +179,18 @@ int	redirector(t_command *commands_list)
 	while (cmd)
 	{
 		red = cmd->redirs;
-		cmd->fd[0] = STDIN_FILENO; // default 0 (might already have been initilized as 0)
-		cmd->fd[1] = STDOUT_FILENO; // default 1
+		cmd->fd[0] = STDIN_FILENO;
+		cmd->fd[1] = STDOUT_FILENO;
 		while (red)
 		{
-			if (red->token_type == GREAT && upd_fd(cmd, red, &red_out, 1) == -1) // > (out)
+			if (red->token_type == GREAT && set_fd(cmd, red, &red_out, 1) == -1) // > (out)
 				return (-1);
-				// cmd->fd[1] = red_out(cmd, red);
-			if (red->token_type == G_GREAT && upd_fd(cmd, red, &red_append, 1) == -1) // >> (append)
+			if (red->token_type == G_GREAT && set_fd(cmd, red, &red_append, 1) == -1) // >> (append)
 				return (-1);
-			// 	cmd->fd[1] = red_append(cmd, red);
-			if (red->token_type == LESS && upd_fd(cmd, red, &red_in, 0) == -1) // < (in)
+			if (red->token_type == LESS && set_fd(cmd, red, &red_in, 0) == -1) // < (in)
 				return (-1);
-			// 	cmd->fd[0] = red_in(cmd, red);
-			if (red->token_type == L_LESS && upd_fd(cmd, red, &red_heredoc, 0) == -1) // << (heredoc)
+			if (red->token_type == L_LESS && set_fd(cmd, red, &red_heredoc, 0) == -1) // << (heredoc)
 				return (-1);
-			// 	cmd->fd[0] = red_heredoc(cmd, red);
 			red = red->next;
 		}
 		cmd = cmd->next;
@@ -240,20 +233,19 @@ int	isbuiltin(char *cmd)
 
 int	bi(t_command *cmd)
 {
-	// (void)cmd;
-	if (ft_strncmp(cmd->str[0], "echo", 5) == 0)
+	if (ft_strncmp(cmd->path, "echo", 5) == 0)
 		return (ft_echo(NULL, cmd->str));
-	else if (ft_strncmp(cmd->str[0], "cd", 3) == 0)
+	else if (ft_strncmp(cmd->path, "cd", 3) == 0)
 		return (ft_cd(NULL, cmd->str));
-	else if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
+	else if (ft_strncmp(cmd->path, "pwd", 4) == 0)
 		return (ft_pwd(NULL, cmd->str));
-	else if (ft_strncmp(cmd->str[0], "export", 7) == 0)
+	else if (ft_strncmp(cmd->path, "export", 7) == 0)
 		return (ft_export(NULL, cmd->str));
-	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
+	else if (ft_strncmp(cmd->path, "unset", 6) == 0)
 		return (ft_unset(NULL, cmd->str));
-	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)
+	else if (ft_strncmp(cmd->path, "env", 4) == 0)
 		return (ft_env(NULL, cmd->str));
-	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0)
+	else if (ft_strncmp(cmd->path, "exit", 5) == 0)
 		return (ft_exit(NULL, cmd->str));
 	return (0);
 }
@@ -276,60 +268,46 @@ int	exec_bi(t_command *cmd, int pp) // app npipes
 	}
 	else
 		return (bi(cmd));
-	return (WEXITSTATUS(wstatus));
+	g_exit_status = WEXITSTATUS(wstatus);
+	return (g_exit_status);
 }
 
 int	exec_cmd(t_command *cmd, char **envp)
 {
-	pid_t	pid;
-	// int		std[2];
-	int		wstatus;
+	// pid_t	pid;
+	// int		wstatus;
 
-	wstatus = 0;
-	// std[0] = dup(STDIN_FILENO);
-	// std[1] = dup(STDOUT_FILENO);
-	// dup2(cmd->fd[0], STDIN_FILENO);
-	// if (cmd->fd[0] != STDIN_FILENO)
-	// 	close(cmd->fd[0]);
-	// dup2(cmd->fd[1], STDOUT_FILENO);
-	// if (cmd->fd[1] != STDOUT_FILENO)
-	// 	close(cmd->fd[1]);
-	if (isbuiltin(cmd->str[0])) // check for no pipes
-	{
-		// wstatus = exec_bi(cmd, 0);
-		// dup2(std[0], STDIN_FILENO);
-		// dup2(std[1], STDOUT_FILENO);
-		// close(std[0]);
-		// close(std[1]);
-		return (exec_bi(cmd, 0)); // npipes
-	}
+	// wstatus = 0;
+	if (isbuiltin(cmd->path)) // old cmd->str[0]
+		return (exec_bi(cmd, 0));
 	else
 	{
-		// printf("cmd->args[0]=%s\n", cmd->args[0]);
-		if (access(cmd->str[0], X_OK) == -1)
+		if (access(cmd->path, X_OK) == -1) // old cmd->str[0]
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putstr_fd(cmd->str[0], STDERR_FILENO);
 			ft_putendl_fd(": permission denied", STDERR_FILENO);
-			// perror(": ");
-			return (126); // EXITSTATUS: 126
+			g_exit_status = 126;
+			return (g_exit_status);
 		}
-		pid = fork();
-		if (pid == 0)
-			execve(cmd->str[0], cmd->str, envp);
-		else if (pid < 0)
+		cmd->pid = fork();
+		if (cmd->pid == 0)
+			execve(cmd->path, cmd->str, envp); // old cmd->str[0]
+		else if (cmd->pid < 0)
+		{
 			perror("minishell: fork: ");
-		else
-			waitpid(pid, &wstatus, 0);
+			g_exit_status = 127;
+			return (-1);
+		}
+		// else
+		// 	waitpid(cmd->pid, &wstatus, 0);
 	}
-	// dup2(std[0], STDIN_FILENO);
-	// dup2(std[1], STDOUT_FILENO);
-	// close(std[0]);
-	// close(std[1]);
-	return (WEXITSTATUS(wstatus));
+	// g_exit_status = WEXITSTATUS(wstatus);
+	// return (g_exit_status);
+	return (0);
 }
 
-void	upd_stdfd(t_command *commands_list, int std[2])
+void	set_stdfd(t_command *commands_list, int std[2])
 {
 	t_command	*cmd;
 
@@ -343,59 +321,125 @@ void	upd_stdfd(t_command *commands_list, int std[2])
 		cmd = cmd->next;
 	}
 }
+int	piper(t_command *commands_list)
+{
+	t_command	*cmd;
+	int			pp[2];
+
+	cmd = commands_list;
+	while (cmd)
+	{
+		if (cmd->next)
+		{
+			if (pipe(pp) == -1)
+			{
+				perror("minishell: pipe: ");
+				g_exit_status = 126;
+				return (-1);
+			}
+			if (cmd->fd[1] == STDOUT_FILENO)
+				cmd->fd[1] = pp[1];
+			else
+				close(pp[1]);
+			if (cmd->next->fd[0] == STDIN_FILENO)
+				cmd->next->fd[0] = pp[0];
+			else
+				close(pp[0]);
+		}
+		cmd = cmd->next;
+	}
+	return (0);
+}
+/* int	piper(t_command *commands_list)
+{
+	t_command	*cmd;
+	int			pp[2];
+
+	cmd = commands_list;
+	while (cmd)
+	{
+		if (cmd->next)
+		{
+			if (pipe(pp) == -1)
+			{
+				perror("minishell: pipe: ");
+				g_exit_status = 126;
+				return (-1);
+			}
+			if (cmd->fd[1] != STDOUT_FILENO)
+				close(cmd->fd[1]);
+			cmd->fd[1] = pp[1];
+			if (cmd->next->fd[0] != STDIN_FILENO)
+				close(cmd->next->fd[0]);
+			cmd->next->fd[0] = pp[0];
+		}
+		cmd = cmd->next;
+	}
+	return (0);
+} */
+
+int	waiter(t_command *commands_list)
+{
+	t_command	*cmd;
+	int			wstatus;
+
+	cmd = commands_list;
+	while (cmd)
+	{
+		waitpid(cmd->pid, &wstatus, 0);
+		cmd = cmd->next;
+	}
+	g_exit_status = WEXITSTATUS(wstatus);
+	return (g_exit_status);
+}
+
+int	killer(t_command *commands_list)
+{
+	t_command	*cmd;
+
+	cmd = commands_list;
+	while (cmd)
+	{
+		if (cmd->pid != 0)
+			kill(cmd->pid, SIGKILL);
+		cmd = cmd->next;
+	}
+	return (0);
+}
 
 int	exec_ppx(t_command *commands_list, char **envp)
 {
-	int			pp[2];
 	int			std[2];
 	t_command	*cmd;
-	int			status;
+	// int			status;
 
 	cmd = commands_list;
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
-	// dup2(cmd->fd[0], STDIN_FILENO);
-	// if (cmd->fd[0] != STDIN_FILENO)
-	// 	close(cmd->fd[0]);
-	upd_stdfd(cmd, std);
-	status = 0;
+	set_stdfd(cmd, std);
+	// status = 0;
 	while (cmd)
 	{
+		dup2(cmd->fd[0], STDIN_FILENO);
 		if (cmd->fd[0] != std[0])
-		{
-			dup2(cmd->fd[0], STDIN_FILENO);
 			close(cmd->fd[0]);
-		}
-		if (cmd->next)
-		{
-			pipe(pp);
-			dup2(pp[1], STDOUT_FILENO);
-			close(pp[1]);
-			if (cmd->fd[1] != std[1])
-			{
-				dup2(cmd->fd[1], STDOUT_FILENO);
-				close(cmd->fd[1]);
-			}
-		}
-		else
-		{
-			dup2(cmd->fd[1], STDOUT_FILENO);
-			if (cmd->fd[1] != std[1])
-				close(std[1]);
-		}
-		status = exec_cmd(cmd, envp);
-		if (cmd->next != NULL)
-		{
-			dup2(pp[0], STDIN_FILENO);
-			close(pp[0]);
-		}
+		dup2(cmd->fd[1], STDOUT_FILENO);
+		if (cmd->fd[1] != std[1])
+			close(cmd->fd[1]);
+		if (exec_cmd(cmd, envp) == -1)
+			break ;
 		cmd = cmd->next;
 	}
+	if (cmd == NULL)
+		g_exit_status = waiter(commands_list);
+	else
+		killer(commands_list);
+	g_exit_status = waiter(commands_list);
 	dup2(std[0], STDIN_FILENO);
 	dup2(std[1], STDOUT_FILENO);
 	close(std[0]);
 	close(std[1]);
-	return (status);
+	return (g_exit_status);
 }
 
 char	*pathsearch(char *cmd, char **paths)
@@ -404,7 +448,7 @@ char	*pathsearch(char *cmd, char **paths)
 	int i;
 
 	i = -1;
-	while (paths[++i])
+	while (paths && paths[++i])
 	{
 		tmp[0] = ft_strjoin(paths[i], "/");
 		if (tmp[0] == NULL)
@@ -413,56 +457,65 @@ char	*pathsearch(char *cmd, char **paths)
 		if (tmp[1] == NULL)
 			return (NULL);
 		free(tmp[0]);
-		if (access(tmp[1], F_OK) == 0) // check for X_OK in execve
+		if (access(tmp[1], F_OK) == 0)
 			return (tmp[1]);
 		free(tmp[1]);
 	}
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
-	// EXITSTATUS: 127
+	g_exit_status = 127;
 	return (NULL);
 }
 
-char	*cmdpath(char *cmd) // free cmd
+char	*get_env_value(char *key, t_env_list *env_list)
+{
+	t_env_list *tmp;
+
+	if (!env_list)
+		return (NULL);
+	tmp = env_list;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->key, key, ft_strlen(key) + 1) == 0)
+			return (tmp->value);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+char	*cmdpath(char *cmd, t_env_list *envl) // free cmd
 {
 	char **paths;
 	char *env_path;
 	char *cpath;
 
-	if (ft_strchr(cmd, '/') && access(cmd, F_OK) == -1)
+	env_path = get_env_value("PATH", envl);
+	if ((ft_strchr(cmd, '/') || !env_path) && access(cmd, F_OK) == -1)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(cmd, STDERR_FILENO);
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO); // has a '\'
-		free(cmd);
-		// EXITSTATUS: 127
+		// free(cmd);
+		g_exit_status = 127;
 		return (NULL);
 	}
 	if (ft_strchr(cmd, '/') || isbuiltin(cmd)) // also check for PATH
 		return (cmd);
-	env_path = getenv("PATH"); // should we use our envp?
-	if (!env_path)
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(cmd, STDERR_FILENO);
-		ft_putendl_fd(": command not found", STDERR_FILENO);
-		// EXITSTATUS: 127
-		return (0);
-	}
 	paths = ft_split(env_path, ':');
 	cpath = pathsearch(cmd, paths);
 	ft_splitfree(paths);
-	free(cmd);
+	// free(cmd);
 	return (cpath);
 }
 
-int	exec_simple(t_command *cmd, char **envp)
+int	exec_simple(t_command *commands_list, char **envp)
 {
-	int		std[2];
-	int		status;
+	int			std[2];
+	// int			status;
+	t_command	*cmd;
 
-	status = 0;
+	// status = 0;
+	cmd = commands_list;
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
 	dup2(cmd->fd[0], STDIN_FILENO);
@@ -471,12 +524,17 @@ int	exec_simple(t_command *cmd, char **envp)
 	dup2(cmd->fd[1], STDOUT_FILENO);
 	if (cmd->fd[1] != STDOUT_FILENO)
 		close(cmd->fd[1]);
-	status = exec_cmd(cmd, envp);
+	// status = exec_cmd(cmd, envp);
+	// if (status == -1)
+	// if (exec_cmd(cmd, envp) == -1)
+	// 	return (-1);
+	if (exec_cmd(cmd, envp) > -1 && !isbuiltin(cmd->str[0]))
+		g_exit_status = waiter(cmd);
 	dup2(std[0], STDIN_FILENO);
 	dup2(std[1], STDOUT_FILENO);
 	close(std[0]);
 	close(std[1]);
-	return (status);
+	return (g_exit_status);
 }
 
 int	executor(t_app *app)
@@ -486,15 +544,19 @@ int	executor(t_app *app)
 	cmd = app->commands_list;
 	while (cmd)
 	{
-		cmd->str[0] = cmdpath(cmd->str[0]);
-		if (!cmd->str[0])
+		cmd->path = cmdpath(cmd->str[0], app->env_list);
+		if (!cmd->path)
 			return (-1); // free stuff !
 		cmd = cmd->next;
 	}
 	if (redirector(app->commands_list) == -1)
 		return (-1);
 	if (app->pipes_count > 0)
+	{
+		if (piper(app->commands_list) == -1)
+			return (-1);
 		return (exec_ppx(app->commands_list, app->envp));
+	}
 	else
 		return (exec_simple(app->commands_list, app->envp));
 	return (0);
@@ -528,6 +590,7 @@ int loop(t_app *app)
 	// printf("/////////////////////\n");
 	// print_commands_list(app->commands_list);
 	executor(app);
+	printf("exit status: %d\n", g_exit_status);
 	// redirector(app->commands_list);
 	// print_commands_fd(app->commands_list);
 	// exit(0);
