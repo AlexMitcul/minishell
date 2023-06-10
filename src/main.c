@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:32:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/09 21:11:23 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/10 20:57:24 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,25 @@
 
 int	g_exit_status = 0;
 
+int	mini_err(char *pre, char *name, char *msg, int exit_status)
+{
+	ft_putstr_fd(pre, STDERR_FILENO);
+	ft_putstr_fd(name, STDERR_FILENO);
+	ft_putendl_fd(msg, STDERR_FILENO);
+	g_exit_status = exit_status;
+	return (g_exit_status);
+}
+
+int	mini_perr(char *pre, char *name, int exit_status, int fail)
+{
+	ft_putstr_fd(pre, STDERR_FILENO);
+	perror(name);
+	g_exit_status = exit_status;
+	if (fail == -1)
+		return (-1);
+	return (g_exit_status);
+}
+
 int init_app(t_app *app)
 {
 	app->env_list = NULL;
@@ -24,7 +43,6 @@ int init_app(t_app *app)
 	app->commands_list = NULL;
 	app->pipes_count = 0;
 	app->reset = false;
-	app->pid = NULL;
 	app->heredoc = false;
 	// global_variable_or_struct_init???
 //	parse_envp(app);
@@ -87,12 +105,7 @@ int	red_out(t_command *cmd, t_lexer_token *red)
 	(void)cmd;
 	fd = open(red->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(red->str, STDERR_FILENO);
-		perror(": ");
-		g_exit_status = 1;
-	}
+		mini_perr("minishell: ", red->str, 1, 0);
 	return (fd);
 }
 
@@ -103,12 +116,7 @@ int	red_append(t_command *cmd, t_lexer_token *red)
 	(void)cmd;
 	fd = open(red->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(red->str, STDERR_FILENO);
-		perror(": ");
-		g_exit_status = 1;
-	}
+		mini_perr("minishell: ", red->str, 1, 0);
 	return (fd);
 }
 
@@ -119,12 +127,7 @@ int	red_in(t_command *cmd, t_lexer_token *red)
 	(void)cmd;
 	fd = open(red->str, O_RDONLY);
 	if (fd == -1)
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(red->str, STDERR_FILENO);
-		perror(": ");
-		g_exit_status = 1;
-	}
+		mini_perr("minishell: ", red->str, 1, 0);
 	return (fd);
 }
 
@@ -136,13 +139,7 @@ int	red_heredoc(t_command *cmd, t_lexer_token *red)
 	(void)cmd;
 	fd = open("tmp_XmXiXnXiXsXhXeXlXl", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(red->str, STDERR_FILENO);
-		perror(": ");
-		g_exit_status = 1;
-		return (-1);
-	}
+		return (mini_perr("minishell: ", red->str, 1, -1));
 	while (1)
 	{
 		l = readline(">");
@@ -155,10 +152,7 @@ int	red_heredoc(t_command *cmd, t_lexer_token *red)
 	close (fd);
 	fd = open("tmp_XmXiXnXiXsXhXeXlXl", O_RDONLY);
 	if (fd == -1 || unlink("tmp_XmXiXnXiXsXhXeXlXl") == -1)
-	{
-		perror("minishell: tmp_XmXiXnXiXsXhXeXlXl: ");
-		g_exit_status = 1;
-	}
+		mini_perr("minishell:", "tmp_XmXiXnXiXsXhXeXlXl", 1, 0);
 	return (fd);
 }
 
@@ -231,79 +225,65 @@ int	isbuiltin(char *cmd)
 	return (0);
 }
 
-int	bi(t_command *cmd)
+int	bi(t_command *cmd, t_app *app)
 {
 	if (ft_strncmp(cmd->path, "echo", 5) == 0)
-		return (ft_echo(NULL, cmd->str));
+		return (ft_echo(app, cmd->str));
 	else if (ft_strncmp(cmd->path, "cd", 3) == 0)
-		return (ft_cd(NULL, cmd->str));
+		return (ft_cd(app, cmd->str));
 	else if (ft_strncmp(cmd->path, "pwd", 4) == 0)
-		return (ft_pwd(NULL, cmd->str));
+		return (ft_pwd(app, cmd->str));
 	else if (ft_strncmp(cmd->path, "export", 7) == 0)
-		return (ft_export(NULL, cmd->str));
+		return (ft_export(app, cmd->str));
 	else if (ft_strncmp(cmd->path, "unset", 6) == 0)
-		return (ft_unset(NULL, cmd->str));
+		return (ft_unset(app, cmd->str));
 	else if (ft_strncmp(cmd->path, "env", 4) == 0)
-		return (ft_env(NULL, cmd->str));
+		return (ft_env(app, cmd->str));
 	else if (ft_strncmp(cmd->path, "exit", 5) == 0)
-		return (ft_exit(NULL, cmd->str));
+		return (ft_exit(app, cmd->str));
 	return (0);
 }
 
-int	exec_bi(t_command *cmd, int pp) // app npipes
+// int	exec_bi(t_command *cmd, int npp) // app npipes
+int	exec_bi(t_command *cmd, t_app *app)
 {
-	pid_t	pid;
-	int		wstatus;
-
-	wstatus = 0;
-	if (pp != 0)
+	if (app->pipes_count > 0)
 	{
-		pid = fork();
-		if (pid == 0)
-			return (bi(cmd));
-		else if (pid < 0)
-			perror("minishell: fork: ");
-		else
-			waitpid(pid, &wstatus, 0);
+		cmd->pid = fork();
+		if (cmd->pid == 0)
+			exit(bi(cmd, app));
+		else if (cmd->pid < 0)
+			return (mini_perr("minishell:", "fork", 1, -1));
 	}
 	else
-		return (bi(cmd));
-	g_exit_status = WEXITSTATUS(wstatus);
+		return (bi(cmd, app));
 	return (g_exit_status);
 }
 
-int	exec_cmd(t_command *cmd, char **envp)
+// int	exec_cmd(t_command *cmd, char **envp, int npp)
+int	exec_cmd(t_command *cmd, t_app *app)
 {
-	// pid_t	pid;
-	// int		wstatus;
-
-	// wstatus = 0;
 	if (isbuiltin(cmd->path)) // old cmd->str[0]
-		return (exec_bi(cmd, 0));
+		return (exec_bi(cmd, app)); // app npipes !
 	else
 	{
-		if (access(cmd->path, X_OK) == -1) // old cmd->str[0]
+		/* if (access(cmd->path, X_OK) == -1) // old cmd->str[0]
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putstr_fd(cmd->str[0], STDERR_FILENO);
-			ft_putendl_fd(": permission denied", STDERR_FILENO);
+			ft_putendl_fd(": Permission denied", STDERR_FILENO);
 			g_exit_status = 126;
 			return (g_exit_status);
-		}
+		} */
 		cmd->pid = fork();
 		if (cmd->pid == 0)
-			execve(cmd->path, cmd->str, envp); // old cmd->str[0]
-		else if (cmd->pid < 0)
 		{
-			perror("minishell: fork: ");
-			g_exit_status = 127;
-			return (-1);
+			execve(cmd->path, cmd->str, app->envp); // old cmd->str[0]
+			exit(mini_perr("minishell: ", cmd->str[0], 127, 0));
 		}
-		// else
-		// 	waitpid(cmd->pid, &wstatus, 0);
+		else if (cmd->pid < 0)
+			return (mini_perr("minishell: ", "fork", 127, -1));
 	}
-	// g_exit_status = WEXITSTATUS(wstatus);
-	// return (g_exit_status);
 	return (0);
 }
 
@@ -327,56 +307,22 @@ int	piper(t_command *commands_list)
 	int			pp[2];
 
 	cmd = commands_list;
-	while (cmd)
+	while (cmd->next)
 	{
-		if (cmd->next)
-		{
-			if (pipe(pp) == -1)
-			{
-				perror("minishell: pipe: ");
-				g_exit_status = 126;
-				return (-1);
-			}
-			if (cmd->fd[1] == STDOUT_FILENO)
-				cmd->fd[1] = pp[1];
-			else
-				close(pp[1]);
-			if (cmd->next->fd[0] == STDIN_FILENO)
-				cmd->next->fd[0] = pp[0];
-			else
-				close(pp[0]);
-		}
-		cmd = cmd->next;
+		if (pipe(pp) == -1)
+			return (mini_perr("minishell: ", "cannot create pipe", 126, -1));
+		if (cmd->fd[1] == STDOUT_FILENO)
+			cmd->fd[1] = pp[1];
+		else
+			close(pp[1]);
+		if (cmd->next->fd[0] == STDIN_FILENO)
+			cmd->next->fd[0] = pp[0];
+		else
+			close(pp[0]);
+	cmd = cmd->next;
 	}
 	return (0);
 }
-/* int	piper(t_command *commands_list)
-{
-	t_command	*cmd;
-	int			pp[2];
-
-	cmd = commands_list;
-	while (cmd)
-	{
-		if (cmd->next)
-		{
-			if (pipe(pp) == -1)
-			{
-				perror("minishell: pipe: ");
-				g_exit_status = 126;
-				return (-1);
-			}
-			if (cmd->fd[1] != STDOUT_FILENO)
-				close(cmd->fd[1]);
-			cmd->fd[1] = pp[1];
-			if (cmd->next->fd[0] != STDIN_FILENO)
-				close(cmd->next->fd[0]);
-			cmd->next->fd[0] = pp[0];
-		}
-		cmd = cmd->next;
-	}
-	return (0);
-} */
 
 int	waiter(t_command *commands_list)
 {
@@ -384,9 +330,10 @@ int	waiter(t_command *commands_list)
 	int			wstatus;
 
 	cmd = commands_list;
+	wstatus = 0;
 	while (cmd)
 	{
-		waitpid(cmd->pid, &wstatus, 0);
+		waitpid(0, &wstatus, 0);
 		cmd = cmd->next;
 	}
 	g_exit_status = WEXITSTATUS(wstatus);
@@ -407,17 +354,16 @@ int	killer(t_command *commands_list)
 	return (0);
 }
 
-int	exec_ppx(t_command *commands_list, char **envp)
+// int	exec_ppx(t_command *commands_list, char **envp, int npp)
+int	exec_ppx(t_app *app)
 {
 	int			std[2];
 	t_command	*cmd;
-	// int			status;
 
-	cmd = commands_list;
+	cmd = app->commands_list;
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
 	set_stdfd(cmd, std);
-	// status = 0;
 	while (cmd)
 	{
 		dup2(cmd->fd[0], STDIN_FILENO);
@@ -426,15 +372,14 @@ int	exec_ppx(t_command *commands_list, char **envp)
 		dup2(cmd->fd[1], STDOUT_FILENO);
 		if (cmd->fd[1] != std[1])
 			close(cmd->fd[1]);
-		if (exec_cmd(cmd, envp) == -1)
+		if (exec_cmd(cmd, app) == -1)
 			break ;
 		cmd = cmd->next;
 	}
 	if (cmd == NULL)
-		g_exit_status = waiter(commands_list);
+		g_exit_status = waiter(app->commands_list);
 	else
-		killer(commands_list);
-	g_exit_status = waiter(commands_list);
+		killer(app->commands_list);
 	dup2(std[0], STDIN_FILENO);
 	dup2(std[1], STDOUT_FILENO);
 	close(std[0]);
@@ -461,9 +406,7 @@ char	*pathsearch(char *cmd, char **paths)
 			return (tmp[1]);
 		free(tmp[1]);
 	}
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
-	g_exit_status = 127;
+	mini_err(NULL, cmd, ": command not found", 127);
 	return (NULL);
 }
 
@@ -492,11 +435,7 @@ char	*cmdpath(char *cmd, t_env_list *envl) // free cmd
 	env_path = get_env_value("PATH", envl);
 	if ((ft_strchr(cmd, '/') || !env_path) && access(cmd, F_OK) == -1)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(cmd, STDERR_FILENO);
-		ft_putendl_fd(": No such file or directory", STDERR_FILENO); // has a '\'
-		// free(cmd);
-		g_exit_status = 127;
+		mini_err("minishell: ", cmd, ": No such file or directory", 127);
 		return (NULL);
 	}
 	if (ft_strchr(cmd, '/') || isbuiltin(cmd)) // also check for PATH
@@ -504,18 +443,16 @@ char	*cmdpath(char *cmd, t_env_list *envl) // free cmd
 	paths = ft_split(env_path, ':');
 	cpath = pathsearch(cmd, paths);
 	ft_splitfree(paths);
-	// free(cmd);
 	return (cpath);
 }
 
-int	exec_simple(t_command *commands_list, char **envp)
+// int	exec_simple(t_command *commands_list, char **envp)
+int	exec_simple(t_app *app)
 {
 	int			std[2];
-	// int			status;
 	t_command	*cmd;
 
-	// status = 0;
-	cmd = commands_list;
+	cmd = app->commands_list;
 	std[0] = dup(STDIN_FILENO);
 	std[1] = dup(STDOUT_FILENO);
 	dup2(cmd->fd[0], STDIN_FILENO);
@@ -524,11 +461,7 @@ int	exec_simple(t_command *commands_list, char **envp)
 	dup2(cmd->fd[1], STDOUT_FILENO);
 	if (cmd->fd[1] != STDOUT_FILENO)
 		close(cmd->fd[1]);
-	// status = exec_cmd(cmd, envp);
-	// if (status == -1)
-	// if (exec_cmd(cmd, envp) == -1)
-	// 	return (-1);
-	if (exec_cmd(cmd, envp) > -1 && !isbuiltin(cmd->str[0]))
+	if (exec_cmd(cmd, app) > -1 && !isbuiltin(cmd->str[0]))
 		g_exit_status = waiter(cmd);
 	dup2(std[0], STDIN_FILENO);
 	dup2(std[1], STDOUT_FILENO);
@@ -551,15 +484,13 @@ int	executor(t_app *app)
 	}
 	if (redirector(app->commands_list) == -1)
 		return (-1);
-	if (app->pipes_count > 0)
+	if (app->pipes_count > 0) // redundant cmdsize > 1 or cmd->next != NULL
 	{
 		if (piper(app->commands_list) == -1)
 			return (-1);
-		return (exec_ppx(app->commands_list, app->envp));
+		return (exec_ppx(app));
 	}
-	else
-		return (exec_simple(app->commands_list, app->envp));
-	return (0);
+	return (exec_simple(app));
 }
 
 int loop(t_app *app)
@@ -568,6 +499,9 @@ int loop(t_app *app)
 
 	app->input = readline(PROMPT);
 	t = ft_strtrim(app->input, " ");
+	// printf("input: %s\n", app->input);
+	// printf("t: %s\n", t);
+	// exit(1);
 	free(app->input);
 	app->input = t;
 	if (!app->input)
@@ -583,6 +517,7 @@ int loop(t_app *app)
 	if (!get_tokens(app))
 		return (ft_error(1, app));
 	parser(app);
+	// print_commands_list(app->commands_list);
 	// printf("/////////////////////\n");
 	// printf("input: %s\n", app->input);
 	// printf("paths: %p\n", app->paths);
@@ -590,7 +525,8 @@ int loop(t_app *app)
 	// printf("/////////////////////\n");
 	// print_commands_list(app->commands_list);
 	executor(app);
-	printf("exit status: %d\n", g_exit_status);
+	// printf("exit status: %d\n", g_exit_status);
+	// printf("loop(i): %s\n", app->input);
 	// redirector(app->commands_list);
 	// print_commands_fd(app->commands_list);
 	// exit(0);
@@ -661,6 +597,7 @@ int	main(int argc, char **argv, char **envp)
 	if (!app)
 		exit(1);
 	ft_bzero(app, sizeof(t_app));
+	// printf("MAIN_PID: %d\n\n", getpid());
 	// app->envp = envp_dup(envp);
 	init_app(app);
 	fill_env_list(app, envp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 21:53:35 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/03 21:54:59 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/10 16:57:56 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ t_command	*init_command(char **str, size_t redirs_count,
 {
 	t_command	*command;
 
-	command = (t_command *)malloc(sizeof(t_command));
+	command = (t_command *)ft_calloc(1, sizeof(t_command));
 	if (!command)
 		return (NULL);
+	// ft_bzero(command, sizeof(t_command));
 	command->str = str;
 	command->redirs_count = redirs_count;
 	command->redirs = redirs;

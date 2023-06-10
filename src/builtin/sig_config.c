@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sig_config.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amenses- <amenses-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 20:07:47 by amenses-          #+#    #+#             */
-/*   Updated: 2023/03/05 23:12:35 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/03/12 19:35:10 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void	ctrl_c(int sig)
 		rl_redisplay();
 		g_exit_status = 128 + SIGINT;
 		// kill(0, SIGKILL); // kill all processes in the process group of the calling process
-		exit(g_exit_status); // set system exit status
 	}
 }
 
