@@ -67,7 +67,6 @@ void	print_commands_list(t_command *commands_list)
 		printf("args:\n");
 		for (int i = 1; tmp->str[i]; i++)
 			printf("_%s\n", tmp->str[i]);
-		printf("heredoc: %s\n", tmp->heredoc);
 		printf("redirs___\n");
 		while (token)
 		{
@@ -527,6 +526,7 @@ int loop(t_app *app)
 	// printf("pipes_count: %d\n", app->pipes_count);
 	// printf("/////////////////////\n");
 	// print_commands_list(app->commands_list);
+	expander(app);
 	executor(app);
 	// redirector(app->commands_list);
 	// print_commands_fd(app->commands_list);
@@ -600,11 +600,10 @@ int	main(int argc, char **argv, char **envp)
 	ft_bzero(app, sizeof(t_app));
 	// app->envp = envp_dup(envp);
 	init_app(app);
-	parser_test(app);
-	fill_env_list(app, envp);
+//	fill_env_list(app, envp);
 	// print_envp(getenvp(app->env_list));
 	// exit(1);
-//	status = loop(app);
+	status = loop(app);
 	status = 1;
 	return (status);
 }

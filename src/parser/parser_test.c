@@ -39,12 +39,7 @@ void parser_test(t_app *app)
 {
 	int status = parser(app);
 
-	t_command *command = app->commands_list;
-	while (command)
-	{
-		command->str = expander(app, command->str);
-		command = command->next;
-	}
+	expander(app);
 
 	if (status == EXIT_SUCCESS)
 		print_parser_info(app);
