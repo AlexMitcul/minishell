@@ -6,14 +6,14 @@
 #    By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/06/10 20:36:23 by amenses-         ###   ########.fr        #
+#    Updated: 2023/06/12 12:43:27 by amenses-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 
 CC		=	cc -fPIE
-CFLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=thread
+CFLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=address
 RM		=	rm -rf
 
 LIBDIR = ./libft

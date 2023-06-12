@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 22:41:34 by amenses-          #+#    #+#             */
-/*   Updated: 2023/03/05 18:08:22 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/12 12:45:23 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ int	ft_exit(t_app *self, char **args) //  review inputs ! everything should be d
 
 	(void)self;
 	status = g_exit_status; // as per the man, default should be the previous exit status in storage, 0 if none
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	if (self->pipes_count == 0)
+		ft_putstr_fd("exit\n", STDOUT_FILENO); // ! should only print when no pipes !
 	if (args[1] && verify_num_arg(args[1]) == 0)
 		status = 2;
 	else if (args[1] && verify_num_arg(args[1]) == 1)

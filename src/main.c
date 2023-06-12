@@ -6,13 +6,13 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:32:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/10 20:57:24 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:30:31 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-#define PROMPT "$>"
+#define PROMPT "minishell$>"
 
 int	g_exit_status = 0;
 
@@ -585,10 +585,148 @@ void	print_envp(char **envp)
 		printf("%s\n", envp[i]);
 }
 
-int	main(int argc, char **argv, char **envp)
+char	*get_hostname(void)
+{
+	char	*tmp;
+	int		fd;
+	char	*host;
+
+	fd = open("/etc/hostname", 00);
+	if (fd == -1)
+		return (NULL);
+	tmp = get_next_line(fd);
+	if (tmp == NULL)
+		return (NULL);
+	close(fd);
+	host = ft_substr(tmp, 0, ft_strchr(tmp, '.') - tmp);
+	free(tmp);
+	return (host);
+}
+
+char	*get_rlpwd(void)
+{
+	char	*rlpwd;
+	char	*home;
+	char	*tmp;
+
+	rlpwd = getcwd(NULL, 0);
+	if (rlpwd == NULL)
+		return (NULL);
+	home = ft_strjoin(getenv("HOME"), "/");
+	if (home == NULL)
+		home = ft_strdup("/");
+	if (ft_strncmp(rlpwd, home, ft_strlen(home)) == 0)
+	{
+		tmp = ft_substr(rlpwd, ft_strlen(home) - 1, ft_strlen(rlpwd));
+		free(rlpwd);
+		free(home);
+		rlpwd = ft_strjoin("~", tmp);
+		free(tmp);
+		return (rlpwd);
+	}
+	return (NULL);
+}
+
+char	*set_prompt(void)
+{
+	char	*host;
+	char	*rlpwd;
+	char	*ppt;
+	char	*tmp;
+
+	host = get_hostname();
+	rlpwd = get_rlpwd();
+	ppt = ft_strjoin(getenv("USER"), "@");
+	tmp = ppt;
+	ppt = ft_strjoin(ppt, host);
+	free(tmp);
+	tmp = ppt;
+	ppt = ft_strjoin(ppt, ":");
+	free(tmp);
+	tmp = ppt;
+	ppt = ft_strjoin(ppt, rlpwd);
+	free(tmp);
+	tmp = ppt;
+	ppt = ft_strjoin(ppt, "$ ");
+	free(tmp);
+	free(host);
+	free(rlpwd);
+	return (ppt);
+}
+
+int loop_(t_app *app)
+{
+	char	*t;
+
+	app->input = readline(PROMPT);
+	t = ft_strtrim(app->input, " ");
+	free(app->input);
+	app->input = t;
+	if (!app->input)
+	{
+		ft_putendl_fd("exit", STDOUT_FILENO);
+		exit(EXIT_SUCCESS);
+	}
+	if (app->input[0] == '\0')
+		return (reset(app));
+	add_history(app->input);
+	if (!check_quotes(app->input))
+		return (ft_error(2, app));
+	if (!get_tokens(app))
+		return (ft_error(1, app));
+	parser(app);
+	executor(app);
+	return (1);
+}
+
+int	mini_loop(t_app *app)
+{
+	char	*l;
+
+	// l = readline(set_prompt());
+	l = readline(PROMPT); // update
+	if (!l)
+	{
+		// reset(app);
+		rl_clear_history();
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
+		exit(g_exit_status);
+	}
+	add_history(l);
+	app->input = ft_strtrim(l, " ");
+	free(l);
+	if (!app->input)
+		return (mini_perr("minishell: ", "malloc", 1, 0));
+	if (!check_quotes(app->input))
+		return (ft_error(2, app));
+	if (!get_tokens(app))
+		return (ft_error(1, app));
+	if (parser(app) != 0 || executor(app) != 0)
+		return (g_exit_status);
+	// reset(app); !!!!!!!!!!!!!!
+	return (0);
+}
+
+int	main(int argc, char **argv, char **envp) // FINAL
+{
+	t_app	*app;
+
+	(void)argc;
+	(void)argv;
+	app = ft_calloc(1, sizeof(t_app));
+	if (!app)
+		return (mini_perr("minishell: ", "malloc", 1, 0));
+	fill_env_list(app, envp);
+	while (1)
+		mini_loop(app);
+	return (0);
+}
+
+/* int	main(int argc, char **argv, char **envp)
 {
 	t_app	*app;
 	int		status;
+	// pid_t	pid;
 
 	(void)envp;
 	if (argc != 1 || argv[1])
@@ -597,6 +735,7 @@ int	main(int argc, char **argv, char **envp)
 	if (!app)
 		exit(1);
 	ft_bzero(app, sizeof(t_app));
+	sig_config();
 	// printf("MAIN_PID: %d\n\n", getpid());
 	// app->envp = envp_dup(envp);
 	init_app(app);
@@ -604,79 +743,14 @@ int	main(int argc, char **argv, char **envp)
 	// print_envp(getenvp(app->env_list));
 	// exit(1);
 	status = loop(app);
+	// while (1)
+	// 	sleep(1);
 	return (status);
-}
+} */
 
 // int	g_exit_status;
 
-// char	*get_hostname(void)
-// {
-// 	char	*tmp;
-// 	int		fd;
-// 	char	*host;
 
-// 	fd = open("/etc/hostname", 00);
-// 	if (fd == -1)
-// 		return (NULL);
-// 	tmp = get_next_line(fd);
-// 	if (tmp == NULL)
-// 		return (NULL);
-// 	close(fd);
-// 	host = ft_substr(tmp, 0, ft_strchr(tmp, '.') - tmp);
-// 	free(tmp);
-// 	return (host);
-// }
-
-// char	*get_rlpwd(void)
-// {
-// 	char	*rlpwd;
-// 	char	*home;
-// 	char	*tmp;
-
-// 	rlpwd = getcwd(NULL, 0);
-// 	if (rlpwd == NULL)
-// 		return (NULL);
-// 	home = ft_strjoin(getenv("HOME"), "/");
-// 	if (home == NULL)
-// 		home = ft_strdup("/");
-// 	if (ft_strncmp(rlpwd, home, ft_strlen(home)) == 0)
-// 	{
-// 		tmp = ft_substr(rlpwd, ft_strlen(home) - 1, ft_strlen(rlpwd));
-// 		free(rlpwd);
-// 		free(home);
-// 		rlpwd = ft_strjoin("~", tmp);
-// 		free(tmp);
-// 		return (rlpwd);
-// 	}
-// 	return (NULL);
-// }
-
-// char	*set_prompt(void)
-// {
-// 	char	*host;
-// 	char	*rlpwd;
-// 	char	*ppt;
-// 	char	*tmp;
-
-// 	host = get_hostname();
-// 	rlpwd = get_rlpwd();
-// 	ppt = ft_strjoin(getenv("USER"), "@");
-// 	tmp = ppt;
-// 	ppt = ft_strjoin(ppt, host);
-// 	free(tmp);
-// 	tmp = ppt;
-// 	ppt = ft_strjoin(ppt, ":");
-// 	free(tmp);
-// 	tmp = ppt;
-// 	ppt = ft_strjoin(ppt, rlpwd);
-// 	free(tmp);
-// 	tmp = ppt;
-// 	ppt = ft_strjoin(ppt, "$ ");
-// 	free(tmp);
-// 	free(host);
-// 	free(rlpwd);
-// 	return (ppt);
-// }
 
 /* int	main(int argc, char **argv, char **envp)
 {
