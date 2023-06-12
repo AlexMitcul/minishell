@@ -598,10 +598,9 @@ int	main(int argc, char **argv, char **envp)
 	if (!app)
 		exit(1);
 	ft_bzero(app, sizeof(t_app));
-	// app->envp = envp_dup(envp);
-	init_app(app);
-//	fill_env_list(app, envp);
-	// print_envp(getenvp(app->env_list));
+    init_app(app);
+	fill_env_list(app, envp);
+//    print_envp(getenvp(app->env_list));
 	// exit(1);
 	status = loop(app);
 	status = 1;

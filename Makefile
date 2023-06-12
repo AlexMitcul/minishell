@@ -20,7 +20,7 @@ LIBDIR = ./libft
 LIB = $(LIBDIR)/libft.a
 
 INCLUDES = ./includes/
-INCLUDES_LIB = ./libft/includes/
+INCLUDES_LIB = ./libft/includes/ -I/Users/alexmitcul/.brew/opt/readline/include
 
 HEADER += $(INCLUDES)minishell.h
 HEADER += $(INCLUDES)utils.h
@@ -28,7 +28,7 @@ HEADER += $(INCLUDES)lexer.h
 HEADER += $(INCLUDES)parser.h
 HEADER += $(INCLUDES)expander.h
 
-LIB_TERMCAP = -lreadline
+LIB_TERMCAP = -lreadline -L/Users/alexmitcul/.brew/opt/readline/lib
 
 SRCS += main.c
 
