@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:32:46 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/12 21:30:31 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:52:51 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ int	set_fd(t_command *cmd, t_lexer_token *red, int (*f)(t_command*, t_lexer_toke
 	return (cmd->fd[io]);
 }
 
-int	redirector(t_command *commands_list)
+int	redirector(t_command *commands_list) // !
 {
 	t_lexer_token	*red;
 	t_command		*cmd;
@@ -263,22 +263,14 @@ int	exec_bi(t_command *cmd, t_app *app)
 // int	exec_cmd(t_command *cmd, char **envp, int npp)
 int	exec_cmd(t_command *cmd, t_app *app)
 {
-	if (isbuiltin(cmd->path)) // old cmd->str[0]
-		return (exec_bi(cmd, app)); // app npipes !
+	if (isbuiltin(cmd->path))
+		return (exec_bi(cmd, app));
 	else
 	{
-		/* if (access(cmd->path, X_OK) == -1) // old cmd->str[0]
-		{
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(cmd->str[0], STDERR_FILENO);
-			ft_putendl_fd(": Permission denied", STDERR_FILENO);
-			g_exit_status = 126;
-			return (g_exit_status);
-		} */
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
-			execve(cmd->path, cmd->str, app->envp); // old cmd->str[0]
+			execve(cmd->path, cmd->str, app->envp);
 			exit(mini_perr("minishell: ", cmd->str[0], 127, 0));
 		}
 		else if (cmd->pid < 0)
@@ -355,7 +347,7 @@ int	killer(t_command *commands_list)
 }
 
 // int	exec_ppx(t_command *commands_list, char **envp, int npp)
-int	exec_ppx(t_app *app)
+int	exec_ppx(t_app *app) // !
 {
 	int			std[2];
 	t_command	*cmd;
@@ -493,7 +485,7 @@ int	executor(t_app *app)
 	return (exec_simple(app));
 }
 
-int loop(t_app *app)
+/* int loop(t_app *app)
 {
 	char	*t;
 
@@ -534,7 +526,7 @@ int loop(t_app *app)
 	// reset(app);
 	// exit(1);
 	return (1);
-}
+} */
 
 int	env_list_size(t_env_list *env_list)
 {
@@ -654,7 +646,7 @@ char	*set_prompt(void)
 	return (ppt);
 }
 
-int loop_(t_app *app)
+/* int loop_(t_app *app)
 {
 	char	*t;
 
@@ -677,7 +669,7 @@ int loop_(t_app *app)
 	parser(app);
 	executor(app);
 	return (1);
-}
+} */
 
 int	mini_loop(t_app *app)
 {
