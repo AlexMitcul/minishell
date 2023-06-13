@@ -6,7 +6,7 @@
 #    By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/06/12 12:43:27 by amenses-         ###   ########.fr        #
+#    Updated: 2023/06/13 22:21:56 by amenses-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,10 @@ SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
 # Builtins source files
 SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
 
+# Executer source files
+SRCS += commands.c exec_builtin.c exec_utils.c executor.c fds.c heredoc.c \
+		prompt.c redirector.c subshells.c \
+
 OBJ_DIR = ./obj/
 
 vpath %.c src/
@@ -60,6 +64,7 @@ vpath %.c src/error/
 vpath %.c src/lexer/
 vpath %.c src/parser/
 vpath %.c src/expander/
+vpath %.c src/executor/
 
 vpath %.c src/utils/
 vpath %.c src/builtin/unset
