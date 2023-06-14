@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:32:16 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/13 20:48:13 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/14 19:00:32 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,13 @@ int	executor(t_app *app)
 	{
 		cmd->path = cmdpath(cmd->str[0], app->env_list);
 		if (!cmd->path)
-			return (-1); // free stuff !
+			return (-1);
 		cmd = cmd->next;
 	}
-	if (redirector(app->commands_list) == -1)
+	// if (redirector(app->commands_list) == -1)
+	if (redirector(app) == -1)
 		return (-1);
-	if (app->pipes_count > 0) // redundant cmdsize > 1 or cmd->next != NULL
+	if (app->pipes_count > 0)
 	{
 		if (piper(app->commands_list) == -1)
 			return (-1);

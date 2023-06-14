@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 20:07:47 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/13 22:17:01 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/14 16:12:28 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	heredoc_ctrl_c(int sig)
 	{
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		g_exit_status = 128 + SIGINT;
+		unlink("tmp_XmXiXnXiXsXhXeXlXl");
 		exit(g_exit_status);
 	}
 }

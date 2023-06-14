@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:45:14 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/13 20:49:36 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/14 16:14:54 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ extern int	g_exit_status;
 
 char	*pathsearch(char *cmd, char **paths)
 {
-	char *tmp[2];
-	int i;
+	char	*tmp[2];
+	int		i;
 
 	i = -1;
 	while (paths && paths[++i])
@@ -39,7 +39,7 @@ char	*pathsearch(char *cmd, char **paths)
 
 static char	*get_env_value(char *key, t_env_list *env_list)
 {
-	t_env_list *tmp;
+	t_env_list	*tmp;
 
 	if (!env_list)
 		return (NULL);
@@ -53,11 +53,11 @@ static char	*get_env_value(char *key, t_env_list *env_list)
 	return (NULL);
 }
 
-char	*cmdpath(char *cmd, t_env_list *envl) // free cmd
+char	*cmdpath(char *cmd, t_env_list *envl)
 {
-	char **paths;
-	char *env_path;
-	char *cpath;
+	char	**paths;
+	char	*env_path;
+	char	*cpath;
 
 	env_path = get_env_value("PATH", envl);
 	if ((ft_strchr(cmd, '/') || !env_path) && access(cmd, F_OK) == -1)
@@ -65,7 +65,7 @@ char	*cmdpath(char *cmd, t_env_list *envl) // free cmd
 		mini_err("minishell: ", cmd, ": No such file or directory", 127);
 		return (NULL);
 	}
-	if (ft_strchr(cmd, '/') || isbuiltin(cmd)) // also check for PATH
+	if (ft_strchr(cmd, '/') || isbuiltin(cmd))
 		return (cmd);
 	paths = ft_split(env_path, ':');
 	cpath = pathsearch(cmd, paths);

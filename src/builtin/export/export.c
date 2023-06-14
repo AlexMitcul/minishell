@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 00:22:40 by amenses-          #+#    #+#             */
-/*   Updated: 2023/03/06 01:35:10 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/14 17:43:58 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ int	ft_export(t_app *self, char **args)
 
 	i = 1;
 	status = EXIT_SUCCESS;
-	if (args[1] == NULL) // confirm if this is the way the input is passed
+	if (args[1] == NULL)
 		sorted_display(env_list_dup(self->env_list));
 	while (args[i])
 	{

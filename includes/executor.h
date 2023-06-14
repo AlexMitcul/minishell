@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:59:30 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/13 22:20:42 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/14 19:28:48 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,26 @@ int		mini_perr(char *pre, char *name, int exit_status, int fail); // EXEC_UTILS
 
 void	ft_splitfree(char **str); // EXEC_UTILS
 
-int		red_out(t_command *cmd, t_lexer_token *red); // REDIRECTOR
+// int		red_out(t_command *cmd, t_lexer_token *red); // REDIRECTOR
+int		red_out(t_app *app, t_command *cmd); // REDIRECTOR
 
-int		red_append(t_command *cmd, t_lexer_token *red); // REDIRECTOR
+// int		red_append(t_command *cmd, t_lexer_token *red); // REDIRECTOR
+int		red_append(t_app *app, t_command *cmd); // REDIRECTOR
 
-int		red_in(t_command *cmd, t_lexer_token *red); // REDIRECTOR
+// int		red_in(t_command *cmd, t_lexer_token *red); // REDIRECTOR
+int		red_in(t_app *app, t_command *cmd); // REDIRECTOR
 
-int		wr_heredoc(t_command *cmd, t_lexer_token *red); // HEREDOC
+// int		wr_heredoc(t_lexer_token *red); // HEREDOC
 
-int		red_heredoc(t_command *cmd, t_lexer_token *red); // HEREDOC
+// int		red_heredoc(t_command *cmd, t_lexer_token *red); // HEREDOC
+int		red_heredoc(t_app *app, t_command *cmd); // HEREDOC
 
-int		set_fd(t_command *cmd, t_lexer_token *red, \
-			int (*f)(t_command*, t_lexer_token*), int io); // EXEC_FDS
+/*  int		set_fd(t_command *cmd, t_lexer_token *red, \
+ 			int (*f)(t_command*, t_lexer_token*), int io); // EXEC_FDS */
+int		set_fd(t_app *app, t_command *cmd, int (*f)(t_app *, t_command *), int io); // EXEC_FDS
 
-int		redirector(t_command *commands_list); // REDIRECTOR
+// int		redirector(t_command *commands_list); // REDIRECTOR
+int		redirector(t_app *app); // REDIRECTOR
 
 int		isbuiltin(char *cmd); // EXEC_BUILTINS
 

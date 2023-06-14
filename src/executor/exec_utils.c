@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:51:21 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/13 21:01:15 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/14 16:16:03 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	mini_perr(char *pre, char *name, int exit_status, int fail)
 
 void	ft_splitfree(char **str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
@@ -59,7 +59,7 @@ char	**getenvp(t_env_list *env_list)
 	i = 0;
 	while (tmp_lst)
 	{
-		tmp = ft_strjoin(tmp_lst->key, "="); // double check env_list formation
+		tmp = ft_strjoin(tmp_lst->key, "=");
 		envp[i] = ft_strjoin(tmp, tmp_lst->value);
 		free(tmp);
 		tmp_lst = tmp_lst->next;
