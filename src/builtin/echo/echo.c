@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 23:39:39 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/14 13:49:17 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:17:30 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 extern int	g_exit_status;
 
-static int	set_option(char ** args)
+static int	set_option(char **args)
 {
-	int i;
+	int	i;
 	int	j;
 
 	i = 0;

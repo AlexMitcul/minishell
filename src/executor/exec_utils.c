@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:51:21 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/14 16:16:03 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:45:05 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,4 @@ char	**getenvp(t_env_list *env_list)
 		i++;
 	}
 	return (envp);
-}
-
-int	env_list_size(t_env_list *env_list)
-{
-	int			size;
-	t_env_list	*tmp;
-
-	size = 0;
-	tmp = env_list;
-	while (tmp)
-	{
-		size++;
-		tmp = tmp->next;
-	}
-	return (size);
 }

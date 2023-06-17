@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:32:16 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/14 19:00:32 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/17 15:37:21 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ int	exec_cmd(t_command *cmd, t_app *app)
 		if (cmd->pid == 0)
 		{
 			execve(cmd->path, cmd->str, app->envp);
-			exit(mini_perr("minishell: ", cmd->str[0], 127, 0));
+			exit(mini_perr(PRE, cmd->str[0], 127, 0));
 		}
 		else if (cmd->pid < 0)
-			return (mini_perr("minishell: ", "fork", 127, -1));
+			return (mini_perr(PRE, "fork", 127, -1));
 	}
 	return (0);
 }
@@ -42,7 +42,7 @@ int	piper(t_command *commands_list)
 	while (cmd->next)
 	{
 		if (pipe(pp) == -1)
-			return (mini_perr("minishell: ", "cannot create pipe", 126, -1));
+			return (mini_perr(PRE, "cannot create pipe", 126, -1));
 		if (cmd->fd[1] == STDOUT_FILENO)
 			cmd->fd[1] = pp[1];
 		else
@@ -114,7 +114,6 @@ int	executor(t_app *app)
 			return (-1);
 		cmd = cmd->next;
 	}
-	// if (redirector(app->commands_list) == -1)
 	if (redirector(app) == -1)
 		return (-1);
 	if (app->pipes_count > 0)

@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 21:11:43 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/14 17:11:38 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:48:21 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,31 @@
 
 int	g_exit_status = 0;
 
-int	mini_loop(t_app *app) // MAIN
+void	ctrl_d(char *line)
 {
-	char	*l;
-
-	sig_config();
-	// l = readline(set_prompt());
-	l = readline(PROMPT); // update
-	if (!l)
+	if (!line)
 	{
-		// reset(app);
 		rl_clear_history();
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 		exit(g_exit_status);
 	}
+}
+
+int	mini_loop(t_app *app)
+{
+	char	*l;
+	char	*ppt;
+
+	sig_config();
+	ppt = set_prompt();
+	l = readline(ppt);
+	free(ppt);
+	ctrl_d(l);
 	add_history(l);
 	app->input = ft_strtrim(l, " ");
 	free(l);
 	if (!app->input)
-		return (mini_perr("minishell: ", "malloc", 1, 0));
+		return (mini_perr(PRE, "malloc", 1, 0));
 	if (!check_quotes(app->input))
 		return (ft_error(2, app));
 	if (!get_tokens(app))
@@ -53,7 +59,7 @@ int	main(int argc, char **argv, char **envp) // FINAL
 	(void)argv;
 	app = ft_calloc(1, sizeof(t_app));
 	if (!app)
-		return (mini_perr("minishell: ", "malloc", 1, 0));
+		return (mini_perr(PRE, "malloc", 1, 0));
 	fill_env_list(app, envp);
 	while (1)
 		mini_loop(app);

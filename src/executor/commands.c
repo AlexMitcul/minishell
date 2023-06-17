@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:45:14 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/14 16:14:54 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/15 15:01:00 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,32 +37,16 @@ char	*pathsearch(char *cmd, char **paths)
 	return (NULL);
 }
 
-static char	*get_env_value(char *key, t_env_list *env_list)
-{
-	t_env_list	*tmp;
-
-	if (!env_list)
-		return (NULL);
-	tmp = env_list;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->key, key, ft_strlen(key) + 1) == 0)
-			return (tmp->value);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
 char	*cmdpath(char *cmd, t_env_list *envl)
 {
 	char	**paths;
 	char	*env_path;
 	char	*cpath;
 
-	env_path = get_env_value("PATH", envl);
+	env_path = get_env_value(envl, "PATH");
 	if ((ft_strchr(cmd, '/') || !env_path) && access(cmd, F_OK) == -1)
 	{
-		mini_err("minishell: ", cmd, ": No such file or directory", 127);
+		mini_err(PRE, cmd, ": No such file or directory", 127);
 		return (NULL);
 	}
 	if (ft_strchr(cmd, '/') || isbuiltin(cmd))

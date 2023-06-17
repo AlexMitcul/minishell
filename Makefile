@@ -6,7 +6,7 @@
 #    By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/06/14 17:09:36 by amenses-         ###   ########.fr        #
+#    Updated: 2023/06/17 15:09:17 by amenses-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,6 @@ SRCS += main.c
 SRCS += error.c
 
 # Lexer source files
-
 SRCS += quotes.c tokens.c lexer_utils.c lexer_test.c
 
 # Parser source files
@@ -49,11 +48,12 @@ SRCS += expander.c expander_utils.c
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
 
 # Builtins source files
-SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
+SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c \
+		env_list_utils.c \
 
 # Executer source files
 SRCS += commands.c exec_builtin.c exec_utils.c executor.c fds.c heredoc.c \
-		prompt.c redirector.c subshells.c \
+		heredoc_signals.c prompt.c redirector.c subshells.c \
 
 OBJ_DIR = ./obj/
 
@@ -74,6 +74,7 @@ vpath %.c src/builtin/export
 vpath %.c src/builtin/pwd
 vpath %.c src/builtin/exit
 vpath %.c src/builtin/cd
+vpath %.c src/builtin/builtin_utils
 vpath %.c src/builtin/
 
 OBJS = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))

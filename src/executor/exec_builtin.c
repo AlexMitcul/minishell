@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:40:50 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/13 20:48:18 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/15 12:11:44 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	exec_bi(t_command *cmd, t_app *app)
 			exit(bi(cmd, app));
 		}
 		else if (cmd->pid < 0)
-			return (mini_perr("minishell:", "fork", 1, -1));
+			return (mini_perr(PRE, "fork", 1, -1));
 	}
 	else
 		return (bi(cmd, app));

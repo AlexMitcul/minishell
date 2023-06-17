@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 22:20:09 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/14 22:27:41 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:13:33 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,72 +42,57 @@ static char	*rm_quotes(char *str)
 	return (del);
 }
 
-static char	*get_env_value(char *key, t_env_list *env_list)
+static void	put_expanded(char **str, char **ptr, t_env_list *envl, int fd)
 {
-	t_env_list	*tmp;
-
-	if (!env_list)
-		return (NULL);
-	tmp = env_list;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->key, key, ft_strlen(key) + 1) == 0)
-			return (tmp->value);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
-static void	hd_expand(char *l, t_env_list *envl, int x, int fd) // !
-{
-	char	*tmp;
 	int		i;
-	char	*m;
 	char	*key;
 
-	tmp = ft_strchr(l, '$');
-	if (!tmp || x > 0)
+	i = 1;
+	while (1)
+	{
+		if (!(*ptr)[i] || (!ft_isalnum((*ptr)[i]) && (*ptr)[i] != '_'))
+		{
+			key = ft_substr(*ptr, 1, i - 1);
+			ft_putstr_fd(get_env_value(envl, key), fd);
+			free(key);
+			*str = *str + i;
+			*ptr = ft_strchr(*ptr + 1, '$');
+			break ;
+		}
+		else
+			i++;
+	}
+}
+
+static void	hd_expand(char *l, t_env_list *envl, int x, int fd)
+{
+	char	*tmp[2];
+
+	tmp[1] = ft_strchr(l, '$');
+	if (!tmp[1] || x > 0)
 	{
 		ft_putendl_fd(l, fd);
 		return ;
 	}
-	m = l;
-	while (m)
+	tmp[0] = l;
+	while (tmp[0])
 	{
-		if (!tmp)
+		if (!tmp[1])
 		{
-			ft_putendl_fd(m, fd);
+			ft_putendl_fd(tmp[0], fd);
 			return ;
 		}
-		while (m && m != tmp)
+		while (tmp[0] && tmp[0] != tmp[1])
+			ft_putchar_fd(*(tmp[0]++), fd);
+		if (!ft_isalpha(tmp[1][1]) && tmp[1][1] != '_')
 		{
-			ft_putchar_fd(*m, fd);
-			m++;
-		}
-		i = 0;
-		if (!ft_isalpha(tmp[++i]) && tmp[i] != '_')
-		{
-			tmp = ft_strchr(tmp + 1, '$');
+			tmp[1] = ft_strchr(tmp[1] + 1, '$');
 			continue ;
 		}
-		while (1)
-		{
-			if (!tmp[i] || (!ft_isalnum(tmp[i]) && tmp[i] != '_'))
-			{
-				key = ft_substr(tmp, 1, i - 1);
-				ft_putstr_fd(get_env_value(key, envl), fd);
-				free(key);
-				m = m + i;
-				tmp = ft_strchr(tmp + 1, '$');
-				break ;
-			}
-			else
-				i++;
-		}
+		put_expanded(&tmp[0], &tmp[1], envl, fd);
 	}
 }
 
-// static int	wr_heredoc(t_lexer_token *red)
 static int	wr_heredoc(t_app *app, t_lexer_token *red)
 {
 	char	*l;
@@ -116,13 +101,13 @@ static int	wr_heredoc(t_app *app, t_lexer_token *red)
 
 	fd = open("tmp_XmXiXnXiXsXhXeXlXl", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
-		exit(mini_perr("minishell: ", red->str, 1, 0));
+		exit(mini_perr(PRE, red->str, 1, 0));
 	del = rm_quotes(red->str);
 	if (!del)
-		exit(mini_perr("minishell: ", "malloc", 1, 0));
+		exit(mini_perr(PRE, "malloc", 1, 0));
 	while (1)
 	{
-		l = readline(">");
+		l = readline(BLUEB "> " DFT);
 		if (ft_strncmp(l, del, ft_strlen(del) + 1) == 0)
 			break ;
 		hd_expand(l, app->env_list, ft_strlen(red->str) - ft_strlen(del), fd);
@@ -134,8 +119,7 @@ static int	wr_heredoc(t_app *app, t_lexer_token *red)
 	exit(0);
 }
 
-// int	red_heredoc(t_command *cmd, t_lexer_token *red)
-int	red_heredoc(t_app *app, t_command *cmd)
+int	red_heredoc(t_app *app, t_lexer_token *red)
 {
 	pid_t	pid;
 	int		fd;
@@ -145,18 +129,19 @@ int	red_heredoc(t_app *app, t_command *cmd)
 	if (pid == 0)
 	{
 		heredoc_sig_config();
-		// wr_heredoc(red);
-		wr_heredoc(app, cmd->redirs);
+		wr_heredoc(app, red);
 	}
 	else if (pid < 0)
-		return (mini_perr("minishell: ", "fork", 1, -1));
+		return (mini_perr(PRE, "fork", 1, -1));
 	sig_ignore();
 	waitpid(pid, &g_exit_status, 0);
 	if (WEXITSTATUS(g_exit_status) != 0)
 		return (-1);
+	if (WIFSIGNALED(g_exit_status))
+		mini_err(PRE HDW, red->str, "\')", 0);
 	sig_config();
 	fd = open("tmp_XmXiXnXiXsXhXeXlXl", O_RDONLY);
 	if (fd == -1 || unlink("tmp_XmXiXnXiXsXhXeXlXl") == -1)
-		mini_perr("minishell:", "here_doc", 1, 0);
+		mini_perr(PRE, "here_doc", 1, 0);
 	return (fd);
 }

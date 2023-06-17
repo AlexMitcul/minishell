@@ -6,13 +6,13 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:08:03 by amitcul           #+#    #+#             */
-/*   Updated: 2023/03/04 19:20:24 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:52:17 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static t_env_list	*init(char *key, char *value)
+t_env_list	*init(char *key, char *value)
 {
 	t_env_list	*new;
 
@@ -23,7 +23,7 @@ static t_env_list	*init(char *key, char *value)
 	return (new);
 }
 
-static void	push_front(t_app *self, t_env_list *new)
+void	push_front(t_app *self, t_env_list *new)
 {
 	if (new == NULL)
 		return ;

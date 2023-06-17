@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:28:52 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/14 19:29:00 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:23:09 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 extern int	g_exit_status;
 
-/* int	set_fd(t_command *cmd, t_lexer_token *red, \
-	int (*f)(t_command*, t_lexer_token*), int io) */
-int		set_fd(t_app *app, t_command *cmd, \
-	int (*f)(t_app *, t_command *), int io)
+int	set_fd(t_app *app, t_command *cmd, t_lexer_token *red, \
+	int (*f)(t_app *, t_lexer_token *), int io)
 {
 	if (cmd->fd[io] != io)
 		close(cmd->fd[io]);
-	cmd->fd[io] = f(app, cmd);
+	cmd->fd[io] = f(app, red);
 	return (cmd->fd[io]);
 }
 

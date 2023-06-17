@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:35:23 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/13 20:48:09 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/17 23:51:00 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*get_hostname(void)
 	return (host);
 }
 
-char	*get_rlpwd(void)
+char	*get_rlpwd(void) // review !
 {
 	char	*rlpwd;
 	char	*home;
@@ -49,7 +49,7 @@ char	*get_rlpwd(void)
 		tmp = ft_substr(rlpwd, ft_strlen(home) - 1, ft_strlen(rlpwd));
 		free(rlpwd);
 		free(home);
-		rlpwd = ft_strjoin("~", tmp);
+		rlpwd = ft_strjoin(YELB "~", tmp);
 		free(tmp);
 		return (rlpwd);
 	}
@@ -60,25 +60,27 @@ char	*set_prompt(void)
 {
 	char	*host;
 	char	*rlpwd;
-	char	*ppt;
-	char	*tmp;
+	char	*ppt[2];
 
 	host = get_hostname();
 	rlpwd = get_rlpwd();
-	ppt = ft_strjoin(getenv("USER"), "@");
-	tmp = ppt;
-	ppt = ft_strjoin(ppt, host);
-	free(tmp);
-	tmp = ppt;
-	ppt = ft_strjoin(ppt, ":");
-	free(tmp);
-	tmp = ppt;
-	ppt = ft_strjoin(ppt, rlpwd);
-	free(tmp);
-	tmp = ppt;
-	ppt = ft_strjoin(ppt, "$ ");
-	free(tmp);
+	ppt[0] = ft_strjoin(getenv("USER"), "@");
+	ppt[1] = ppt[0];
+	ppt[0] = ft_strjoin(ppt[0], host);
+	free(ppt[1]);
+	ppt[1] = ppt[0];
+	ppt[0] = ft_strjoin(ppt[0], ":");
+	free(ppt[1]);
+	ppt[1] = ppt[0];
+	ppt[0] = ft_strjoin(ppt[0], rlpwd);
+	free(ppt[1]);
+	ppt[1] = ppt[0];
+	ppt[0] = ft_strjoin(ppt[0], "$ " DFT);
+	free(ppt[1]);
+	ppt[1] = ppt[0];
+	ppt[0] = ft_strjoin(BLUEB, ppt[0]);
+	free(ppt[1]);
 	free(host);
 	free(rlpwd);
-	return (ppt);
+	return (ppt[0]);
 }
