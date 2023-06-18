@@ -6,11 +6,27 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 14:53:23 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/15 18:56:18 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/18 18:56:25 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	find_env_key(t_env_list *env_list, char *key)
+{
+	t_env_list	*envl;
+
+	if (!env_list)
+		return (0);
+	envl = env_list;
+	while (envl)
+	{
+		if (ft_strncmp(envl->key, key, ft_strlen(key) + 1) == 0)
+			return (1);
+		envl = envl->next;
+	}
+	return (0);
+}
 
 char	*get_env_value(t_env_list *env_list, char *key)
 {
@@ -28,6 +44,26 @@ char	*get_env_value(t_env_list *env_list, char *key)
 	return (NULL);
 }
 
+int	set_env_value(t_env_list *env_list, char *key, char *value)
+{
+	t_env_list	*tmp;
+
+	if (!env_list || !value || value[0] == '\0')
+		return (0);
+	tmp = env_list;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->key, key, ft_strlen(key) + 1) == 0)
+		{
+			free(tmp->value);
+			tmp->value = ft_strdup(value);
+			return (1);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 int	env_list_size(t_env_list *env_list)
 {
 	int			size;
@@ -41,23 +77,4 @@ int	env_list_size(t_env_list *env_list)
 		tmp = tmp->next;
 	}
 	return (size);
-}
-
-t_app	*env_list_dup(t_env_list *env_list)
-{
-	t_app		*new;
-	t_env_list	*tmp;
-
-	tmp = env_list;
-	new = malloc(sizeof(t_app));
-	ft_bzero(new, sizeof(t_app));
-	while (tmp)
-	{
-		if (tmp->value == NULL)
-			push_front(new, init(ft_strdup(tmp->key), NULL));
-		else
-			push_front(new, init(ft_strdup(tmp->key), ft_strdup(tmp->value)));
-		tmp = tmp->next;
-	}
-	return (new);
 }

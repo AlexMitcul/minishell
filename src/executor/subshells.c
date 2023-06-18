@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:44:11 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/17 15:37:58 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:22:46 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ int	waiter(t_command *commands_list)
 	wstatus = 0;
 	while (cmd)
 	{
-		if (waitpid(0, &wstatus, 0) == -1)
-			return (mini_perr(PRE, "waitpid", 1, 0));
+		waitpid(0, &wstatus, 0);
 		cmd = cmd->next;
 	}
 	g_exit_status = WEXITSTATUS(wstatus);

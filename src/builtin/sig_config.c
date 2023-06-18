@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 20:07:47 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/17 15:37:12 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/18 16:30:31 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int	chld_sig_config(void)
 	struct sigaction	sa_int;
 
 	sa_int.sa_handler = &chld_ctrl_c;
-	// sigemptyset(&sa_int.sa_mask);
-	// sa_int.sa_flags = 0;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
 	if (sigaction(SIGINT, &sa_int, NULL) == -1)
 		return (mini_perr(PRE, "sigaction", 1, 0));
 	return (0);
@@ -53,10 +53,11 @@ int	sig_config(void)
 	struct sigaction	sa_quit;
 
 	sa_quit.sa_handler = SIG_IGN;
+	sigemptyset(&sa_quit.sa_mask);
+	sa_quit.sa_flags = 0;
 	sa_int.sa_handler = &ctrl_c;
 	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = 0;
-	// sigaddset(&sa_int.sa_mask, SIGINT);
 	if (sigaction(SIGINT, &sa_int, NULL) == -1)
 		return (mini_perr(PRE, "sigaction", 1, 0));
 	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)

@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 22:20:09 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/15 18:13:33 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:28:18 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static int	wr_heredoc(t_app *app, t_lexer_token *red)
 		exit(mini_perr(PRE, "malloc", 1, 0));
 	while (1)
 	{
-		l = readline(BLUEB "> " DFT);
+		l = readline("> ");
 		if (ft_strncmp(l, del, ft_strlen(del) + 1) == 0)
 			break ;
 		hd_expand(l, app->env_list, ft_strlen(red->str) - ft_strlen(del), fd);

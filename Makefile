@@ -6,14 +6,14 @@
 #    By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/06/17 15:09:17 by amenses-         ###   ########.fr        #
+#    Updated: 2023/06/18 21:27:12 by amenses-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 
 CC		=	cc -fPIE
-CFLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
 RM		=	rm -rf
 
 LIBDIR = ./libft
@@ -48,8 +48,8 @@ SRCS += expander.c expander_utils.c
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
 
 # Builtins source files
-SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c \
-		env_list_utils.c \
+SRCS += unset.c env.c echo.c export.c export_utils.c pwd.c exit.c cd.c \
+		sig_config.c env_list_utils.c \
 
 # Executer source files
 SRCS += commands.c exec_builtin.c exec_utils.c executor.c fds.c heredoc.c \

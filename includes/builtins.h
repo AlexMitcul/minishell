@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:46:32 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/15 18:56:41 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/18 22:53:29 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,21 @@ int	ft_unset(t_app *self, char **args);
 
 int	sig_config(void);
 
+int	find_env_key(t_env_list *env_list, char *key);
+
 char	*get_env_value(t_env_list *env_list, char *key);
+
+int	set_env_value(t_env_list *env_list, char *key, char *value);
 
 int		env_list_size(t_env_list *env_list);
 
+void	add_envlist_item(t_app **self, char *arg);
+
+// t_app	*env_list_dup(t_env_list *env_list); // move to export_utils.c
 t_app	*env_list_dup(t_env_list *env_list);
+
+int	find_env_key(t_env_list *env_list, char *key);
+
+void	envl_dup_clear(t_app **self);
 
 #endif

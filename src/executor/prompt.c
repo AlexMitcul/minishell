@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:35:23 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/17 23:51:00 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/18 16:23:24 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,30 @@ char	*get_hostname(void)
 	return (host);
 }
 
-char	*get_rlpwd(void) // review !
+char	*prefix(char *user, char *host)
+{
+	char	*prefix;
+	char	*tmp;
+
+	if (user == NULL)
+		user = ft_strdup("");
+	if (host == NULL)
+		host = ft_strdup("");
+	prefix = ft_strjoin(user, "@");
+	tmp = prefix;
+	prefix = ft_strjoin(prefix, host);
+	free(tmp);
+	free(host);
+	tmp = prefix;
+	if (getenv("HOME"))
+		prefix = ft_strjoin(prefix, ":~");
+	else
+		prefix = ft_strjoin(prefix, ":");
+	free(tmp);
+	return (prefix);
+}
+
+char	*get_rlpwd(void)
 {
 	char	*rlpwd;
 	char	*home;
@@ -40,7 +63,7 @@ char	*get_rlpwd(void) // review !
 
 	rlpwd = getcwd(NULL, 0);
 	if (rlpwd == NULL)
-		return (NULL);
+		return (ft_strdup(""));
 	home = ft_strjoin(getenv("HOME"), "/");
 	if (home == NULL)
 		home = ft_strdup("/");
@@ -49,38 +72,27 @@ char	*get_rlpwd(void) // review !
 		tmp = ft_substr(rlpwd, ft_strlen(home) - 1, ft_strlen(rlpwd));
 		free(rlpwd);
 		free(home);
-		rlpwd = ft_strjoin(YELB "~", tmp);
-		free(tmp);
-		return (rlpwd);
+		return (tmp);
 	}
-	return (NULL);
+	return (ft_strdup(""));
 }
 
 char	*set_prompt(void)
 {
-	char	*host;
 	char	*rlpwd;
 	char	*ppt[2];
 
-	host = get_hostname();
+	ppt[0] = prefix(getenv("USER"), get_hostname());
 	rlpwd = get_rlpwd();
-	ppt[0] = ft_strjoin(getenv("USER"), "@");
-	ppt[1] = ppt[0];
-	ppt[0] = ft_strjoin(ppt[0], host);
-	free(ppt[1]);
-	ppt[1] = ppt[0];
-	ppt[0] = ft_strjoin(ppt[0], ":");
-	free(ppt[1]);
 	ppt[1] = ppt[0];
 	ppt[0] = ft_strjoin(ppt[0], rlpwd);
 	free(ppt[1]);
 	ppt[1] = ppt[0];
-	ppt[0] = ft_strjoin(ppt[0], "$ " DFT);
+	ppt[0] = ft_strjoin(ppt[0], "$ ");
 	free(ppt[1]);
 	ppt[1] = ppt[0];
-	ppt[0] = ft_strjoin(BLUEB, ppt[0]);
+	ppt[0] = ft_strjoin("<MINI> ", ppt[0]);
 	free(ppt[1]);
-	free(host);
 	free(rlpwd);
 	return (ppt[0]);
 }

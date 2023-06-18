@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 00:22:40 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/17 15:05:36 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/18 22:52:53 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,25 +39,6 @@ static int	validate_key(char *arg)
 		i++;
 	}
 	return (1);
-}
-
-static void	add_envlist_item(t_app **self, char *arg)
-{
-	t_env_list	*new;
-	char		*del;
-	int			index;
-
-	del = ft_strchr(arg, '=');
-	if (del == NULL)
-		index = ft_strlen(arg);
-	else
-		index = (int)(del - arg);
-	if (del == NULL)
-		new = init(ft_substr(arg, 0, index), NULL);
-	else
-		new = init(ft_substr(arg, 0, index), \
-			ft_substr(arg, index + 1, ft_strlen(arg)));
-	push_front(*self, new);
 }
 
 static void	export_display(t_env_list *env_list)
@@ -101,31 +82,30 @@ static void	sorted_display(t_app *self_dup)
 		tmp[0] = tmp[0]->next;
 	}
 	export_display(self_dup->env_list);
-	free_env_list(self_dup); // double free error, investigate!
 }
 
 int	ft_export(t_app *self, char **args)
 {
-	int	i;
-	int	status;
+	int		i;
+	t_app	*self_dup;
 
 	i = 1;
-	status = EXIT_SUCCESS;
 	if (args[1] == NULL)
-		sorted_display(env_list_dup(self->env_list));
+	{
+		self_dup = env_list_dup(self->env_list);
+		if (self_dup == NULL && args[1] == NULL)
+			return (mini_perr(PRE, "export", 1, 0));
+		sorted_display(self_dup);
+		envl_dup_clear(&self_dup);
+		g_exit_status = 0;
+	}
 	while (args[i])
 	{
 		if (validate_key(args[i]))
 			add_envlist_item(&self, args[i]);
 		else
-		{
-			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-			ft_putstr_fd(args[i], STDERR_FILENO);
-			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
-			status = EXIT_FAILURE;
-		}
+			mini_err(PRE "export: `", args[i], "': not a valid identifier", 1);
 		i++;
 	}
-	g_exit_status = status;
 	return (g_exit_status);
 }
