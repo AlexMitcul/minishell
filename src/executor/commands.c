@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:45:14 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/15 15:01:00 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:57:12 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*cmdpath(char *cmd, t_env_list *envl)
 		return (NULL);
 	}
 	if (ft_strchr(cmd, '/') || isbuiltin(cmd))
-		return (cmd);
+		return (ft_strdup(cmd));
 	paths = ft_split(env_path, ':');
 	cpath = pathsearch(cmd, paths);
 	ft_splitfree(paths);
