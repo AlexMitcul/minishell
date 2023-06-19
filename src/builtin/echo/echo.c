@@ -6,27 +6,46 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 23:39:39 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/09 17:38:04 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/15 18:17:30 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern int	g_exit_status; // extern
+extern int	g_exit_status;
+
+static int	set_option(char **args)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (args[++i])
+	{
+		if (ft_strncmp(args[i], "-n", 2) == 0)
+		{
+			j = 1;
+			while (args[i][j])
+			{
+				if (args[i][j] != 'n')
+					return (i);
+				j++;
+			}
+		}
+		else
+			return (i);
+	}
+	return (i);
+}
 
 int	ft_echo(t_app *self, char **args)
 {
 	int	i;
-	int	n_flag;
+	int	n;
 
 	(void)self;
-	i = 1;
-	n_flag = 0;
-	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
-	{
-		n_flag = 1;
-		i++;
-	}
+	n = set_option(args);
+	i = n;
 	while (args[i])
 	{
 		ft_putstr_fd(args[i], STDOUT_FILENO);
@@ -34,21 +53,8 @@ int	ft_echo(t_app *self, char **args)
 			ft_putchar_fd(' ', STDOUT_FILENO);
 		i++;
 	}
-	if (n_flag == 0)
+	if (n == 1)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	g_exit_status = 0;
 	return (g_exit_status);
 }
-
-/* int	main(int argc, char **argv, char **envp)
-{
-	t_app	*app;
-
-	(void)argc;
-	app = malloc(sizeof(t_app));
-	fill_env_list(app, envp);
-	ft_echo(argv + 1);
-	free_env_list(app);
-	free(app);
-	return (EXIT_SUCCESS);
-} */

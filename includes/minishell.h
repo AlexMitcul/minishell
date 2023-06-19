@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/08 18:00:17 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:36:05 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@
 # include "error.h"
 # include "executor.h"
 
+# define BLUEB	"\033[0;34m\033[1m"
+# define GRNB	"\033[0;32m\033[1m"
+# define YELB	"\033[0;33m\033[1m"
+# define DFT	"\033[0m"
+
 // typedef struct s_app		t_app;
 // typedef struct s_tree		t_tree;
 // typedef struct s_parser		t_parser;
@@ -56,5 +61,7 @@ void	fill_env_list(t_app *self, char **envp);
 void	free_env_list(t_app *self);
 void	remove_list_item_by_key(t_app *self, char *key);
 int	env(t_app **self, char **args);
+
+char	*ft_readline(char *prompt);
 
 #endif

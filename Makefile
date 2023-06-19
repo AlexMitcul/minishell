@@ -6,14 +6,14 @@
 #    By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/06/08 20:44:43 by amenses-         ###   ########.fr        #
+#    Updated: 2023/06/19 16:55:18 by amenses-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 
-CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror -g
+CC		=	cc -fPIE
+CFLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=address
 RM		=	rm -rf
 
 LIBDIR = ./libft
@@ -36,7 +36,6 @@ SRCS += main.c
 SRCS += error.c
 
 # Lexer source files
-
 SRCS += quotes.c tokens.c lexer_utils.c lexer_test.c
 
 # Parser source files
@@ -49,7 +48,12 @@ SRCS += expander.c expander_utils.c
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
 
 # Builtins source files
-SRCS += unset.c env.c echo.c export.c pwd.c exit.c cd.c sig_config.c
+SRCS += unset.c env.c echo.c export.c export_utils.c pwd.c exit.c cd.c \
+		sig_config.c env_list_utils.c \
+
+# Executer source files
+SRCS += commands.c exec_builtin.c exec_utils.c executor.c fds.c heredoc.c \
+		heredoc_signals.c prompt.c redirector.c subshells.c \
 
 OBJ_DIR = ./obj/
 
@@ -60,6 +64,7 @@ vpath %.c src/error/
 vpath %.c src/lexer/
 vpath %.c src/parser/
 vpath %.c src/expander/
+vpath %.c src/executor/
 
 vpath %.c src/utils/
 vpath %.c src/builtin/unset
@@ -69,6 +74,7 @@ vpath %.c src/builtin/export
 vpath %.c src/builtin/pwd
 vpath %.c src/builtin/exit
 vpath %.c src/builtin/cd
+vpath %.c src/builtin/builtin_utils
 vpath %.c src/builtin/
 
 OBJS = $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS))

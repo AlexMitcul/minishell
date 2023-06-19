@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alexmitcul <alexmitcul@student.42.fr>      +#+  +:+       +#+        */
+/*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 12:04:58 by alexmitcul        #+#    #+#             */
-/*   Updated: 2022/11/07 00:14:16 by alexmitcul       ###   ########.fr       */
+/*   Updated: 2023/06/10 16:49:17 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,55 +26,38 @@
 
 #include "libft.h"
 
-static void	get_length(char const *line, char const *set, int *start, int *end)
+static int ft_isspace(char ch, const char *set)
 {
-	int		i;
-	int		len;
-
-	len = ft_strlen(line);
-	i = 0;
-	while (i < len)
+	while (*set != '\0')
 	{
-		if (ft_strchr(set, line[i]) == NULL)
-			break ;
-		i++;
+		if (ch == *set)
+			return (1);
+		set++;
 	}
-	*start = i;
-	i = len - 1;
-	while (i >= 0)
-	{
-		if (ft_strchr(set, line[i]) == NULL)
-			break ;
-		i--;
-	}
-	*end = len - i - 1;
+	return (0);
 }
 
-char	*ft_strtrim(char const *s1, char const *set)
+char* ft_strtrim(const char* str, const char* set)
 {
-	char	*res;
-	int		i;
-	int		start;
-	int		end;
+	size_t		trimmed_length;
+	char*		trimmed_str;
+	const char*	start;
+	const char*	end;
 
-	if (s1 == NULL)
+	if (str == NULL)
 		return (NULL);
-	if (set == NULL)
-		return (ft_strdup(s1));
-	get_length(s1, set, &start, &end);
-	if (start - end == 0)
-		res = malloc(sizeof(char));
-	else
-		res = malloc(sizeof(char) * (ft_strlen(s1) - start - end + 1));
-	if (res == NULL)
-		return (NULL);
-	i = 0;
-	end = ft_strlen(s1) - start - end;
-	while (i < end)
+	start = str;
+	end = str + ft_strlen(str) - 1;
+	while (*start != '\0' && ft_isspace(*start, set))
+		start++;
+	while (end > start && ft_isspace(*end, set))
+		end--;
+	trimmed_length = end - start + 1;
+	trimmed_str = malloc(trimmed_length + 1);
+	if (trimmed_str != NULL)
 	{
-		res[i] = s1[start + i];
-		i++;
+		ft_memcpy(trimmed_str, start, trimmed_length);
+		trimmed_str[trimmed_length] = '\0';
 	}
-	res[i] = '\0';
-	return (res);
+	return (trimmed_str);
 }

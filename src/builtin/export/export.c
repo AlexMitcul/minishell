@@ -6,49 +6,13 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 00:22:40 by amenses-          #+#    #+#             */
-/*   Updated: 2023/03/06 01:35:10 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/18 22:52:53 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern int	g_exit_status; // extern
-
-/* static void	print_env_list(t_env_list *self)
-{
-	t_env_list	*tmp;
-
-	tmp = self;
-	while (tmp)
-	{
-		printf("key=%s, value=%s\n", tmp->key, tmp->value);
-		tmp = tmp->next;
-	}
-} */
-
-static t_env_list	*init(char *key, char *value) // build general new item function
-{
-	t_env_list	*new;
-
-	new = malloc(sizeof(t_env_list));
-	new->key = key;
-	new->value = value;
-	new->next = NULL;
-	return (new);
-}
-
-static void	push_front(t_app *self, t_env_list *new) // build general push front function
-{
-	if (new == NULL)
-		return ;
-	if (self->env_list == NULL)
-	{
-		self->env_list = new;
-		return ;
-	}
-	new->next = self->env_list;
-	self->env_list = new;
-}
+extern int	g_exit_status;
 
 static int	validate_key(char *arg)
 {
@@ -75,25 +39,6 @@ static int	validate_key(char *arg)
 		i++;
 	}
 	return (1);
-}
-
-static void	add_envlist_item(t_app **self, char *arg)
-{
-	t_env_list	*new;
-	char		*del;
-	int			index;
-
-	del = ft_strchr(arg, '=');
-	if (del == NULL)
-		index = ft_strlen(arg);
-	else
-		index = (int)(del - arg);
-	if (del == NULL)
-		new = init(ft_substr(arg, 0, index), NULL);
-	else
-		new = init(ft_substr(arg, 0, index), \
-			ft_substr(arg, index + 1, ft_strlen(arg)));
-	push_front(*self, new);
 }
 
 static void	export_display(t_env_list *env_list)
@@ -137,65 +82,30 @@ static void	sorted_display(t_app *self_dup)
 		tmp[0] = tmp[0]->next;
 	}
 	export_display(self_dup->env_list);
-	// free_env_list(self_dup); // double free error, investigate!
-}
-
-static t_app	*env_list_dup(t_env_list *env_list)
-{
-	t_app		*new;
-	t_env_list	*tmp;
-
-	tmp = env_list;
-	new = malloc(sizeof(t_app));
-	ft_bzero(new, sizeof(t_app));
-	while (tmp)
-	{
-		if (tmp->value == NULL)
-			push_front(new, init(ft_strdup(tmp->key), NULL));
-		else
-			push_front(new, init(ft_strdup(tmp->key), ft_strdup(tmp->value)));
-		tmp = tmp->next;
-	}
-	// print_env_list(new->env_list);
-	// exit(0);
-	return (new);
 }
 
 int	ft_export(t_app *self, char **args)
 {
-	int	i;
-	int	status;
+	int		i;
+	t_app	*self_dup;
 
 	i = 1;
-	status = EXIT_SUCCESS;
-	if (args[1] == NULL) // confirm if this is the way the input is passed
-		sorted_display(env_list_dup(self->env_list));
+	if (args[1] == NULL)
+	{
+		self_dup = env_list_dup(self->env_list);
+		if (self_dup == NULL && args[1] == NULL)
+			return (mini_perr(PRE, "export", 1, 0));
+		sorted_display(self_dup);
+		envl_dup_clear(&self_dup);
+		g_exit_status = 0;
+	}
 	while (args[i])
 	{
 		if (validate_key(args[i]))
 			add_envlist_item(&self, args[i]);
 		else
-		{
-			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-			ft_putstr_fd(args[i], STDERR_FILENO);
-			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
-			status = EXIT_FAILURE;
-		}
+			mini_err(PRE "export: `", args[i], "': not a valid identifier", 1);
 		i++;
 	}
-	g_exit_status = status;
 	return (g_exit_status);
 }
-
-/* int main(int argc, char **argv, char **envp)
-{
-	t_app	*app;
-
-	(void)argc;
-	app = malloc(sizeof(t_app));
-	fill_env_list(app, envp);
-	printf("status=%d\n", ft_export(app, argv + 1));
-	// printf("%s\n", argv[1]);
-	ft_export(app, argv + 2);
-	return (0);
-} */

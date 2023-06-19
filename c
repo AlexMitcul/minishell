@@ -1,0 +1,11 @@
+a
+b
+c
+includes
+libft
+Makefile
+minishell
+obj
+out
+src
+test

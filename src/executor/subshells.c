@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   subshells.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/26 20:31:20 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/17 16:30:16 by amenses-         ###   ########.fr       */
+/*   Created: 2023/06/13 20:44:11 by amenses-          #+#    #+#             */
+/*   Updated: 2023/06/18 15:22:46 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,32 @@
 
 extern int	g_exit_status;
 
-int	ft_pwd(t_app *self, char **args)
+int	waiter(t_command *commands_list)
 {
-	char	*pwd;
+	t_command	*cmd;
+	int			wstatus;
 
-	(void)self;
-	(void)args;
-	pwd = getcwd(NULL, 0);
-	if (pwd == NULL)
-		return (mini_perr(PRE, "pwd", 1, 0));
-	ft_putendl_fd(pwd, STDOUT_FILENO);
-	free(pwd);
-	g_exit_status = 0;
+	cmd = commands_list;
+	wstatus = 0;
+	while (cmd)
+	{
+		waitpid(0, &wstatus, 0);
+		cmd = cmd->next;
+	}
+	g_exit_status = WEXITSTATUS(wstatus);
 	return (g_exit_status);
+}
+
+int	killer(t_command *commands_list)
+{
+	t_command	*cmd;
+
+	cmd = commands_list;
+	while (cmd)
+	{
+		if (cmd->pid != 0)
+			kill(cmd->pid, SIGKILL);
+		cmd = cmd->next;
+	}
+	return (0);
 }
