@@ -1,139 +1,207 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/03 21:44:17 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/05 20:53:07 by amitcul          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "../../includes/expander.h"
-#include "../../includes/error.h"
 
-size_t	loop_if_sign(t_app *app, char *str, char **t1, size_t start)
+char	*handle_single_quotes(char *str, size_t *start);
+char    *handle_double_quotes(char *str, size_t *start, t_env_list *list);
+
+bool is_delimeter(char c)
 {
-	int		i;
-	int		ret;
-	char	*t2;
-	char	*t3;
+    return (c == '\'' || c == '"' || c == '$');
+}
+
+void print_strs(char **strs)
+{
+	size_t i;
 
 	i = 0;
-	ret = 0;
-	while (app->envp[i])
+	if (strs == NULL || strs[i] == NULL)
 	{
-		if (ft_strncmp(str + i + 1, app->envp[i], equal_sign(app->envp[i]) - 1)
-			&& after_dol_length(str, start) - start == equal_sign(app->envp[i]))
-		{
-			t2 = ft_strdup(app->envp[i] + equal_sign(app->envp[i]));
-			t3 = ft_strjoin(*t1, t2);
-			free(*t1);
-			*t1 = t3;
-			free(t2);
-			ret = equal_sign(app->envp[i]);
-		}
+		printf("Is empty.\n");
+		return ;
+	}
+	while (strs[i])
+	{
+		printf("%s ", strs[i]);
 		i++;
 	}
-	if (ret == 0)
-		ret = after_dol_length(str, start) - start;
-	return (ret);
+	printf("\n");
 }
 
-char	*char_to_string(char c)
+size_t count_strings(char **strs)
 {
-	char	*str;
+	size_t	count;
 
-	str = ft_calloc(sizeof(char), 2);
-	str[0] = c;
-	return (str);
+	count = 0;
+	while (strs[count])
+		count++;
+	return (count);
 }
 
-char	*detect_sign(t_app *app, char *str)
+void free_strs(char **strs)
 {
 	size_t	i;
-	char	*t1;
-	char	*t2;
-	char	*t3;
 
 	i = 0;
-	t1 = ft_strdup("\0");
-	while (str[i])
+	while (strs[i])
 	{
-		i += handle_after_sign(i, str);
-		if (str[i] == '$' && str[i + 1] == '?')
-			i += question_mark(&t1);
-		else if (str[i] == '$' && str[i + 1] != ' '
-			&& (str[i + 1] != '"' || str[i + 2] != '\0') && str[i + 1] != '\0')
-			i += loop_if_sign(app, str, &t1, i);
-		else
-		{
-			t2 = char_to_string(str[i++]);
-			t3 = ft_strjoin(t1, t2);
-			free(t1);
-			t1 = t3;
-			free(t2);
-		}
-	}
-	return (t1);
-}
-
-char	*delete_quotes(char *str, char c)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-		{
-			j = 0;
-			while (str[i + j] == c)
-				j++;
-			ft_strlcpy(&str[i], &str[i + j], ft_strlen(str) - i);
-		}
+		free(strs[i]);
 		i++;
 	}
-	return (str);
+	free(strs);
 }
 
-char	**expander(t_app *app, char **str)
-{
-	int		i;
-	char	*tmp;
-
-	tmp = NULL;
-	i = 0;
-	while (str[i] != NULL)
-	{
-		if (sign(str[i]) != 0 && str[i][sign(str[i])]
-			&& str[i][sign(str[i]) - 2] != '\'')
-		{
-			tmp = detect_sign(app, str[i]);
-			free(str[i]);
-			str[i] = tmp;
-		}
-		i++;
-	}
-	return (str);
-}
-
-//char	*expander_str(t_app *app, char *str)
+//static void print_env_list(t_env_list *list)
 //{
-//	char	*tmp;
-//
-//	tmp = NULL;
-//	if (str[sign(str) - 2] != '\'' && sign(str) != 0
-//		&& str[sign(str)] != '\0')
-//	{
-//		tmp = detect_sign(app, str);
-//		free(str);
-//		str = tmp;
-//	}
-//	str = delete_quotes(str, '\"');
-//	str = delete_quotes(str, '\'');
-//	return (str);
+//    while (list) {
+//        printf("%s %s\n", list->key, list->value);
+//        list = list->next;
+//    }
 //}
+
+static char    *get_env_value(char *key, t_env_list *env_list)
+{
+    t_env_list *tmp;
+    if (!env_list)
+        return (NULL);
+    tmp = env_list;
+    while (tmp)
+    {
+        if (ft_strncmp(tmp->key, key, ft_strlen(key) + 1) == 0)
+            return (tmp->value);
+        tmp = tmp->next;
+    }
+    return (NULL);
+}
+
+
+// handle $?
+char *handle_dollar_sign(char *str, size_t *start, t_env_list *list)
+{
+    size_t  i;
+    size_t  length;
+    char *varname;
+
+    (void)list;
+    i = *start + 1;
+    while (str[i] != '\0' && is_delimeter(str[i]) == false)
+        i++;
+    length = i - *start - 1;
+    varname = ft_substr(str, *start + 1, length);
+    printf("%s\n", varname);
+    *start += length + 1;
+    return (get_env_value(varname, list));
+}
+
+size_t	get_head(char **result, char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] && !is_delimeter(str[i]))
+		i++;
+	*result = ft_calloc(i + 1, sizeof(char));
+    ft_memcpy(*result, str, i);
+	return (i);
+}
+
+char    *join(char **strs)
+{
+    size_t total_length;
+    size_t i;
+    size_t written;
+    char *result;
+
+    total_length = 0;
+    i = 0;
+    while (strs[i] != NULL)
+    {
+        total_length += ft_strlen(strs[i]);
+        i++;
+    }
+    result = (char *) ft_calloc(total_length + 1, sizeof(char));
+    if (!result)
+        return (NULL);
+    i = 0;
+    written = 0;
+    while (strs[i] != NULL)
+    {
+        total_length = ft_strlen(strs[i]);
+        ft_memcpy(result + written, strs[i], total_length);
+        written += total_length;
+        i++;
+    }
+    return (result);
+}
+
+bool is_valid_varname_character(char ch)
+{
+    if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')
+        return (true);
+    return (false);
+}
+
+char *try_expand(char *str, t_env_list *list)
+{
+	char *result;
+	char **to_join;
+	size_t	result_index;
+	size_t	i;
+
+	// check that str exist
+    i = 0;
+	to_join = ft_calloc(100, sizeof(char *));
+	result_index = 0;
+	if (!is_delimeter(str[0]))
+	{
+		char *head = NULL;
+		i += get_head(&head, str);
+		printf("head: %s\n", head);
+		to_join[result_index] = head;
+		result_index++;
+	}
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			to_join[result_index++] = handle_single_quotes(str, &i);
+		else if (str[i] == '"')
+			to_join[result_index++] = handle_double_quotes(str, &i, list);
+		else if (str[i] == '$')
+            to_join[result_index++] = handle_dollar_sign(str, &i, list);
+	}
+    result = join(to_join);
+    free_strs(to_join);
+    return (result);
+}
+
+char **expand(t_env_list *list, char **strs)
+{
+    size_t i;
+    char *tmp;
+
+    (void)list;
+    i = 0;
+    while (strs[i] != NULL)
+    {
+        tmp = try_expand(strs[i], list);
+        free(strs[i]);
+        strs[i] = tmp;
+        i++;
+    }
+    return (strs);
+}
+
+int expander(t_app *app)
+{
+	t_command *command;
+	char **expanded;
+
+	command = app->commands_list;
+	while (command)
+	{
+		expanded = expand(app->env_list, command->str);
+		print_strs(expanded);
+		command = command->next;
+	}
+	return (EXIT_SUCCESS);
+}
