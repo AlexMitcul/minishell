@@ -648,7 +648,7 @@ void	print_envp(char **envp)
 	while (envp[++i])
 		printf("%s\n", envp[i]);
 }
-
+void parser_test(t_app *app);
 int	main(int argc, char **argv, char **envp)
 {
 	t_app	*app;
@@ -663,10 +663,12 @@ int	main(int argc, char **argv, char **envp)
 	ft_bzero(app, sizeof(t_app));
 	// app->envp = envp_dup(envp);
 	init_app(app);
+	parser_test(app);
 	fill_env_list(app, envp);
 	// print_envp(getenvp(app->env_list));
 	// exit(1);
-	status = loop(app);
+//	status = loop(app);
+	status = 1;
 	return (status);
 }
 
