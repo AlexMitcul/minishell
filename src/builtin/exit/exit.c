@@ -6,13 +6,13 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 22:41:34 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/18 22:19:50 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:09:56 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-extern int	g_exit_status; // extern long long
+extern int	g_exit_status;
 
 static int	verify_num_arg(char *arg)
 {
@@ -90,7 +90,7 @@ int	ft_exit(t_app *self, char **args)
 		else
 			g_exit_status = get_exit_status(args[1]);
 	}
-	// terminate(&app); // free all the freeables and clear history! !
+	// terminate(&app);
 	exit(g_exit_status);
 	return (g_exit_status);
 }

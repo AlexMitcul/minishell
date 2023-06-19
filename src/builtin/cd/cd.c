@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 01:46:06 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/18 22:58:59 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/19 12:53:52 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,5 @@ int	ft_cd(t_app *self, char **args)
 		g_exit_status = 0;
 	}
 	set_pwd(self, oldpwd);
-	printf("PWD: %s\n", get_env_value(self->env_list, "PWD"));
-	printf("OLDPWD: %s\n", get_env_value(self->env_list, "OLDPWD"));
 	return (g_exit_status);
 }

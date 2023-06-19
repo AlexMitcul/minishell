@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:35:23 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/18 16:23:24 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:21:00 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,21 @@ char	*get_rlpwd(void)
 	char	*home;
 	char	*tmp;
 
+	tmp = ft_strdup("");
 	rlpwd = getcwd(NULL, 0);
 	if (rlpwd == NULL)
-		return (ft_strdup(""));
+		return (tmp);
 	home = ft_strjoin(getenv("HOME"), "/");
 	if (home == NULL)
 		home = ft_strdup("/");
 	if (ft_strncmp(rlpwd, home, ft_strlen(home)) == 0)
 	{
+		free(tmp);
 		tmp = ft_substr(rlpwd, ft_strlen(home) - 1, ft_strlen(rlpwd));
-		free(rlpwd);
-		free(home);
-		return (tmp);
 	}
-	return (ft_strdup(""));
+	free(rlpwd);
+	free(home);
+	return (tmp);
 }
 
 char	*set_prompt(void)
@@ -91,7 +92,7 @@ char	*set_prompt(void)
 	ppt[0] = ft_strjoin(ppt[0], "$ ");
 	free(ppt[1]);
 	ppt[1] = ppt[0];
-	ppt[0] = ft_strjoin("<MINI> ", ppt[0]);
+	ppt[0] = ft_strjoin("<MINISHELL> ", ppt[0]);
 	free(ppt[1]);
 	free(rlpwd);
 	return (ppt[0]);

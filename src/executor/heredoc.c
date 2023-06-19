@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 22:20:09 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/18 15:28:18 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:55:57 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,12 +107,14 @@ static int	wr_heredoc(t_app *app, t_lexer_token *red)
 		exit(mini_perr(PRE, "malloc", 1, 0));
 	while (1)
 	{
-		l = readline("> ");
-		if (ft_strncmp(l, del, ft_strlen(del) + 1) == 0)
+		l = ft_readline("> ");
+		if (!l || ft_strncmp(l, del, ft_strlen(del) + 1) == 0)
 			break ;
 		hd_expand(l, app->env_list, ft_strlen(red->str) - ft_strlen(del), fd);
 		free(l);
 	}
+	if (!l)
+		mini_err(PRE HDW, red->str, "\')", 0);
 	free(del);
 	free(l);
 	close(fd);
@@ -135,10 +137,9 @@ int	red_heredoc(t_app *app, t_lexer_token *red)
 		return (mini_perr(PRE, "fork", 1, -1));
 	sig_ignore();
 	waitpid(pid, &g_exit_status, 0);
-	if (WEXITSTATUS(g_exit_status) != 0)
+	g_exit_status = WEXITSTATUS(g_exit_status);
+	if (g_exit_status != 0)
 		return (-1);
-	if (WIFSIGNALED(g_exit_status))
-		mini_err(PRE HDW, red->str, "\')", 0);
 	sig_config();
 	fd = open("tmp_XmXiXnXiXsXhXeXlXl", O_RDONLY);
 	if (fd == -1 || unlink("tmp_XmXiXnXiXsXhXeXlXl") == -1)

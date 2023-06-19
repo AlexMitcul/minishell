@@ -6,13 +6,13 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 23:09:01 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/15 18:41:01 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/19 13:10:16 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-extern int	g_exit_status; // extern
+extern int	g_exit_status;
 
 int	ft_env(t_app *self, char **args)
 {

@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 13:47:01 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/15 11:42:25 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:36:05 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,7 @@ void	fill_env_list(t_app *self, char **envp);
 void	free_env_list(t_app *self);
 void	remove_list_item_by_key(t_app *self, char *key);
 int	env(t_app **self, char **args);
+
+char	*ft_readline(char *prompt);
 
 #endif
