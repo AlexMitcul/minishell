@@ -40,6 +40,39 @@ static void	ctrl_d(char *line, t_app **app)
 	}
 }
 
+static void free_command_list(t_command **list)
+{
+
+	free(*list);
+	return ;
+	t_command *cmd;
+	t_command *prev;
+
+	cmd = *list;
+	while (cmd)
+	{
+		if (cmd->str)
+			ft_splitfree(cmd->str);
+		if (cmd->path)
+			free(cmd->path);
+		ft_lexerclear(&(cmd->redirs));
+		prev = cmd;
+		cmd = cmd->next;
+		free(prev);
+	}
+}
+
+static void	reset(t_app *app)
+{
+	if (app->lexer_tokens)
+		ft_lexerclear(&(app->lexer_tokens));
+	if (app->input)
+		free(app->input);
+	if (app->commands_list)
+		free_command_list(&(app->commands_list));
+
+}
+
 static int	mini_loop(t_app *app)
 {
 	char	*l;
@@ -59,9 +92,9 @@ static int	mini_loop(t_app *app)
 		return (ft_error(2, app));
 	if (!get_tokens(app))
 		return (ft_error(1, app));
-	if (parser(app) != 0 || executor(app) != 0)
+	if (parser(app) != 0 || expander(app) != 0 || executor(app) != 0)
 		return (g_exit_status);
-	// reset(app);
+	reset(app);
 	return (0);
 }
 

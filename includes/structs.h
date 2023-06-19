@@ -46,7 +46,6 @@ typedef struct s_app
 {
 	t_env_list			*env_list;
 	char				**envp;
-	char 				**paths;
 	char				*input;
 	t_lexer_token		*lexer_tokens;
 	struct s_command	*commands_list;

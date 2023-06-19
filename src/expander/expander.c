@@ -59,20 +59,20 @@ void free_strs(char **strs)
 //    }
 //}
 
-static char    *get_env_value(char *key, t_env_list *env_list)
-{
-    t_env_list *tmp;
-    if (!env_list)
-        return (NULL);
-    tmp = env_list;
-    while (tmp)
-    {
-        if (ft_strncmp(tmp->key, key, ft_strlen(key) + 1) == 0)
-            return (tmp->value);
-        tmp = tmp->next;
-    }
-    return (NULL);
-}
+// static char    *get_env_value(char *key, t_env_list *env_list)
+// {
+//     t_env_list *tmp;
+//     if (!env_list)
+//         return (NULL);
+//     tmp = env_list;
+//     while (tmp)
+//     {
+//         if (ft_strncmp(tmp->key, key, ft_strlen(key) + 1) == 0)
+//             return (tmp->value);
+//         tmp = tmp->next;
+//     }
+//     return (NULL);
+// }
 
 
 // handle $?
@@ -88,9 +88,9 @@ char *handle_dollar_sign(char *str, size_t *start, t_env_list *list)
         i++;
     length = i - *start - 1;
     varname = ft_substr(str, *start + 1, length);
-    printf("%s\n", varname);
+    // printf("%s\n", varname);
     *start += length + 1;
-    return (get_env_value(varname, list));
+    return (get_env_value(list, varname));
 }
 
 size_t	get_head(char **result, char *str)
@@ -156,7 +156,7 @@ char *try_expand(char *str, t_env_list *list)
 	{
 		char *head = NULL;
 		i += get_head(&head, str);
-		printf("head: %s\n", head);
+        // printf("head: %s\n", head);
 		to_join[result_index] = head;
 		result_index++;
 	}
@@ -200,7 +200,8 @@ int expander(t_app *app)
 	while (command)
 	{
 		expanded = expand(app->env_list, command->str);
-		print_strs(expanded);
+		// print_strs(expanded);
+		(void)expanded;
 		command = command->next;
 	}
 	return (EXIT_SUCCESS);
