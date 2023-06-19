@@ -2,6 +2,9 @@
 
 #include "../../includes/expander.h"
 
+char	*handle_single_quotes(char *str, size_t *start);
+char    *handle_double_quotes(char *str, size_t *start, t_env_list *list);
+
 bool is_delimeter(char c)
 {
     return (c == '\'' || c == '"' || c == '$');
@@ -47,7 +50,7 @@ void free_strs(char **strs)
 	}
 	free(strs);
 }
-//
+
 //static void print_env_list(t_env_list *list)
 //{
 //    while (list) {
@@ -72,6 +75,7 @@ static char    *get_env_value(char *key, t_env_list *env_list)
 }
 
 
+// handle $?
 char *handle_dollar_sign(char *str, size_t *start, t_env_list *list)
 {
     size_t  i;
@@ -87,22 +91,6 @@ char *handle_dollar_sign(char *str, size_t *start, t_env_list *list)
     printf("%s\n", varname);
     *start += length + 1;
     return (get_env_value(varname, list));
-}
-
-char	*handle_single_quotes(char *str, size_t *start)
-{
-	size_t i;
-	size_t len;
-	char *result;
-
-	i = *start + 1;
-	while (str[i] != '\0' && str[i] != '\'')
-		i++;
-	len = i - *start - 1;
-	result = (char *)ft_calloc(len + 1, sizeof(char));
-    ft_memcpy(result, str + *start + 1, len);
-	*start += len + 2;
-	return (result);
 }
 
 size_t	get_head(char **result, char *str)
@@ -151,24 +139,6 @@ bool is_valid_varname_character(char ch)
     if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_')
         return (true);
     return (false);
-}
-
-char    *handle_double_quotes(char *str, size_t *start, t_env_list *list)
-{
-    size_t i;
-
-    // how to collect them??? %(
-    (void)list;
-    i = *start + 1;
-    while (str[i] != '\0' && str[i] != '"')
-    {
-        if (str[i] == '$')
-        {
-            ;
-        }
-        i++;
-    }
-    return ("TMP");
 }
 
 char *try_expand(char *str, t_env_list *list)

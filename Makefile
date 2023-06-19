@@ -20,7 +20,8 @@ LIBDIR = ./libft
 LIB = $(LIBDIR)/libft.a
 
 INCLUDES = ./includes/
-INCLUDES_LIB = ./libft/includes/ -I/Users/alexmitcul/.brew/opt/readline/include
+INCLUDES_LIB = ./libft/includes/ -I/Users/alexmitcul/.brew/opt/readline/include/readline
+#INCLUDES_LIB = -I/Users/alexmitcul/.brew/opt/readline/include
 
 HEADER += $(INCLUDES)minishell.h
 HEADER += $(INCLUDES)utils.h
@@ -28,7 +29,8 @@ HEADER += $(INCLUDES)lexer.h
 HEADER += $(INCLUDES)parser.h
 HEADER += $(INCLUDES)expander.h
 
-LIB_TERMCAP = -lreadline -L/Users/alexmitcul/.brew/opt/readline/lib
+LIB_TERMCAP = -L/Users/alexmitcul/.brew/opt/readline/lib
+#LIB_TERMCAP = -L/Users/alexmitcul/.brew/opt/readline/lib
 
 SRCS += main.c
 
@@ -43,7 +45,7 @@ SRCS += quotes.c tokens.c lexer_utils.c lexer_test.c
 SRCS += parser.c parser_test.c command.c parser_utils.c redirections.c
 
 # Expander files
-SRCS += expander.c
+SRCS += expander.c double_quotes.c single_quotes.c
 
 # Utils source files
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
