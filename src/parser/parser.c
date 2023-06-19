@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 20:13:05 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/05 17:30:59 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/19 20:27:30 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,4 @@ int	parser(t_app *app)
 		app->lexer_tokens = parser->lexer_list;
 	}
 	return (EXIT_SUCCESS);
-}
-
-vector<int> v;
-
-for (iterator<vector::iterator> *it v.begin(); it != v.end(); it++) {
-	
 }
