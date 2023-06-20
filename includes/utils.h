@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 20:37:55 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/15 18:53:52 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/20 18:33:35 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,8 @@ int			count_symbol_in_string(char *str, int ch);
 t_env_list	*init(char *key, char *value);
 void		push_front(t_app *self, t_env_list *new);
 
+void 	free_command_list(t_command **list);
+void	reset(t_app *app);
+void	terminate(t_app **app);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 20:11:46 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/18 22:53:07 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:46:47 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,48 @@ void	envl_dup_clear(t_app **self)
 		tmp = next;
 	}
 	free(*self);
+}
+
+static char	**init_envp(t_env_list *env_list)
+{
+	char		**envp;
+	t_env_list	*tmp_lst;
+	int			i;
+
+	tmp_lst = env_list;
+	i = 0;
+	while (tmp_lst)
+	{
+		if (tmp_lst->value)
+			i++;
+		tmp_lst = tmp_lst->next;
+	}
+	envp = ft_calloc(i + 1, sizeof(char *));
+	if (!envp)
+		return (NULL);
+	return (envp);
+}
+
+char	**getenvp(t_env_list *env_list)
+{
+	char		**envp;
+	char		*tmp;
+	int			i;
+	t_env_list	*tmp_lst;
+
+	envp = init_envp(env_list);
+	tmp = NULL;
+	tmp_lst = env_list;
+	i = 0;
+	while (tmp_lst)
+	{
+		if (tmp_lst->value)
+		{
+			tmp = ft_strjoin(tmp_lst->key, "=");
+			envp[i++] = ft_strjoin(tmp, tmp_lst->value);
+			free(tmp);
+		}
+		tmp_lst = tmp_lst->next;
+	}
+	return (envp);
 }

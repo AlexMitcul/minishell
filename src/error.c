@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amitcul <amitcul@student.42porto.com>      +#+  +:+       +#+        */
+/*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 20:58:59 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/05 21:27:14 by amitcul          ###   ########.fr       */
+/*   Updated: 2023/06/20 18:33:59 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	parser_error(int error, t_app *app, t_lexer_token *lexer_list)
 	ft_error(error, app);
 }
 
-static void reset(t_app *app)
+/* static void reset(t_app *app)
 {
 	if (app)
 		printf("Reset\n");
-}
+} */
 
 int	handle_pipe_errors(t_app *app, t_token_type token_type)
 {

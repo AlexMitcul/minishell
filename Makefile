@@ -6,14 +6,14 @@
 #    By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 11:02:30 by amitcul           #+#    #+#              #
-#    Updated: 2023/06/19 16:55:18 by amenses-         ###   ########.fr        #
+#    Updated: 2023/06/20 19:35:01 by amenses-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 
 CC		=	cc -fPIE
-CFLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
 RM		=	rm -rf
 
 LIBDIR = ./libft
@@ -45,7 +45,8 @@ SRCS += parser.c parser_test.c command.c parser_utils.c redirections.c
 SRCS += expander.c double_quotes.c single_quotes.c
 
 # Utils source files
-SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c
+SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c \
+		main_utils.c
 
 # Builtins source files
 SRCS += unset.c env.c echo.c export.c export_utils.c pwd.c exit.c cd.c \

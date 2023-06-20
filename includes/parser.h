@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 14:21:06 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/09 21:06:04 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/20 18:05:38 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_command
 	char				**str;
 	char				*path; // N
 	pid_t				pid; // N
-	int 				(*builtin)(t_app *, char **);
+	// int 				(*builtin)(t_app *, char **);
 	size_t				redirs_count;
 	t_lexer_token		*redirs;
 	struct s_command	*next;

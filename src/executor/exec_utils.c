@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:51:21 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/15 18:45:05 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:41:37 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,22 @@ int	mini_perr(char *pre, char *name, int exit_status, int fail)
 	return (g_exit_status);
 }
 
+char	**ft_splitdup(char **str)
+{
+	int		i;
+	char	**dup;
+
+	i = 0;
+	while (str[i])
+		i++;
+	dup = ft_calloc(i + 1, sizeof(char *));
+	if (!dup)
+		return (NULL);
+	while (--i >= 0)
+		dup[i] = ft_strdup(str[i]);
+	return (dup);
+}
+
 void	ft_splitfree(char **str)
 {
 	int	i;
@@ -41,29 +57,4 @@ void	ft_splitfree(char **str)
 	while (str[++i])
 		free(str[i]);
 	free(str);
-}
-
-char	**getenvp(t_env_list *env_list)
-{
-	char		**envp;
-	char		*tmp;
-	int			i;
-	t_env_list	*tmp_lst;
-
-	envp = malloc(sizeof(char *) * (env_list_size(env_list) + 1));
-	if (!envp)
-		return (NULL);
-	envp[env_list_size(env_list)] = NULL;
-	tmp = NULL;
-	tmp_lst = env_list;
-	i = 0;
-	while (tmp_lst)
-	{
-		tmp = ft_strjoin(tmp_lst->key, "=");
-		envp[i] = ft_strjoin(tmp, tmp_lst->value);
-		free(tmp);
-		tmp_lst = tmp_lst->next;
-		i++;
-	}
-	return (envp);
 }
