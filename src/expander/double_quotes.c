@@ -5,20 +5,23 @@
 
 char *handle_dollar_sign(char *str, size_t *start, t_env_list *list);
 
-static bool is_space(char c)
-{
-    // check for expansion delimeters
-    return (c == ' ');
-}
+//static bool is_space(char c)
+//{
+//    // check for expansion delimeters
+//    return (c == ' ');
+//}
 
 static void free_join_array(char **strs, size_t count)
 {
     size_t i;
 
+	if (!strs || !(*strs))
+		return ;
     i = 0;
     while (i < count)
     {
-        free(strs[i]);
+		if (strs[i])
+        	free(strs[i]);
         i++;
     }
     free(strs);
@@ -43,9 +46,9 @@ static char    *join(char **strs, size_t count)
         return (NULL);
     i = 0;
     written = 0;
-    while (strs[i] != NULL)
+    while (i < count)
     {
-        total_length = ft_strlen(strs[i]);
+        total_length = ft_strlen(strs[i]); // not a null ended
         ft_memcpy(result + written, strs[i], total_length);
         written += total_length;
         i++;
@@ -54,26 +57,45 @@ static char    *join(char **strs, size_t count)
     return (result);
 }
 
+bool is_delimeter(char c);
+static char *handle_dollar_sign_special(char *str, size_t start, t_env_list *list)
+{
+	size_t  i;
+	size_t  length;
+	char *varname;
+
+	(void)list;
+	i = start + 1;
+	while (str[i] != '\0' && is_delimeter(str[i]) == false)
+		i++;
+	length = i - start - 1;
+	varname = ft_substr(str, start + 1, length);
+	// printf("%s\n", varname);
+//	*start += length + 1;
+	return (get_env_value(list, varname));
+}
+
 char    *handle_double_quotes(char *str, size_t *start, t_env_list *list)
 {
     size_t i;
     size_t j;
     size_t curr;
-    char *to_join[100];
+    char **to_join;
     char *expanded_var;
 
     i = *start + 1;
     curr = 0;
+	to_join = ft_calloc(100, sizeof(char *));
     while (str[i] != '\0' && str[i] != '"')
     {
         if (str[i] == '$')
         {
             // check if alloc null string
-            expanded_var = handle_dollar_sign(&(str[i]), 0, list);
+            expanded_var = handle_dollar_sign_special(&(str[i]), 0, list);
             if (expanded_var)
-                to_join[curr++] = expanded_var;
-            while (str[i] && !is_space(str[i]))
-                i++;
+                to_join[curr++] = ft_strdup(expanded_var);
+			// need to pass name of expanded part. Крч, не скипает слово которые расскрыло,
+			// надо цикл бахнуть чтоб скипнул
         }
         else
         {
