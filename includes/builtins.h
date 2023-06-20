@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:46:32 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/19 13:15:35 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:43:16 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,7 @@ t_app	*env_list_dup(t_env_list *env_list);
 int		find_env_key(t_env_list *env_list, char *key);
 
 void	envl_dup_clear(t_app **self);
+
+char	**getenvp(t_env_list *env_list);
 
 #endif

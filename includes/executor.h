@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:59:30 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/19 13:19:27 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:42:20 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 
 # define PRE "minishell: "
 # define HDW "warning: here-document delimited by end-of-file (wanted `"
+
+char	**ft_splitdup(char **str);
 
 int		sig_ignore(void);
 
@@ -44,6 +46,7 @@ int		set_fd(t_app *app, t_command *cmd, t_lexer_token *red, \
 	int (*f)(t_app *, t_lexer_token *), int io);
 
 int		redirector(t_app *app);
+
 int		isbuiltin(char *cmd);
 
 int		bi(t_command *cmd, t_app *app);
@@ -71,8 +74,6 @@ char	*cmdpath(char *cmd, t_env_list *envl);
 int		exec_simple(t_app *app);
 
 int		executor(t_app *app);
-
-char	**getenvp(t_env_list *env_list);
 
 char	*get_hostname(void);
 

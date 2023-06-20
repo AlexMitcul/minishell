@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 00:22:40 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/18 22:52:53 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:51:23 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,7 @@ int	ft_export(t_app *self, char **args)
 			mini_err(PRE "export: `", args[i], "': not a valid identifier", 1);
 		i++;
 	}
+	ft_splitfree(self->envp);
+	self->envp = getenvp(self->env_list);
 	return (g_exit_status);
 }

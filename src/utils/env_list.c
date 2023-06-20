@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:08:03 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/18 20:54:43 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/20 20:51:53 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	push_front(t_app *self, t_env_list *new)
 	self->env_list = new;
 }
 
-//! check case when we add "export x"
 void	fill_env_list(t_app *self, char **envp)
 {
 	int		i;
@@ -57,7 +56,7 @@ void	fill_env_list(t_app *self, char **envp)
 		push_front(self, init(key, value));
 		i--;
 	}
-	self->envp = envp;
+	self->envp = ft_splitdup(envp);
 }
 
 void	remove_list_item_by_key(t_app *self, char *key)

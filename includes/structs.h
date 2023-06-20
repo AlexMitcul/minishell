@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 14:39:34 by amitcul           #+#    #+#             */
-/*   Updated: 2023/06/06 18:09:27 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/20 14:00:45 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ typedef struct s_app
 	struct s_command	*commands_list;
 	int					pipes_count;
 
-	int *pid;
-	bool heredoc;
-	bool reset;
+	// int *pid;
+	// bool heredoc;
+	// bool reset;
 } t_app;
 
 #endif

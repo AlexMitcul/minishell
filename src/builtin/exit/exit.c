@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 22:41:34 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/19 13:09:56 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:30:57 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	ft_exit(t_app *self, char **args)
 		else
 			g_exit_status = get_exit_status(args[1]);
 	}
-	// terminate(&app);
-	exit(g_exit_status);
+	terminate(&self);
 	return (g_exit_status);
 }
