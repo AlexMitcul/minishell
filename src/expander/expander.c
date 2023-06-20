@@ -174,21 +174,27 @@ char *try_expand(char *str, t_env_list *list)
     return (result);
 }
 
-char **expand(t_env_list *list, char **strs)
+char **expand(t_env_list *list, char **strs, t_command *cmd)
 {
     size_t i;
+	size_t index;
+	char **result;
     char *tmp;
 
-    (void)list;
     i = 0;
+	index = 0;
+	result = ft_calloc(100, sizeof(char *));
+	result[index++] = ft_strdup(cmd->str[0]);
     while (strs[i] != NULL)
     {
         tmp = try_expand(strs[i], list);
+		result[index] = ft_strdup(tmp);
+//		free(tmp);
         free(strs[i]);
         strs[i] = tmp;
         i++;
     }
-    return (strs);
+    return (result);
 }
 
 int expander(t_app *app)
@@ -199,9 +205,10 @@ int expander(t_app *app)
 	command = app->commands_list;
 	while (command)
 	{
-		expanded = expand(app->env_list, command->str);
+		expanded = expand(app->env_list, command->str, command);
 		// print_strs(expanded);
-		(void)expanded;
+		free_strs(command->str);
+		command->str = expanded;
 		command = command->next;
 	}
 	return (EXIT_SUCCESS);
