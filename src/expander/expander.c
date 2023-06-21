@@ -103,11 +103,11 @@ static char *expand_string(char *str, t_env_list *list)
 
 	curr_index = 0;
 	result = (char **) ft_calloc(ft_strlen(str) + 1, sizeof(char *));
-	line = NULL;
 	i = 0;
 	// prefix
 	while (str[i])
 	{
+		line = NULL;
 		if (str[i] == '\\')
 			i = expand_backslash(str, i, &line);
 		else if (str[i] == '\'')
@@ -118,9 +118,10 @@ static char *expand_string(char *str, t_env_list *list)
 			i = expand_dollar_sign(str, i, &line, list);
 		else
 			i = expand_plain_text(str, i, &line);
-		result[curr_index++] = ft_strdup(line);
-		if (line)
+		if (line) {
+			result[curr_index++] = ft_strdup(line);
 			free(line);
+		}
 	}
     return (strings_join(result));
 }
