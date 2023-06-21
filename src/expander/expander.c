@@ -1,87 +1,131 @@
 
-
-
 #include "../../includes/expander.h"
 
-void free_strs(char **strs)
-{
-    size_t i;
+// dollar\$first' part'"i\'m = $USER status = $?code"'end 'part
 
-    if (!strs)
-        return ;
-    i = 0;
-    while (strs[i])
-    {
-        free(strs[i]);
-        i++;
-    }
-    free(strs);
+// result = [00000000000]
+// strs = ["aaa", "bb", "fffff"]
+/*
+ * result = [aaa00000000]
+ * result = [aaabb000000]
+ * result = [aaabbfffff0]
+ */
+static char *strings_join(char **strs)
+{
+	char *result;
+	size_t i;
+	size_t count;
+
+	i = 0;
+	count = 0;
+	while (strs[i])
+		count += ft_strlen(strs[i++]);
+	result = (char *) ft_calloc(count + 1, sizeof(char));
+	count = 0;
+	i = 0;
+	while (strs[count])
+	{
+		ft_memcpy(result + i, strs[count], ft_strlen(strs[count]));
+		i += ft_strlen(strs[count]);
+		free(strs[count]);
+		count++;
+	}
+	free(strs);
+	return (result);
 }
 
-bool is_var_name(char c)
+size_t expand_plain_text(char *str, size_t start, char **line)
 {
-    if ((c >= 'A' && c <= 'Z')
-        || (c >= 'a' && c <= 'z')
-        || (c >= '0' && c <= '9')
-        || (c == '_'))
-        return (true);
-    return (false);
+	char *result;
+
+	result = ft_calloc(2, sizeof(char));
+	result[0] = str[start];
+	*line = result;
+	return (start + 1);
 }
 
-// ! Need to test this function
-char *expand_dollar_sign(char *str, size_t start, t_env_list *list)
+size_t expand_backslash(char *str, size_t start, char **line)
 {
-    size_t end;
-    char *key;
-    char *result;
+	char *result;
 
-    end = start + 1;
-    if (str[end] && str[end] == '?')
-        return (ft_itoa(42)); // Put here status code
-    while (str[end] && is_var_name(str[end]))
-        end++;
-    /*
-     *    $PATH
-     * 012345678
-    */
-    key = ft_substr(str, start + 1, end - start + 1);
-    result = get_env_value(list, key);
-    free(key);
-    return (result);
+	result = ft_calloc(2, sizeof(char));
+	result[0] = str[start + 1];
+	*line = result;
+	return (start + 2);
 }
 
-// ! Need to test this function
-char *expand_single_quotes(char *str, size_t start)
+bool is_valid_to_expand_from_double_quotes(char *str, size_t i)
 {
-    size_t end;
-    size_t i;
-    char *result;
-
-    end = start + 1;
-    while (str[end] && str[end] != '\'')
-        end++;
-    // start 2 end 6
-    result = (char *) ft_calloc(end - start, sizeof(char));
-    if (!result)
-        return (NULL);
-    start++;
-    i = 0;
-    while (str[start] && start < end)
-        result[i++] = str[start++];
-    return (result);
+	if (str[i] == '\\' && str[i + 1] && str[i + 1] == '"')
+		return (true);
+	if (str[i] == '\\' && str[i + 1] && str[i + 1] == '$')
+		return (true);
+	if (str[i] == '\\' && str[i + 1] && str[i + 1] == '\\')
+		return (true);
+	return (false);
 }
 
-char *expand_string(char *str)
+size_t expand_double_quotes(char *str, size_t start, char **line, t_env_list *list)
 {
-    char *result = NULL;
-    (void) str;
-//    size_t start;
-//    size_t end;
+	char **result;
+	char *tmp;
+	size_t curr_index;
+	size_t i;
 
-    return (result);
+	result = (char **) ft_calloc(ft_strlen(str) + 1, sizeof(char *));
+	curr_index = 0;
+	i = start + 1;
+	while (str[i] && str[i] != '"')
+	{
+		tmp = NULL;
+		if (is_valid_to_expand_from_double_quotes(str, i))
+			i = expand_backslash(str, i, &tmp);
+		else if (str[i] == '$')
+			i = expand_dollar_sign(str, i, &tmp, list);
+		else
+			i = expand_plain_text(str, i, &tmp);
+		if (tmp)
+		{
+			result[curr_index++] = ft_strdup(tmp);
+			free(tmp);
+		}
+	}
+	*line = strings_join(result);
+	return (i);
 }
 
-char **expand_all_strings(char **strs)
+static char *expand_string(char *str, t_env_list *list)
+{
+	char **result;
+	char *line;
+	size_t	curr_index;
+	size_t	i;
+
+	curr_index = 0;
+	result = (char **) ft_calloc(ft_strlen(str) + 1, sizeof(char *));
+	line = NULL;
+	i = 0;
+	// prefix
+	while (str[i])
+	{
+		if (str[i] == '\\')
+			i = expand_backslash(str, i, &line);
+		else if (str[i] == '\'')
+			i = expand_single_quotes(str, i, &line); // !
+		else if (str[i] == '"')
+			i = expand_double_quotes(str, i, &line, list);
+		else if (str[i] == '$')
+			i = expand_dollar_sign(str, i, &line, list);
+		else
+			i = expand_plain_text(str, i, &line);
+		result[curr_index++] = ft_strdup(line);
+		if (line)
+			free(line);
+	}
+    return (strings_join(result));
+}
+
+static char **expand_all_strings(char **strs, t_env_list *list)
 {
     char **result;
     size_t curr_string;
@@ -96,11 +140,11 @@ char **expand_all_strings(char **strs)
     index = 0;
     curr_string = 0;
     while (strs[curr_string])
-        result[index++] = expand_string(strs[curr_string++]);
+        result[index++] = expand_string(strs[curr_string++], list);
     return (result);
 }
 
-void expand(t_command *cmd)
+static void expand(t_command *cmd, t_env_list *list)
 {
     size_t i;
     char **expanded;
@@ -111,7 +155,7 @@ void expand(t_command *cmd)
     expanded = NULL;
     while (cmd->str[i])
     {
-        expanded = expand_all_strings(cmd->str);
+        expanded = expand_all_strings(cmd->str, list);
         if (expanded != NULL)
         {
             free_strs(cmd->str);
@@ -123,17 +167,18 @@ void expand(t_command *cmd)
 
 int expander(t_app *app)
 {
-    (void)app;
-//    t_command *cmd;
-//
-//    cmd = app->commands_list;
-//    if (!cmd)
-//        return (EXIT_SUCCESS);
-//    while (cmd)
-//    {
-//        expand(cmd);
-//        cmd = cmd->next;
-//    }
+    t_command *cmd;
 
+    cmd = app->commands_list;
+    if (!cmd)
+        return (EXIT_SUCCESS);
+    while (cmd)
+    {
+        expand(cmd, app->env_list);
+        cmd = cmd->next;
+    }
+//	printf("%s\n", expand_dollar_sign("$?", 0, app->env_list));
+//	printf("%s\n", expand_single_quotes(cmd->str[1], 0));
+//	return (EXIT_FAILURE); // ! Just for debug
     return (EXIT_SUCCESS);
 }

@@ -53,16 +53,17 @@ int	read_word(int start, char *str, t_lexer_token **list)
 {
 	int	i;
 
-	i = 0;
-	while (str[start + i] && !(is_token(str[start + i])))
+	i = start;
+	while (str[i] && !(is_token(str[i])))
 	{
-		i += handle_quotes(start + i, str, '"');
-		i += handle_quotes(start + i, str, '\'');
-		if (ft_iswhitespace(str[start + i]))
+		i = handle_quotes(i, str, '"');
+		i = handle_quotes(i, str, '\'');
+		if (ft_iswhitespace(str[i]))
 			break ;
-		i++;
+		if (str[i] != '\0' && str[i] != '"' && str[i] != '\'')
+			i++;
 	}
-	if (!add_node(ft_substr(str, start, i), 0, list))
+	if (!add_node(ft_substr(str, start, i - start), 0, list))
 		return (-1);
 	return (i);
 }
@@ -84,7 +85,7 @@ int	get_tokens(t_app *app)
 			j = read_word(i, app->input, &app->lexer_tokens);
 		if (j < 0)
 			return (0);
-		i += j;
+		i = j;
 	}
 	return (1);
 }

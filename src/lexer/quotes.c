@@ -49,11 +49,11 @@ int	handle_quotes(int start, char *str, char quote)
 {
 	int	i;
 
-	i = 0;
-	if (str[start + i] == quote)
+	i = start;
+	if (str[i] == quote)
 	{
 		i++;
-		while (str[start + i] && str[start + i] != quote)
+		while (str[i] && str[i] != quote)
 			i++;
 		i++;
 	}

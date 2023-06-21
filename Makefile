@@ -53,7 +53,7 @@ SRCS += quotes.c tokens.c lexer_utils.c lexer_test.c
 SRCS += parser.c parser_test.c command.c parser_utils.c redirections.c
 
 # Expander files
-SRCS += expander.c
+SRCS += expander.c dollar_sign.c double_quotes.c single_quotes.c expander_utils.c
 
 # Utils source files
 SRCS += doubly_linked_list_utils.c env_list.c count_symbol_in_string.c \

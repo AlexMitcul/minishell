@@ -47,6 +47,7 @@ static int	mini_loop(t_app *app)
 	sig_config();
 	ppt = set_prompt();
 	l = readline(ppt);
+	printf("%s\n", l);
 	free(ppt);
 	ctrl_d(l, &app);
 	add_history(l);
