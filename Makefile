@@ -15,12 +15,23 @@ NAME	=	minishell
 CC		=	cc -fPIE
 CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
 RM		=	rm -rf
+OS		:= 	$(shell uname)
 
 LIBDIR = ./libft
-LIB = $(LIBDIR)/libft.a -lreadline -L/Users/alexmitcul/.brew/opt/readline/lib
+
+ifeq ($(OS), macos)
+	LIB = $(LIBDIR)/libft.a -lreadline -L/Users/alexmitcul/.brew/opt/readline/lib
+else
+	LIB = $(LIBDIR)/libft.a -lreadline
+endif
 
 INCLUDES = ./includes/
-INCLUDES_LIB = ./libft/includes/ -I/Users/alexmitcul/.brew/opt/readline/include/
+
+ifeq ($(OS), macos)
+	INCLUDES_LIB = ./libft/includes/ -I/Users/alexmitcul/.brew/opt/readline/include/
+else
+	INCLUDES_LIB = ./libft/includes/
+endif
 
 HEADER += $(INCLUDES)minishell.h
 HEADER += $(INCLUDES)utils.h
