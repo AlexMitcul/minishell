@@ -17,10 +17,10 @@ CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
 RM		=	rm -rf
 
 LIBDIR = ./libft
-LIB = $(LIBDIR)/libft.a
+LIB = $(LIBDIR)/libft.a -lreadline -L/Users/alexmitcul/.brew/opt/readline/lib
 
 INCLUDES = ./includes/
-INCLUDES_LIB = ./libft/includes/
+INCLUDES_LIB = ./libft/includes/ -I/Users/alexmitcul/.brew/opt/readline/include/
 
 HEADER += $(INCLUDES)minishell.h
 HEADER += $(INCLUDES)utils.h
@@ -88,7 +88,7 @@ $(OBJS): $(OBJ_DIR)%.o: %.c $(HEADER)
 
 $(NAME): $(OBJ_DIR) $(OBJS)
 	@echo $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -I$(INCLUDES) -I$(INCLUDES_LIB) $(LIB_TERMCAP) -L./libft -lft -o $@
+	$(CC) $(CFLAGS) $(OBJS) -I$(INCLUDES) -I$(INCLUDES_LIB) $(LIB) -L./libft -lft -o $@
 
 $(OBJ_DIR):
 	mkdir $@
