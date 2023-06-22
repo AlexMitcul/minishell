@@ -10,6 +10,19 @@
  * result = [aaabb000000]
  * result = [aaabbfffff0]
  */
+
+//void print_strings(char **strs)
+//{
+//    size_t i;
+//
+//    i = 0;
+//    while (strs[i])
+//    {
+//        printf("%zu %s\n", i, strs[i]);
+//        i++;
+//    }
+//}
+
 static char *strings_join(char **strs)
 {
 	char *result;
@@ -104,14 +117,13 @@ static char *expand_string(char *str, t_env_list *list)
 	curr_index = 0;
 	result = (char **) ft_calloc(ft_strlen(str) + 1, sizeof(char *));
 	i = 0;
-	// prefix
 	while (str[i])
 	{
 		line = NULL;
 		if (str[i] == '\\')
 			i = expand_backslash(str, i, &line);
 		else if (str[i] == '\'')
-			i = expand_single_quotes(str, i, &line); // !
+			i = expand_single_quotes(str, i, &line);
 		else if (str[i] == '"')
 			i = expand_double_quotes(str, i, &line, list);
 		else if (str[i] == '$')
@@ -134,7 +146,6 @@ static char **expand_all_strings(char **strs, t_env_list *list)
 
     if (!strs)
         return (NULL);
-    // can I do that?
     result = (char **) ft_calloc(100, sizeof(char *));
     if (!result)
         return (NULL);
@@ -147,22 +158,16 @@ static char **expand_all_strings(char **strs, t_env_list *list)
 
 static void expand(t_command *cmd, t_env_list *list)
 {
-    size_t i;
     char **expanded;
 
     if (!cmd->str)
         return ;
-    i = 0;
     expanded = NULL;
-    while (cmd->str[i])
+    expanded = expand_all_strings(cmd->str, list);
+    if (expanded != NULL)
     {
-        expanded = expand_all_strings(cmd->str, list);
-        if (expanded != NULL)
-        {
-            free_strs(cmd->str);
-            cmd->str = expanded;
-        }
-        i++;
+        free_strs(cmd->str);
+        cmd->str = expanded;
     }
 }
 
