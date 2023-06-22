@@ -47,5 +47,7 @@ size_t expand_double_quotes(char *str, size_t start, char **line, t_env_list *li
         }
     }
     *line = strings_join(result);
+    if (str[i] == '"')
+        return (i + 1);
     return (i);
 }
