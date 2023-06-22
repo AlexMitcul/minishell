@@ -6,7 +6,7 @@
 /*   By: amenses- <amenses-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 20:32:16 by amenses-          #+#    #+#             */
-/*   Updated: 2023/06/20 18:09:57 by amenses-         ###   ########.fr       */
+/*   Updated: 2023/06/22 17:01:51 by amenses-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ extern int	g_exit_status;
 
 int	exec_cmd(t_command *cmd, t_app *app)
 {
+	if (!cmd->str[0])
+		return (0);
 	if (isbuiltin(cmd->path))
 		return (exec_bi(cmd, app));
 	else
@@ -89,6 +91,8 @@ int	exec_simple(t_app *app)
 	t_command	*cmd;
 
 	cmd = app->commands_list;
+	if (!cmd->str[0])
+		return (g_exit_status);
 	std_dup(app->commands_list, &std[0], &std[1]);
 	dup2(cmd->fd[0], STDIN_FILENO);
 	if (cmd->fd[0] != std[0])
@@ -109,9 +113,12 @@ int	executor(t_app *app)
 	cmd = app->commands_list;
 	while (cmd)
 	{
-		cmd->path = cmdpath(cmd->str[0], app->env_list);
-		if (!cmd->path)
-			return (-1);
+		if (cmd->str[0])
+		{
+			cmd->path = cmdpath(cmd->str[0], app->env_list);
+			if (!cmd->path)
+				return (-1);
+		}
 		cmd = cmd->next;
 	}
 	if (redirector(app) == -1)
