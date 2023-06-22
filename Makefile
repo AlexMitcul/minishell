@@ -19,18 +19,18 @@ OS		:= 	$(shell uname)
 
 LIBDIR = ./libft
 
-ifeq ($(OS), macos)
+ifeq ($(OS), Darwin)
 	LIB = $(LIBDIR)/libft.a -lreadline -L/Users/alexmitcul/.brew/opt/readline/lib
 else
-	LIB = $(LIBDIR)/libft.a -lreadline
+	LIB = $(LIBDIR)/libft.a -lreadline -L/Users/alexmitcul/.brew/opt/readline/lib
 endif
 
 INCLUDES = ./includes/
 
-ifeq ($(OS), macos)
+ifeq ($(OS), Darwin)
 	INCLUDES_LIB = ./libft/includes/ -I/Users/alexmitcul/.brew/opt/readline/include/
 else
-	INCLUDES_LIB = ./libft/includes/
+	INCLUDES_LIB = ./libft/includes/ -I/Users/alexmitcul/.brew/opt/readline/include/
 endif
 
 HEADER += $(INCLUDES)minishell.h
