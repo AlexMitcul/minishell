@@ -64,5 +64,6 @@ int	parser(t_app *app)
 			add_command_to_list(app, command);
 		app->lexer_tokens = parser->lexer_list;
 	}
+	free(parser);
 	return (EXIT_SUCCESS);
 }
