@@ -32,19 +32,19 @@ int	handle_token(char *str, int start, t_lexer_token **list)
 	{
 		if (!add_node(NULL, G_GREAT, list))
 			return (-1);
-		return (2);
+		return (start + 2);
 	}
 	else if (token_type == LESS && is_token(str[start + 1]) == LESS)
 	{
 		if (!add_node(NULL, L_LESS, list))
 			return (-1);
-		return (2);
+		return (start + 2);
 	}
 	else if (token_type)
 	{
 		if (!add_node(NULL, token_type, list))
 			return (-1);
-		return (1);
+		return (start + 1);
 	}
 	return (0);
 }
@@ -71,21 +71,18 @@ int	read_word(int start, char *str, t_lexer_token **list)
 int	get_tokens(t_app *app)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (app->input[i])
 	{
-		j = 0;
 		while (ft_iswhitespace(app->input[i]))
 			i++;
 		if (is_token(app->input[i]))
-			j = handle_token(app->input, i, &app->lexer_tokens);
+			i = handle_token(app->input, i, &app->lexer_tokens);
 		else
-			j = read_word(i, app->input, &app->lexer_tokens);
-		if (j < 0)
+			i = read_word(i, app->input, &app->lexer_tokens);
+		if (i < 0)
 			return (0);
-		i = j;
 	}
 	return (1);
 }
